@@ -13,6 +13,11 @@ class Game
 public:
 	static Game* instance;
 
+
+	//Entity* root = nullptri;
+	//std::map<std::string, sRenderData> meshes_to_load;
+
+
 	//window
 	SDL_Window* window;
 	int window_width;

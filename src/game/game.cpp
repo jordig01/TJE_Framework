@@ -51,6 +51,9 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
 	// Hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
+
+
+	//Parse scene
 }
 
 //what to do when the image has to be draw
@@ -179,3 +182,11 @@ void Game::onResize(int width, int height)
 	window_height = height;
 }
 
+
+//añadir parse scene  colgado en el aula global pero en una clase llamada World
+//lee linea por linea  # son comentarios para skippear
+
+	/*añadir una model a ese render data con el contador
+	tag para identificar diferentes entities
+	models 3D si la mesh se repite
+	*/
