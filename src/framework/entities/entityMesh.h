@@ -1,34 +1,45 @@
-//#pragma once
-//
-//#include "framework/entities/entity.h"
-//#include "graphics/mesh.h"
-//
-//
-//class Material;
-//
-//
-//class EntityMesh : public Entity {
-//
-//
-//public:
-//
-//	// Attributes of the derived class  
-//	Mesh* mesh = nullptr;
-//	/*Texture* texture = nullptr;
-//	Shader* shader = nullptr;
-//	Vector4 color;*/ //YA LO HACE MATERIAL
-//
-//	Material material;
-//
-//	EntityMesh(); 
-//	EntityMesh(Mesh* mesh, Material material);
-//
-//	//bool instanced = false;
-//	//std::vector<Matrix44> models;
-//	//void addInstance(const Matrix44& model); models.push_back(model)
-//
-//	// Methods overwritten from base class
-//	void render();
-//	void update(float elapsed_time);
-//
-//};
+#pragma once
+
+#include "entity.h"
+#include "graphics/mesh.h"
+#include "graphics/material.h"
+#include "framework/includes.h"
+
+
+struct sMeshLOD {
+	Mesh* mesh_lod = nullptr;
+	float distance = 0.0f;
+};
+
+class EntityMesh : public Entity {
+
+
+	std::vector<sMeshLOD> mesh_lods;
+
+public:
+
+	EntityMesh() {};
+	//EntityMesh(Mesh* mesh, Material material, const std::string& name);
+	EntityMesh(Mesh* mesh, Material material);
+	~EntityMesh(); //Destructor
+
+
+	// Attributes of the derived class  
+	Mesh* mesh = nullptr;
+	Material material;
+
+
+	//Instancing
+	bool isInstanced = false;
+	std::vector<Matrix44> models;
+
+	
+	// Methods overwritten from base class
+	void render(Camera* camera);
+	void update(float elapsed_time);
+
+
+	void addInstance(const Matrix44& model);
+	void addLOD(sMeshLOD mesh_lod);
+
+};
