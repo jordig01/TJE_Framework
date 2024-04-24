@@ -2,6 +2,10 @@
 #include "camera.h"
 #include "game/game.h"
 
+
+
+//IMPLEMENTAR GO TO STAGES
+
 World::World()
 {
 	int window_width = Game::instance->window_width;
