@@ -5,6 +5,8 @@
 #include "graphics/material.h"
 #include "framework/includes.h"
 
+class Shader;
+class Camera;
 
 struct sMeshLOD {
 	Mesh* mesh_lod = nullptr;

@@ -1,4 +1,8 @@
 #include "entityMesh.h"
+#include "graphics/shader.h"
+#include "framework/camera.h"
+#include <algorithm>
+
 
 
 EntityMesh::EntityMesh(Mesh* mesh, Material material) {
@@ -37,9 +41,37 @@ void EntityMesh::render(Camera* camera) {
 
 	if (!mesh) return;
 
-	std::vector<Matrix44> final_models = &models;
+
+	/*Vector3 center_world = model * mesh->box.center;
+	float aabb_radius = mesh->box.halfsize.length();*/
+
+	std::vector<Matrix44>* final_models = &models;
+	std::vector<Matrix44> models_instanced;
 
 	
+	if (isInstanced) {
+		for (int i = 0; i < models.size(); ++i) {
+			Vector3 center_world = models[i] * mesh->box.center;
+			float aabb_radius = mesh->box.halfsize.length();
+
+			if (camera->testSphereInFrustum(center_world, aabb_radius)) {
+				models_instanced.push_back(models[i]);
+			}
+
+			final_models = &models_instanced;
+		}
+	}
+	else {
+		Vector3 center_world = model * mesh->box.center;
+		float aabb_radius = mesh->box.halfsize.length();
+
+		if (!camera->testSphereInFrustum(center_world, aabb_radius)) {
+			return;
+		}
+	}
+
+
+
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 
@@ -47,8 +79,6 @@ void EntityMesh::render(Camera* camera) {
 		material.shader = Shader::Get(isInstanced ? "");
 	}
 	*/
-
-
 
 	// Enable shader and pass uniforms 
 	material.shader->enable();
@@ -69,7 +99,7 @@ void EntityMesh::render(Camera* camera) {
 	//si instanciado renderInstance
 
 	if (isInstanced)
-		mesh->renderInstanced(GL_TRIANGLES, models.data(), models.size());
+		mesh->renderInstanced(GL_TRIANGLES, final_models->data(), final_models->size());
 	else
 		mesh->render(GL_TRIANGLES);
 
@@ -107,6 +137,8 @@ void EntityMesh::addInstance(const Matrix44& model)
 void EntityMesh::addLOD(sMeshLOD mesh_lod) {
 	mesh_lods.push_back(mesh_lod);
 
-	std::sort(mesh_lods.begin(), mesh_lods.end(), [](sMeshLOD a, sMeshLOD b) {return a.distance < b.distance});
+	std::sort(mesh_lods.begin(), mesh_lods.end(), [](sMeshLOD a, sMeshLOD b) {
+		return a.distance < b.distance;
+		});
 }
 
