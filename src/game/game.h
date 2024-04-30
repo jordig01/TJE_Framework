@@ -7,6 +7,7 @@
 #include "framework/includes.h"
 #include "framework/camera.h"
 #include "framework/utils.h"
+#include "world.h"
 
 class Game
 {
@@ -16,6 +17,8 @@ public:
 
 	//Entity* root = nullptri;
 	//std::map<std::string, sRenderData> meshes_to_load;
+
+	World* world;
 
 
 	//window

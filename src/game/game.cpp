@@ -41,10 +41,10 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
 
 	// Load one texture using the Texture Manager
-	texture = Texture::Get("data/textures/texture.tga");
+	texture = Texture::Get("data/meshes/spitfire_color_spec.tga");
 
 	// Example of loading Mesh from Mesh Manager
-	mesh = Mesh::Get("data/meshes/box.ASE");
+	mesh = Mesh::Get("data/meshes/spitfire.ASE");
 
 	// Example of shader loading using the shaders manager
 	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
@@ -54,6 +54,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
 
 	//Parse scene
+	
+
 }
 
 //what to do when the image has to be draw
