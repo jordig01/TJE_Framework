@@ -19,8 +19,6 @@ float mouse_speed = 100.0f;
 
 Game* Game::instance = NULL;
 
-Stage* current_stage;
-
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
 {
@@ -45,21 +43,32 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
 	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
 
-	// Load one texture using the Texture Manager
-	texture = Texture::Get("data/meshes/spitfire_color_spec.tga");
+	//// Load one texture using the Texture Manager
+	//texture = Texture::Get("data/meshes/spitfire_color_spec.tga");
 
-	// Example of loading Mesh from Mesh Manager
-	mesh = Mesh::Get("data/meshes/spitfire.ASE");
+	//// Example of loading Mesh from Mesh Manager
+	//mesh = Mesh::Get("data/meshes/spitfire.ASE");
 
-	// Example of shader loading using the shaders manager
-	shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	//// Example of shader loading using the shaders manager
+	//shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 
-	// Hide the cursor
-	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
+	//// Hide the cursor
+	//SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
+	//Material entity_mat;
+	//entity_mat.shader = shader;
 
-	//Parse scene
-	
+	//entity_mat.diffuse = texture;
+
+	////Parse scene
+	//EntityMesh* entity = new EntityMesh(mesh, entity_mat);
+	//entity->model.setTranslation(0.0f, 0.0f, 0.0f); // Posición inicial
+	//entity->model.rotate(0.0f, Vector3(0.0f, 1.0f, 0.0f)); // Rotación inicial
+	//entity->isInstanced = true; 
+	//
+	//entities.push_back(entity);
+
+	world = new World();
 
 }
 
@@ -75,7 +84,7 @@ void Game::render(void)
 	// Set the camera as default
 	camera->enable();
 
-	// Set flags
+	//// Set flags
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
@@ -84,24 +93,36 @@ void Game::render(void)
 	Matrix44 m;
 	m.rotate(angle*DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
 
-	if(shader)
-	{
-		// Enable shader
-		shader->enable();
+	//if(shader)
+	//{
+	//	// Enable shader
+	//	shader->enable();
 
-		// Upload uniforms
-		shader->setUniform("u_color", Vector4(1,1,1,1));
-		shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
-		shader->setUniform("u_texture", texture, 0);
-		shader->setUniform("u_model", m);
-		shader->setUniform("u_time", time);
+	//	// Upload uniforms
+	//	shader->setUniform("u_color", Vector4(1,1,1,1));
+	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
+	//	shader->setUniform("u_texture", texture, 0);
+	//	shader->setUniform("u_model", m);
+	//	shader->setUniform("u_time", time);
 
-		// Do the draw call
-		mesh->render( GL_TRIANGLES );
+	//	// Do the draw call
+	//	mesh->render( GL_TRIANGLES );
 
-		// Disable shader
-		shader->disable();
-	}
+	//	// Disable shader
+	//	shader->disable();
+	//}
+	
+	//if (entities.empty()) {
+	//	std::cout << "Entities vector is empty." << std::endl;
+	//}
+	//else {
+	//	// Loop through each entity and render it
+	//	for (EntityMesh* entity : entities) {
+	//		entity->render(camera);
+	//	}
+	//}
+	
+	world->render();
 
 	// Draw the floor grid
 	drawGrid();
@@ -115,6 +136,7 @@ void Game::render(void)
 
 void Game::update(double seconds_elapsed)
 {
+
 	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 
 	// Example
@@ -193,12 +215,12 @@ void Game::onResize(int width, int height)
 //Metodo go to stage
 void Game::goToStage(int new_stage)
 {
-	if (current_stage) {
+	/*if (current_stage) {
 		current_stage->onExitStage();
 	}
 
 	current_stage = stages[new_stage];
-	current_stage->onEnterStage();
+	current_stage->onEnterStage();*/
 }
 
 

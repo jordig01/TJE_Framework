@@ -25,8 +25,9 @@ public:
 
 	Entity root;
 
+	EntityMesh* spitfire;
 
-	Camera* camera = nullptr;
+	//Camera* camera = nullptr;
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;

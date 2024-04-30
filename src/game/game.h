@@ -20,9 +20,11 @@ public:
 	//Entity* root = nullptri;
 	//std::map<std::string, sRenderData> meshes_to_load;
 
+	std::vector<EntityMesh*> entities;
+
 	World* world;
-	Stage* current_stage;
-	Stage* stages[STAGES_SIZE];
+	//Stage* current_stage;
+	//Stage* stages[STAGES_SIZE];
 
 	//window
 	SDL_Window* window;
