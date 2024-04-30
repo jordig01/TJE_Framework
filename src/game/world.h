@@ -1,6 +1,8 @@
 #pragma once
 
 #include "framework/entities/entityMesh.h"
+#include "framework/utils.h"
+
 
 class Camera;
 
@@ -25,9 +27,7 @@ public:
 
 	Entity root;
 
-	EntityMesh* spitfire;
-
-	//Camera* camera = nullptr;
+	Camera* camera = nullptr;
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;

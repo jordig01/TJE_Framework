@@ -37,36 +37,10 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	// OpenGL flags
 	glEnable( GL_CULL_FACE ); //render both sides of every triangle
 	glEnable( GL_DEPTH_TEST ); //check the occlusions using the Z buffer
-
-	// Create our camera
-	camera = new Camera();
-	camera->lookAt(Vector3(0.f,100.f, 100.f),Vector3(0.f,0.f,0.f), Vector3(0.f,1.f,0.f)); //position the camera and point to 0,0,0
-	camera->setPerspective(70.f,window_width/(float)window_height,0.1f,10000.f); //set the projection, we want to be perspective
-
-	//// Load one texture using the Texture Manager
-	//texture = Texture::Get("data/meshes/spitfire_color_spec.tga");
-
-	//// Example of loading Mesh from Mesh Manager
-	//mesh = Mesh::Get("data/meshes/spitfire.ASE");
-
-	//// Example of shader loading using the shaders manager
-	//shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	
 
 	//// Hide the cursor
-	//SDL_ShowCursor(!mouse_locked); //hide or show the mouse
-
-	//Material entity_mat;
-	//entity_mat.shader = shader;
-
-	//entity_mat.diffuse = texture;
-
-	////Parse scene
-	//EntityMesh* entity = new EntityMesh(mesh, entity_mat);
-	//entity->model.setTranslation(0.0f, 0.0f, 0.0f); // Posición inicial
-	//entity->model.rotate(0.0f, Vector3(0.0f, 1.0f, 0.0f)); // Rotación inicial
-	//entity->isInstanced = true; 
-	//
-	//entities.push_back(entity);
+	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
 	world = new World();
 
@@ -75,62 +49,10 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	// Set the clear color (the background color)
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-
-	// Clear the window and the depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	// Set the camera as default
-	camera->enable();
-
-	//// Set flags
-	glDisable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-   
-	// Create model matrix for cube
-	Matrix44 m;
-	m.rotate(angle*DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
-
-	//if(shader)
-	//{
-	//	// Enable shader
-	//	shader->enable();
-
-	//	// Upload uniforms
-	//	shader->setUniform("u_color", Vector4(1,1,1,1));
-	//	shader->setUniform("u_viewprojection", camera->viewprojection_matrix );
-	//	shader->setUniform("u_texture", texture, 0);
-	//	shader->setUniform("u_model", m);
-	//	shader->setUniform("u_time", time);
-
-	//	// Do the draw call
-	//	mesh->render( GL_TRIANGLES );
-
-	//	// Disable shader
-	//	shader->disable();
-	//}
-	
-	//if (entities.empty()) {
-	//	std::cout << "Entities vector is empty." << std::endl;
-	//}
-	//else {
-	//	// Loop through each entity and render it
-	//	for (EntityMesh* entity : entities) {
-	//		entity->render(camera);
-	//	}
-	//}
-	
+	//render of the world
 	world->render();
 
-	// Draw the floor grid
-	drawGrid();
-
-	// Render the FPS, Draw Calls, etc
-	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
-
-	// Swap between front buffer and back buffer
+	// Swap between front buffer and back buffer DEIXEM
 	SDL_GL_SwapWindow(this->window);
 }
 
@@ -145,16 +67,16 @@ void Game::update(double seconds_elapsed)
 	// Mouse input to rotate the cam
 	if (Input::isMousePressed(SDL_BUTTON_LEFT) || mouse_locked) //is left button pressed?
 	{
-		camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f,-1.0f,0.0f));
-		camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
+		world->camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
+		world->camera->rotate(Input::mouse_delta.y * 0.005f, world->camera->getLocalVector( Vector3(-1.0f,0.0f,0.0f)));
 	}
 
 	// Async input to move the camera around
 	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT) ) speed *= 10; //move faster with left shift
-	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) camera->move(Vector3(0.0f, 0.0f,-1.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
-	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f,0.0f, 0.0f) * speed);
+	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) 	world->camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
+	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) 	world->camera->move(Vector3(0.0f, 0.0f,-1.0f) * speed);
+	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) 	world->camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
+	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) world->camera->move(Vector3(-1.0f,0.0f, 0.0f) * speed);
 }
 
 //Keyboard event handler (sync input)
