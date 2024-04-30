@@ -9,6 +9,8 @@
 #include "framework/utils.h"
 #include "world.h"
 
+class Stage;
+
 class Game
 {
 public:
@@ -19,7 +21,8 @@ public:
 	//std::map<std::string, sRenderData> meshes_to_load;
 
 	World* world;
-
+	Stage* current_stage;
+	Stage* stages[STAGES_SIZE];
 
 	//window
 	SDL_Window* window;
@@ -52,4 +55,8 @@ public:
 	void onGamepadButtonDown(SDL_JoyButtonEvent event);
 	void onGamepadButtonUp(SDL_JoyButtonEvent event);
 	void onResize(int width, int height);
+
+	void goToStage(int new_stage);
+
+
 };

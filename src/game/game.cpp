@@ -8,6 +8,8 @@
 
 #include <cmath>
 
+#include "stage.h"
+
 //some globals
 Mesh* mesh = NULL;
 Texture* texture = NULL;
@@ -16,6 +18,9 @@ float angle = 0;
 float mouse_speed = 100.0f;
 
 Game* Game::instance = NULL;
+
+Stage* current_stage;
+
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
 {
@@ -182,6 +187,18 @@ void Game::onResize(int width, int height)
 	camera->aspect =  width / (float)height;
 	window_width = width;
 	window_height = height;
+}
+
+
+//Metodo go to stage
+void Game::goToStage(int new_stage)
+{
+	if (current_stage) {
+		current_stage->onExitStage();
+	}
+
+	current_stage = stages[new_stage];
+	current_stage->onEnterStage();
 }
 
 

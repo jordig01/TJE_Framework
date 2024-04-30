@@ -80,3 +80,13 @@ void World::update(float seconds_elapsed) {
 
 }
 
+void World::addEntity(Entity* entity)
+{
+
+}
+
+void World::removeEntity(Entity* entity)
+{
+
+}
+

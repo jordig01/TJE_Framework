@@ -1,9 +1,7 @@
 #pragma once
-#include "includes.h"
-#include "image.h"
-#include "utils.h"
-#include "synth.h"
-#include "input.h"
+#include "framework/includes.h"
+#include "framework/utils.h"
+#include "framework/input.h"
 #include "world.h"
 #include "game.h"
 
@@ -30,6 +28,14 @@ public:
 	virtual void render() {};
 	virtual void update(float seconds_elapsed) {};
 	virtual void onEnterStage() {};
-	virtual void onExitStage() {}:
+	virtual void onExitStage() {};
+
+};
+
+class MenuStage {
+
+	eStages type = MENU;
+
+
 
 };
