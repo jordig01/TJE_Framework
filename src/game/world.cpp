@@ -48,7 +48,7 @@ World::World()
 	root.addChild(spitfire);
 
 
-	parseScene("data/scene/myscene3.scene", &root);
+	parseScene("data/scene/myscene.scene", &root);
 
 }
 
