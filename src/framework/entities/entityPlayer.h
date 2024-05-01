@@ -4,10 +4,16 @@
 
 class EntityPlayer: public EntityMesh{
 
-    
-    
-    ~EntityPlayer();
-    void update(float seconds_elapsed) override;
+public:
 
+
+    int walk_speed;
+    Vector3 velocity;
+    Vector3 position;
+    
+
+    ~EntityPlayer();
+    EntityPlayer(Mesh* mesh, Material material);
+    void update(float seconds_elapsed);
 
 };

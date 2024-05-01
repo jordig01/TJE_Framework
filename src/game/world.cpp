@@ -2,10 +2,11 @@
 #include "framework/camera.h"
 #include "game/game.h"
 #include "graphics/texture.h"
+#include "framework/entities/entityPlayer.h"
 #include <framework/input.h>
 #include <fstream>
 
-
+World* World::instance = nullptr; // Initialization of static member variable
 
 
 World::World()
@@ -30,25 +31,17 @@ World::World()
 	spitfire->addLOD({ Mesh::Get("data/meshes/spitfire_low.ASE"),10.0f });
 
 
+	Mesh* player_mesh = Mesh::Get("data/meshes/box.ASE");
+	Material player_mat;
+	player_mat.diffuse = Texture::Get("data/textures/texture.tga");
 
-	//spitfire->addInstance((5, 0, 0)); // Ejemplo de otra instancia en la posición (5, 0, 0)
+	player = new EntityPlayer(player_mesh, player_mat);
 
-
-
-	/*int iterations = 25;
-
-	for (int x = -iterations; x < iterations; ++x) {
-		for (int y = -iterations; y < iterations; ++y) {
-			EntityMesh* spitfire = new EntityMesh(spitfire_mesh, spitfire_mat);
-			spitfire->model.setTranslation(x*5,y*5,0);
-			root.addChild(spitfire);
-		}
-	}*/
 
 	root.addChild(spitfire);
 
 
-	parseScene("data/scene/mysceneMario.scene", &root);
+	//parseScene("data/scene/mysceneMario.scene", &root);
 
 
 }
@@ -77,6 +70,7 @@ void World::render() {
 
 	drawGrid();
 	root.render(camera);
+	player->render(camera);
 
 
 	// Render the FPS, Draw Calls, etc
@@ -89,16 +83,37 @@ void World::render() {
 void World::update(float seconds_elapsed) {
 
 
+	if (Input::isKeyPressed(SDL_SCANCODE_C)) free_camera = !free_camera; 
 
-	if (free_camera)
-	{
-		float speed = seconds_elapsed * camera_speed;
+	printf("%d\n", free_camera);
+
+
+	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
+
+
+	//if (free_camera)
+	//{
+		/*float speed = seconds_elapsed * camera_speed;
 
 		camera_pitch = clamp(camera_yaw);
 
-		root.update(seconds_elapsed);
+		root.update(seconds_elapsed);*/
 
-	}
+		// Mouse input to rotate the cam
+		//if (Input::isMousePressed(SDL_BUTTON_LEFT) || Game::instance->mouse_locked) //is left button pressed?
+		//{
+		//	camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
+		//	camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector(Vector3(-1.0f, 0.0f, 0.0f)));
+		//}
+
+		// Async input to move the camera around
+		if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 10; //move faster with left shift
+		if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) 	camera->move(Vector3(0.0f, 0.0f, 1.0f) * speed);
+		if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN))	camera->move(Vector3(0.0f, 0.0f, -1.0f) * speed);
+		if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) 	camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
+		if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f, 0.0f, 0.0f) * speed);
+
+	/*}
 	else {
 		camera_yaw -= Input::mouse_delta.x * 0.001;
 		camera_pitch -= Input::mouse_delta.y * 0.001;
@@ -117,12 +132,13 @@ void World::update(float seconds_elapsed) {
 
 		float orbit_dist = 0.6f;
 
-		/*eye = player->model.getTranslation() - front * orbit_dist;
+		eye = player->model.getTranslation() - front * orbit_dist;
 
 		center = player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
-		root.update(seconds_elapsed);*/
+		root.update(seconds_elapsed);
+		player->update(seconds_elapsed);
 
 	}
 
@@ -131,7 +147,7 @@ void World::update(float seconds_elapsed) {
 		root.removeChild(e);
 		delete e;
 	}
-	entities_to_destroy.clear();
+	entities_to_destroy.clear();*/
 
 }
 
@@ -233,6 +249,8 @@ void World::removeEntity(Entity* entity)
 {
 
 }
+
+
 
 
 

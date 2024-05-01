@@ -12,16 +12,13 @@ EntityMesh::EntityMesh(Mesh* mesh, Material material) {
 
 
 EntityMesh::~EntityMesh() {
-	// Libera la memoria allocata per il mesh
 	if (mesh != nullptr) {
 		delete mesh;
 		mesh = nullptr;
 	}
 
-	// Pulisci il vettore di istanze
 	models.clear();
 
-	// Pulisci il vettore di LODs
 	for (auto& lod : mesh_lods) {
 		if (lod.mesh_lod != nullptr) {
 			delete lod.mesh_lod;

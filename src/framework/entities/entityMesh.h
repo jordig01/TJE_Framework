@@ -21,7 +21,6 @@ class EntityMesh : public Entity {
 public:
 
 	EntityMesh() {};
-	//EntityMesh(Mesh* mesh, Material material, const std::string& name);
 	EntityMesh(Mesh* mesh, Material material);
 	~EntityMesh(); //Destructor
 

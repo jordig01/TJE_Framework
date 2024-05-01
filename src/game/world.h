@@ -4,17 +4,20 @@
 #include "framework/utils.h"
 
 
+class EntityPlayer;
+
 class Camera;
 
 
 
 class World {
 
-	static World* instance;
 
 
 public:
 	
+	static World* instance;
+
 	static World* get_instance() {
 		if (instance != nullptr) 
 			return instance;
@@ -26,6 +29,8 @@ public:
 	World();
 
 	Entity root;
+
+	EntityPlayer* player;
 
 	Camera* camera = nullptr;
 
