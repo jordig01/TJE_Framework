@@ -48,10 +48,7 @@ World::World()
 	root.addChild(spitfire);
 
 
-	//chiamare parsescene qui dentro 
-	//parseScene
-
-	parseScene("data/myscene2.scene", &root);
+	parseScene("data/scene/myscene3.scene", &root);
 
 }
 
@@ -148,6 +145,8 @@ bool World::parseScene(const char* filename, Entity* root)
 		return false;
 	}
 
+	std::map<std::string, sRenderData> meshes_to_load;
+
 	std::string scene_info, mesh_name, model_data;
 	file >> scene_info; file >> scene_info;
 	int mesh_count = 0;
@@ -186,6 +185,7 @@ bool World::parseScene(const char* filename, Entity* root)
 
 		Material mat = render_data.material;
 		EntityMesh* new_entity = nullptr;
+
 
 		size_t tag = data.first.find("@tag");
 
