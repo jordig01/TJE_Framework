@@ -48,7 +48,8 @@ World::World()
 	root.addChild(spitfire);
 
 
-	parseScene("data/scene/myscene.scene", &root);
+	parseScene("data/scene/mysceneMario.scene", &root);
+
 
 }
 
@@ -175,7 +176,7 @@ bool World::parseScene(const char* filename, Entity* root)
 	// Iterate through meshes loaded and create corresponding entities
 	for (auto data : meshes_to_load) {
 
-		mesh_name = "data/" + data.first;
+		mesh_name = "data/scene/" + data.first;
 		sRenderData& render_data = data.second;
 
 		// No transforms, nothing to do here
