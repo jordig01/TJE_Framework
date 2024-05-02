@@ -131,13 +131,13 @@ void World::update(float seconds_elapsed) {
 		Vector3 eye;
 		Vector3 center;
 
-		float orbit_dist = 400.0f;
+		float orbit_dist = 200.0f;
 		player->update(seconds_elapsed);
 
 		//std::cout << front.x << "," << front.y << "," << front.z << std::endl;
 
 		eye = player->model.getTranslation() + front * orbit_dist;
-		eye.y = 200.0f;
+		eye.y = 100.0f;
 
 		center = player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
