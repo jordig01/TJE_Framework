@@ -8,6 +8,7 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->material = material;
 	this->position = Vector3(0,100,0);
 	this->velocity = Vector3(0, 0, 0);
+	this->walk_speed = 10.0f;
 }
 
 
@@ -47,36 +48,33 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) {
-		move_dir += right;
+		move_dir -= right;
 	}
 
 	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) {
-		move_dir -= right;
+		move_dir += right;
 	}
 
 
 	float speed_mult = walk_speed;
-	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) {
-		speed_mult *= 3.0f;
+	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 3.0f;
+
+	move_dir.normalize();
+	move_dir *= speed_mult;
+
+	velocity += move_dir;
+
+	position += velocity * seconds_elapsed;
+
+	velocity.x *= 0.5f;
+	velocity.z *= 0.5f;
+	std::cout << position.x << "," << position.y << "," << position.z << std::endl;
+	model.setTranslation(position);
+	model.rotate(camera_yaw, Vector3(0, 1, 0));
+
+	EntityMesh::update(seconds_elapsed);
 
 
-
-		move_dir.normalize();
-		move_dir *= speed_mult;
-
-		velocity += move_dir;
-
-		position += velocity * seconds_elapsed;
-
-		velocity.x *= 0.5f;
-		velocity.z *= 0.5f;
-
-		model.setTranslation(position);
-		model.rotate(camera_yaw, Vector3(0, 1, 0));
-
-		EntityMesh::update(seconds_elapsed);
-
-	}
 }
 
 

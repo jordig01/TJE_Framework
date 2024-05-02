@@ -69,7 +69,7 @@ void World::render() {
 
 
 	drawGrid();
-	root.render(camera);
+	//root.render(camera);
 	player->render(camera);
 
 
@@ -83,28 +83,29 @@ void World::render() {
 void World::update(float seconds_elapsed) {
 
 
-	if (Input::isKeyPressed(SDL_SCANCODE_C)) free_camera = !free_camera; 
+	if (Input::wasKeyPressed(SDL_SCANCODE_C)) free_camera = !free_camera; 
 
-	printf("%d\n", free_camera);
-
-
-	float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
+	//printf("%d\n", free_camera);
 
 
-	//if (free_camera)
-	//{
-		/*float speed = seconds_elapsed * camera_speed;
+	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
+	float speed = seconds_elapsed * 20.0f;
+
+
+	if (free_camera)
+	{
+		float speed = seconds_elapsed * camera_speed;
 
 		camera_pitch = clamp(camera_yaw);
 
-		root.update(seconds_elapsed);*/
+		root.update(seconds_elapsed);
 
 		// Mouse input to rotate the cam
-		//if (Input::isMousePressed(SDL_BUTTON_LEFT) || Game::instance->mouse_locked) //is left button pressed?
-		//{
-		//	camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
-		//	camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector(Vector3(-1.0f, 0.0f, 0.0f)));
-		//}
+		if (Input::isMousePressed(SDL_BUTTON_LEFT) || Game::instance->mouse_locked) //is left button pressed?
+		{
+			camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
+			camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector(Vector3(-1.0f, 0.0f, 0.0f)));
+		}
 
 		// Async input to move the camera around
 		if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed *= 10; //move faster with left shift
@@ -113,7 +114,7 @@ void World::update(float seconds_elapsed) {
 		if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) 	camera->move(Vector3(1.0f, 0.0f, 0.0f) * speed);
 		if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) camera->move(Vector3(-1.0f, 0.0f, 0.0f) * speed);
 
-	/*}
+	}
 	else {
 		camera_yaw -= Input::mouse_delta.x * 0.001;
 		camera_pitch -= Input::mouse_delta.y * 0.001;
@@ -124,21 +125,25 @@ void World::update(float seconds_elapsed) {
 		mYaw.setRotation(camera_yaw, Vector3(0, 1, 0));
 
 		Matrix44 mPitch;
-		mPitch.setRotation(camera_yaw, Vector3(-1, 0, 0));
+		mPitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
 
-		Vector3 front = (mPitch * mYaw).frontVector().normalize();
+		Vector3 front = (mPitch * mYaw).frontVector();//;.normalize();
 		Vector3 eye;
 		Vector3 center;
 
-		float orbit_dist = 0.6f;
+		float orbit_dist = 400.0f;
+		player->update(seconds_elapsed);
 
-		eye = player->model.getTranslation() - front * orbit_dist;
+		//std::cout << front.x << "," << front.y << "," << front.z << std::endl;
+
+		eye = player->model.getTranslation() + front * orbit_dist;
+		eye.y = 200.0f;
 
 		center = player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
-		camera->lookAt(eye, center, Vector3(0, 1, 0));
+		camera->lookAt(eye, center, Vector3(0, 100, 0)); //Revisar, no va bien
 		root.update(seconds_elapsed);
-		player->update(seconds_elapsed);
+		//player->update(seconds_elapsed);
 
 	}
 
@@ -147,7 +152,7 @@ void World::update(float seconds_elapsed) {
 		root.removeChild(e);
 		delete e;
 	}
-	entities_to_destroy.clear();*/
+	entities_to_destroy.clear();
 
 }
 
