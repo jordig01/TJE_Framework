@@ -30,6 +30,8 @@ public:
 
 	Entity root;
 
+	EntityMesh * skybox;
+
 	EntityPlayer* player;
 
 	Camera* camera = nullptr;

@@ -2,6 +2,7 @@
 #include "framework/camera.h"
 #include "game/game.h"
 #include "graphics/texture.h"
+#include "graphics/shader.h"
 #include "framework/entities/entityPlayer.h"
 #include <framework/input.h>
 #include <fstream>
@@ -37,6 +38,22 @@ World::World()
 
 	player = new EntityPlayer(player_mesh, player_mat);
 
+	Material landscape;
+	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
+	landscape.diffuse = new Texture();
+
+	landscape.diffuse->loadCubemap("landscape",  {
+		"data/textures/skybox/right.png",
+		"data/textures/skybox/left.png",
+		"data/textures/skybox/bottom.png",
+		"data/textures/skybox/top.png",
+		"data/textures/skybox/front.png",
+		"data/textures/skybox/back.png"
+	});
+
+
+	skybox = new EntityMesh(Mesh::Get("data/meshes/cubemap.ASE"), landscape);
+
 
 	root.addChild(spitfire);
 
@@ -52,11 +69,20 @@ void World::render() {
 	// Set the clear color (the background color)
 	glClearColor(0.0, 0.0, 0.0, 1.0);
 
+
 	// Clear the window and the depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set the camera as default
 	camera->enable();
+
+	glDisable(GL_DEPTH_TEST);
+	skybox->render(camera);
+	glEnable(GL_DEPTH_TEST);
+
+	
+	drawGrid();
+
 
 	//// Set flags
 	glDisable(GL_BLEND);
@@ -68,7 +94,6 @@ void World::render() {
 	//m.rotate(angle * DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
 
 
-	drawGrid();
 	//root.render(camera);
 	player->render(camera);
 
@@ -259,10 +284,7 @@ void World::removeEntity(Entity* entity)
 
 
 
-//ENTITY MESH DEL CUBO Y EL MATERIAL il shader è diverso infatti dobbiammo crearci uno che si chiami cubemap.fs
-
-//non mettorlo nel root  
-
+//ENTITY MESH DEL CUBO Y EL MATERIAL il shader ï¿½ diverso infatti dobbiammo crearci uno che si chiami cubemap.fs
 
 //glDisable()
 //flEnable()
