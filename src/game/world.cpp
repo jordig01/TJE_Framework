@@ -43,19 +43,20 @@ World::World()
 	landscape.diffuse = new Texture();
 
 	landscape.diffuse->loadCubemap("landscape",  {
-		"data/textures/skybox/right.png",
-		"data/textures/skybox/left.png",
-		"data/textures/skybox/bottom.png",
-		"data/textures/skybox/top.png",
-		"data/textures/skybox/front.png",
-		"data/textures/skybox/back.png"
+		"data/textures/skybox2/right.png",
+		"data/textures/skybox2/left.png",
+		"data/textures/skybox2/bottom.png",
+		"data/textures/skybox2/top.png",
+		"data/textures/skybox2/front.png",
+		"data/textures/skybox2/back.png"
 	});
 
+	Mesh* cubemapMesh = Mesh::Get("data/meshes/cubemap.obj");
 
-	skybox = new EntityMesh(Mesh::Get("data/meshes/cubemap.ASE"), landscape);
+	skybox = new EntityMesh(cubemapMesh, landscape);
 
 
-	root.addChild(spitfire);
+	//root.addChild(spitfire);
 
 
 	//parseScene("data/scene/mysceneMario.scene", &root);
@@ -94,7 +95,7 @@ void World::render() {
 	//m.rotate(angle * DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
 
 
-	//root.render(camera);
+	root.render(camera);
 	player->render(camera);
 
 
@@ -114,7 +115,7 @@ void World::update(float seconds_elapsed) {
 
 
 	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
-	float speed = seconds_elapsed * 20.0f;
+	float speed = seconds_elapsed * 30.0f;
 
 
 	if (free_camera)

@@ -8,7 +8,7 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->material = material;
 	this->position = Vector3(0,100,0);
 	this->velocity = Vector3(0, 0, 0);
-	this->walk_speed = 10.0f;
+	this->walk_speed = 20.0f;
 }
 
 

@@ -38,7 +38,7 @@ public:
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
-	float camera_speed = 2.0f;
+	float camera_speed = 10.0f;
 	float mouse_speed = 0.5f;
 
 	bool free_camera = true;
