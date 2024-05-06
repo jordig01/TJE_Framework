@@ -8,7 +8,7 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->material = material;
 	this->position = Vector3(0,100,0);
 	this->velocity = Vector3(0, 0, 0);
-	this->walk_speed = 20.0f;
+	this->walk_speed = 100.0f;
 }
 
 
@@ -32,8 +32,10 @@ void EntityPlayer::update(float seconds_elapsed) {
 	Matrix44 mYaw;
 	mYaw.setRotation(camera_yaw, Vector3(0, 1, 0));
 
-	Vector3 front = Vector3(0, 0, -1);
-	Vector3 right = Vector3(1, 0, 0);
+	//Vector3 front = Vector3(0, 0, -1);
+	//Vector3 right = Vector3(1, 0, 0);
+	//Vector3 left = Vector3(-1, 0, 0);
+	//Vector3 back = Vector3(0, 0, 1);
 
 	position = model.getTranslation();
 
@@ -47,13 +49,15 @@ void EntityPlayer::update(float seconds_elapsed) {
 		move_dir -= front;
 	}
 
-	if (Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) {
-		move_dir -= right;
+	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP))) {
+		rotation -= 0.005f;
 	}
 
-	if (Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) {
-		move_dir += right;
+
+	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP))) {
+		rotation += 0.005f;
 	}
+	front = Vector3(cos(rotation), 0, sin(rotation));
 
 
 	float speed_mult = walk_speed;
@@ -68,7 +72,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
-	std::cout << position.x << "," << position.y << "," << position.z << std::endl;
+	//std::cout << position.x << "," << position.y << "," << position.z << std::endl;
 	model.setTranslation(position);
 	model.rotate(camera_yaw, Vector3(0, 1, 0));
 
