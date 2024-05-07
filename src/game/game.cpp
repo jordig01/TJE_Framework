@@ -49,6 +49,8 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 //what to do when the image has to be draw
 void Game::render(void)
 {
+	// Tendrá que ir un PlayStage que renderice el mundo del stage
+	// 
 	//render of the world
 	world->render();
 

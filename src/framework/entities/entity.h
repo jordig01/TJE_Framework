@@ -5,6 +5,10 @@
 
 class Camera;
 
+enum eCollisionFilter {
+	//Ejemplo
+};
+
 class Entity {
 
 public:
