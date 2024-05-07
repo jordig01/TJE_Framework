@@ -77,6 +77,9 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
 
+	//Para el cubomap
+	material.shader->setUniform("u_camera_position", camera->eye);
+
 	if (material.diffuse) {
 		material.shader->setTexture("u_texture", material.diffuse, 0);
 	}

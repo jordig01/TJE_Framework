@@ -78,6 +78,7 @@ void World::render() {
 	camera->enable();
 
 	glDisable(GL_DEPTH_TEST);
+	skybox-> model.setTranslation(camera->center);
 	skybox->render(camera);
 	glEnable(GL_DEPTH_TEST);
 
