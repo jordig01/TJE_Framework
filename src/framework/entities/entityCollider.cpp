@@ -4,10 +4,6 @@
 
 
 
-
-
-
-
 void EntityCollider::getCollisionsWithModel(const Matrix44 model, const Vector3& center, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions, eCollisionFilter filter) {
 
 	Vector3 collision_point;
@@ -69,8 +65,6 @@ void EntityCollider::getCollisions(const Vector3& target_position, std::vector<s
 //}
 
 
-
-
 //
 // Vector3 collision_point;
 // Vector3 collision_normal;
@@ -90,8 +84,6 @@ void EntityCollider::getCollisions(const Vector3& target_position, std::vector<s
 // 
 // 
 // 
-
-
 
 
 //camera cpp
