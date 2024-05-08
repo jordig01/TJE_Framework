@@ -21,15 +21,15 @@ World::World()
 	camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f); //set the projection, we want to be perspective
 
 	
-	Mesh* spitfire_mesh = Mesh::Get("data/meshes/spitfire.ASE");
-	Material spitfire_mat;
-	spitfire_mat.diffuse = Texture::Get("data/meshes/spitfire_color_spec.tga");
+	//Mesh* spitfire_mesh = Mesh::Get("data/meshes/spitfire.ASE");
+	//Material spitfire_mat;
+	//spitfire_mat.diffuse = Texture::Get("data/meshes/spitfire_color_spec.tga");
 
-	EntityMesh* spitfire = new EntityMesh(spitfire_mesh, spitfire_mat);
+	//EntityMesh* spitfire = new EntityMesh(spitfire_mesh, spitfire_mat);
 
-	spitfire->model.setTranslation(0.f, 10.f, 0.f);
+	//spitfire->model.setTranslation(0.f, 10.f, 0.f);
 
-	spitfire->addLOD({ Mesh::Get("data/meshes/spitfire_low.ASE"),10.0f });
+	//spitfire->addLOD({ Mesh::Get("data/meshes/spitfire_low.ASE"),10.0f });
 
 
 	Mesh* player_mesh = Mesh::Get("data/meshes/race.obj");
@@ -37,6 +37,7 @@ World::World()
 	player_mat.diffuse = Texture::Get("data/textures/colormap.png");
 
 	player = new EntityPlayer(player_mesh, player_mat);
+
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -59,7 +60,8 @@ World::World()
 	//root.addChild(spitfire);
 
 
-	//parseScene("data/scene/mysceneMario.scene", &root);
+
+	//	parseScene("data/scene/mysceneMario.scene", &root);
 
 
 }
