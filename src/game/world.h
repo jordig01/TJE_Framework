@@ -36,6 +36,12 @@ public:
 
 	Camera* camera = nullptr;
 
+
+	//Para Entity Collider
+	float sphere_radius;
+	float sphere_ground_radius;
+	float player_height;
+
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
 	float camera_speed = 10.0f;
