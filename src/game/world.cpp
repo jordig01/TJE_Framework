@@ -30,13 +30,37 @@ World::World()
 	//spitfire->model.setTranslation(0.f, 10.f, 0.f);
 
 	//spitfire->addLOD({ Mesh::Get("data/meshes/spitfire_low.ASE"),10.0f });
+	//
+
+	Mesh* wheels_mesh = Mesh::Get("data/meshes/player/wheels.obj");
+	Material wheels_mat;
+	wheels_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Tire_S.png");
+	root_player = new EntityPlayer(wheels_mesh, wheels_mat);
+	
+
+	Mesh* kart_mesh = Mesh::Get("data/meshes/player/kart.obj");
+	Material kart_mat;
+	kart_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Kart_S.png");
+	EntityMesh* kart = new EntityMesh(kart_mesh, kart_mat);
+	
+	Mesh* character_mesh = Mesh::Get("data/meshes/player/character.obj");
+	Material character_mat;
+	character_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Body_S.png");
+	EntityMesh* character = new EntityMesh(character_mesh, character_mat);
+
+	root_player->addChild(kart);
+	root_player->addChild(character);
 
 
-	Mesh* player_mesh = Mesh::Get("data/meshes/race.obj");
-	Material player_mat;
-	player_mat.diffuse = Texture::Get("data/textures/colormap.png");
+	root_player->model.setTranslation(0.f, 12.f, 0.f);
 
-	player = new EntityPlayer(player_mesh, player_mat);
+	//Mesh* player_mesh = Mesh::Get("data/meshes/race.obj");
+	//Material player_mat;
+	//player_mat.diffuse = Texture::Get("data/textures/colormap.png");
+
+	//player = new EntityPlayer(player_mesh, player_mat);
+
+	//player->model.setTranslation(0.f, 10.f, 0.f);
 
 
 	Material landscape;
@@ -57,10 +81,6 @@ World::World()
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
 
-	//root.addChild(spitfire);
-
-
-
 	parseScene("data/scene/mysceneMario.scene", &root);
 
 
@@ -73,10 +93,10 @@ void World::render() {
 	// Set the camera as default
 	camera->enable();
 
-	glDisable(GL_DEPTH_TEST);
+	glDepthMask(GL_FALSE);
 	skybox-> model.setTranslation(camera->center);
 	skybox->render(camera);
-	glEnable(GL_DEPTH_TEST);
+	glDepthMask(GL_TRUE);
 
 	
 	drawGrid();
@@ -93,7 +113,8 @@ void World::render() {
 
 
 	root.render(camera);
-	player->render(camera);
+	root_player->render(camera);
+	//player->render(camera);
 
 
 	// Render the FPS, Draw Calls, etc
@@ -145,7 +166,7 @@ void World::update(float seconds_elapsed) {
 		
 		Matrix44 mYaw;
 
-		mYaw.setRotation(player->rotation, Vector3(0, 1, 0));
+		mYaw.setRotation(root_player->rotation, Vector3(0, 1, 0));
 
 		Matrix44 mPitch;
 		mPitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
@@ -155,18 +176,15 @@ void World::update(float seconds_elapsed) {
 		Vector3 center;
 
 		float orbit_dist = 35.0f;
-		player->update(seconds_elapsed);
+		root_player->update(seconds_elapsed);
 
-		//std::cout << front.x << "," << front.y << "," << front.z << std::endl;
+		eye = root_player->model.getTranslation() + front * orbit_dist;
+		eye.y += 18.0f;
 
-		eye = player->model.getTranslation() + front * orbit_dist;
-		eye.y = 20.0f;
-
-		center = player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
+		center = root_player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
 		camera->lookAt(eye, center, Vector3(0, 100, 0)); //Revisar, no va bien
 		root.update(seconds_elapsed);
-		//player->update(seconds_elapsed);
 
 	}
 

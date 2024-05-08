@@ -1,6 +1,6 @@
 # Blender 4.1.1
 # www.blender.org
-mtllib wheels.mtl
+mtllib kart.mtl
 o F2_Item_Kart_Yoshi_S
 v 0.000000 9.311035 -0.995197
 v 0.641187 9.385192 -1.182994

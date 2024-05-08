@@ -1,7 +1,7 @@
-# Blender 4.1.1 MTL File: 'None'
+# Blender 4.1.1 MTL File: 'player.blend'
 # www.blender.org
 
-newmtl mt_Kart_Yoshi_Tire_S
+newmtl mt_Kart_Yoshi_Tire_S.002
 Ns 250.000000
 Ka 1.000000 1.000000 1.000000
 Ks 0.000000 0.000000 0.000000
@@ -10,3 +10,23 @@ Ni 1.500000
 d 1.000000
 illum 1
 map_Kd F2_Item_Kart_Yoshi_Tire_S.png
+
+newmtl mt_Yoshi.002
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd F2_Item_Kart_Yoshi_Body_S.png
+
+newmtl mt_Yoshi_S.002
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd F2_Item_Kart_Yoshi_Kart_S.png

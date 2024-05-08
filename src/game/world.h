@@ -30,6 +30,8 @@ public:
 
 	Entity root;
 
+	EntityPlayer*  root_player;
+
 	EntityMesh * skybox;
 
 	EntityPlayer* player;
@@ -38,9 +40,9 @@ public:
 
 
 	//Para Entity Collider
-	float sphere_radius = 5.0f;
-	float sphere_ground_radius = 5.0f;
-	float player_height = 5.0f;
+	float sphere_radius = 3.0f;
+	float sphere_ground_radius = 3.0f;
+	float player_height = 3.0f;
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
