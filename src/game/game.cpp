@@ -50,11 +50,22 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 void Game::render(void)
 {
 	// Tendrá que ir un PlayStage que renderice el mundo del stage
-	// 
+
+
+	// Set the clear color (the background color)
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+
+
+	// Clear the window and the depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	
 	//render of the world
 	world->render();
 
-	// Swap between front buffer and back buffer DEIXEM
+	//StageManager::get_instance()->render();
+
+	// Swap between front buffer and back buffer 
 	SDL_GL_SwapWindow(this->window);
 }
 

@@ -6,7 +6,20 @@
 class Camera;
 
 enum eCollisionFilter {
-	//Ejemplo
+	NONE = 0,
+	FLOOR = 1 << 0,
+	WALL = 1 << 1,
+	PLAYER = 1 << 2,
+	ENEMY = 1 << 3,
+	SCENARIO = FLOOR | WALL,
+	ALL = 0xFF
+};
+
+
+struct sCollisionData {
+	Vector3 col_point;
+	Vector3 col_normal;
+	float distance = 0.f;
 };
 
 class Entity {
