@@ -20,7 +20,7 @@ World::World()
 	camera->lookAt(Vector3(0.f, 100.f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.f, 1.f, 0.f)); //position the camera and point to 0,0,0
 	camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f); //set the projection, we want to be perspective
 
-
+	
 	Mesh* spitfire_mesh = Mesh::Get("data/meshes/spitfire.ASE");
 	Material spitfire_mat;
 	spitfire_mat.diffuse = Texture::Get("data/meshes/spitfire_color_spec.tga");
@@ -32,9 +32,9 @@ World::World()
 	spitfire->addLOD({ Mesh::Get("data/meshes/spitfire_low.ASE"),10.0f });
 
 
-	Mesh* player_mesh = Mesh::Get("data/meshes/box.ASE");
+	Mesh* player_mesh = Mesh::Get("data/meshes/race.obj");
 	Material player_mat;
-	player_mat.diffuse = Texture::Get("data/textures/texture.tga");
+	player_mat.diffuse = Texture::Get("data/textures/colormap.png");
 
 	player = new EntityPlayer(player_mesh, player_mat);
 
@@ -143,7 +143,7 @@ void World::update(float seconds_elapsed) {
 		
 		Matrix44 mYaw;
 
-		mYaw.setRotation(camera_yaw, Vector3(0, 1, 0));
+		mYaw.setRotation(player->rotation, Vector3(0, 1, 0));
 
 		Matrix44 mPitch;
 		mPitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
@@ -152,13 +152,13 @@ void World::update(float seconds_elapsed) {
 		Vector3 eye;
 		Vector3 center;
 
-		float orbit_dist = 200.0f;
+		float orbit_dist = 35.0f;
 		player->update(seconds_elapsed);
 
 		//std::cout << front.x << "," << front.y << "," << front.z << std::endl;
 
 		eye = player->model.getTranslation() + front * orbit_dist;
-		eye.y = 100.0f;
+		eye.y = 20.0f;
 
 		center = player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 

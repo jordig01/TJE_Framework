@@ -1,6 +1,8 @@
 #include "entityPlayer.h"
+#include "graphics/shader.h"
 #include "game/world.h"
 #include <framework/input.h>
+#include "framework/camera.h"
 
 
 EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
@@ -9,6 +11,8 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->position = Vector3(0,100,0);
 	this->velocity = Vector3(0, 0, 0);
 	this->walk_speed = 100.0f;
+	this->front = Vector3(0, 0, -1);
+	this->rotation = -1.0f;
 }
 
 
@@ -117,15 +121,65 @@ void EntityPlayer::update(float seconds_elapsed) {
 	position += velocity * seconds_elapsed;
 
 
-	//Para frenar al personaje
+	//Decrease velocity when not moving
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
-	//std::cout << position.x << "," << position.y << "," << position.z << std::endl;
 
 	model.setTranslation(position);
 	model.rotate(rotation, Vector3(0, 1, 0));
 
 	EntityMesh::update(seconds_elapsed);
+
+
+}
+
+void EntityPlayer::render(Camera* camera)
+{
+
+	EntityMesh::render(camera);
+
+
+	//Render debug spheres...
+
+	float sphere_radius = World::get_instance()->sphere_radius;
+	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
+	float player_height = World::get_instance()->player_height;
+
+	Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
+	Matrix44 m = model;
+
+	shader->enable();
+
+
+	//First sphere
+	{
+		m.translate(0.0f, sphere_ground_radius, 0.0f);
+		m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
+
+		shader->setUniform("u_color", Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+		shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
+		shader->setUniform("u_model", m);
+
+		mesh->render(GL_LINES);
+	}
+
+
+	//Second sphere
+	{
+		m = model;
+		m.translate(0.0f, player_height, 0.0f);
+		m.scale(sphere_radius, sphere_radius, sphere_radius);
+
+		shader->setUniform("u_color", Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+
+		shader->setUniform("u_model", m);
+
+		mesh->render(GL_LINES);
+
+	}
+	
+	shader->disable();
 
 
 }
