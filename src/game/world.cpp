@@ -61,7 +61,7 @@ World::World()
 
 
 
-	//	parseScene("data/scene/mysceneMario.scene", &root);
+	parseScene("data/scene/mysceneMario.scene", &root);
 
 
 }
