@@ -25,7 +25,7 @@ EntityPlayer::~EntityPlayer()
 
 }
 
-//void ENtityPlayer::render(Camera* camera)
+//void EntityPlayer::render(Camera* camera)
 // 
 // //REnder mesh
 // EntityMesh::render(camera);
@@ -42,7 +42,7 @@ EntityPlayer::~EntityPlayer()
 // 
 // 
 // //Check collisions with world entities
-// for(auto e: World::get_instance()->root.childern)
+// for(auto e: World::get_instance()->root.childern()
 // 
 // 
 // //Ground collisions
@@ -65,7 +65,7 @@ EntityPlayer::~EntityPlayer()
 // }
 // 
 // 
-//void ENtityPlayer::render(Camera* camera)
+//void EntityPlayer::render(Camera* camera)
 
 void EntityPlayer::update(float seconds_elapsed) {
 
@@ -80,8 +80,8 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//Vector3 back = Vector3(0, 0, 1);
 
 	//Cambiar cámara
-	//Vector3 front = mYaw.frontVector();
-	//Vector3 right = mYaw.rightVector();
+	//Vector3 front_cam = mYaw.frontVector();
+	//Vector3 right_cam = mYaw.rightVector();
 
 	position = model.getTranslation();
 
@@ -103,7 +103,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP))) {
 		rotation += 0.005f;
 	}
-	front = Vector3(cos(rotation), 0, sin(rotation));
+	front = Vector3(sin(rotation), 0, -cos(rotation));
 
 
 	float speed_mult = walk_speed;
@@ -116,13 +116,14 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	position += velocity * seconds_elapsed;
 
+
 	//Para frenar al personaje
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
 	//std::cout << position.x << "," << position.y << "," << position.z << std::endl;
 
 	model.setTranslation(position);
-	model.rotate(camera_yaw, Vector3(0, 1, 0));
+	model.rotate(rotation, Vector3(0, 1, 0));
 
 	EntityMesh::update(seconds_elapsed);
 
