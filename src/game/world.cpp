@@ -67,12 +67,6 @@ World::World()
 
 void World::render() {
 
-	// Set the clear color (the background color)
-	glClearColor(0.0, 0.0, 0.0, 1.0);
-
-
-	// Clear the window and the depth buffer
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set the camera as default
 	camera->enable();

@@ -1,26 +1,57 @@
 #include "entityCollider.h"
+#include "game/world.h"
 
 
-//
-// Vector3 collision_point;
-// Vector3 collision_normal;
-// 
-// float sphere_radius = World::get-instance()->sphere_radius;
-// float sphere_ground_radius = World::get-instance()->sphere_radius;
-// float player_height = World::get-instance()->sphere_radius;
-// 
-// Vector3 floor_sphere_center = center + Vector3(0.0f, sphere_ground_radius, 0.0f);
-// 
-// if(mesh->testSphereCollision){
-// collisions.push_back();
-// }
-// 
-// Vector3 character_center
-// 
-// 
-// 
-// 
-//void EntityCollider::getCollidionsWithModel(const Vector3& target) {
+
+
+void EntityCollider::getCollisionsWithModel(const Matrix44 model, const Vector3& center, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions, eCollisionFilter filter) {
+
+	Vector3 collision_point;
+	Vector3 collision_normal;
+
+	float sphere_radius = World::get_instance()->sphere_radius;
+	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
+	float player_height = World::get_instance()->player_height;
+
+	Vector3 floor_sphere_center = center + Vector3(0.0f, sphere_ground_radius, 0.0f);
+	if (mesh->testSphereCollision(model, floor_sphere_center, sphere_radius, collision_point, collision_normal)) {
+		collisions.push_back({ collision_point, collision_normal.normalize(), floor_sphere_center.distance(collision_point)});
+	}
+
+	Vector3 character_center = center + Vector3(0.f, player_height, 0.f);
+	if (mesh->testSphereCollision(model, character_center, sphere_radius,collision_point, collision_normal)) {
+		collisions.push_back({ collision_point, collision_normal.normalize(), character_center.distance(collision_point) });
+	}
+
+
+	//Check if grounded
+	if (mesh->testRayCollision(model, character_center, Vector3(0, -1, 0), collision_point, collision_normal, player_height + 0.01f)) {
+		ground_collisions.push_back({ collision_point, collision_normal.normalize(), character_center.distance(collision_point) });
+	}
+
+
+
+
+}
+
+void EntityCollider::getCollisions(const Vector3& target_position, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions, eCollisionFilter filter){
+	if (!(layer & filter)) return;
+	
+	if (!isInstanced) {
+		getCollisionsWithModel(model, target_position, collisions, ground_collisions, filter);
+	}
+	 else{
+		 for(int i =0; i<models.size();++i){
+			 getCollisionsWithModel(models[i], target_position, collisions, ground_collisions, filter);
+		 }
+	 }
+
+}
+
+
+
+// FROM LECTURE 07/05
+// void EntityCollider::getCollidions(const Vector3& target) {
 //	if (!(layer & filter)) return;
 //
 //	if (!isInstanced) {
@@ -34,52 +65,26 @@
 //}
 
 
-//PlayStage update(float seconds_elapsed)
-// World::get_instance->().update(seconds_elapsed);
+//
+// Vector3 collision_point;
+// Vector3 collision_normal;
 // 
-// //Example
-// if(Input::wasKeyPressed()){
+// float sphere_radius = World::get-instance()->sphere_radius;
+// float sphere_ground_radius = World::get-instance()->sphere_ground_radius;
+// float player_height = World::get-instance()->player_height;
 // 
-// Camera* camera = World::get_instance()->camera;
+// Vector3 floor_sphere_center = center + Vector3(0.0f, sphere_ground_radius, 0.0f);
 // 
-// //Get ray direction
-// Vector2 mouse_pos = Input::mouse_position;
-// Vector3 ray_origin = camera->eye;
+// if(mesh->testSphereCollision){
+// collisions.push_back();
+// }e
 // 
-// Vector3 ray_directoin = camera->getRayDirection(mouse_po.x, mouse_pos.y, Game::instance->window_width, Game::instance->window_height);
+// Vector3 character_center
 // 
-// //Fill collision vector
 // 
-// std::vector<Vector3> collisions;
 // 
-// //Recorro todas las entidades del mundo
-// for(Entity* e : World::get_instance()->root.children()){
-// EntityCollider* collider = dynamic_cast<EntityCollider*>(e);
-// if(!collider) continue;
-// //En extra están todos los métodos de la librería coldet
 // 
-// //Como testRayCollision devuelve un bool, hay que pasarle los vectores donde guardará la colisión y las normales
-// Vector3 col_point;
-// Vector3 col_normal;
-// 
-// if(collider->mesh->testRayCollision(collider->model, ray_origin, ray_direction, col_point, col_normal)){
-// collisions.push_back(col_point);
-// }
-// 
-// }
-// 
-// //Generate entities
-// 
-// for(auto& col_point: collisions){
-// Mesh* mesh = Mesh::Get("data/meshes/...");
-// EntityMesh* new_mesh = new EntityMesh(mesh, {});
-// new_entity.model.setTranslation(col_point);
-// World::get_instance()->addEntity(new_entity);
-// //En este punto estoy colocando mesh donte apunto con el ratón
-// }
-// 
-// }
-//PlayStage update(float seconds_elapsed)
+
 
 //camera cpp
 // Vector
