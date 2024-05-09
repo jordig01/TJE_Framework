@@ -13,7 +13,7 @@ void EntityCollider::getCollisionsWithModel(const Matrix44 model, const Vector3&
 	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
 	float player_height = World::get_instance()->player_height;
 
-	Vector3 floor_sphere_center = center + Vector3(0.0f, sphere_ground_radius, 0.0f);
+	Vector3 floor_sphere_center = center + Vector3(0.f, sphere_ground_radius, 0.f);
 	if (mesh->testSphereCollision(model, floor_sphere_center, sphere_radius, collision_point, collision_normal)) {
 		collisions.push_back({ collision_point, collision_normal.normalize(), floor_sphere_center.distance(collision_point)});
 	}

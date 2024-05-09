@@ -24,7 +24,7 @@ public:
 
 		~EntityCollider() {};
 
-		void getCollisions(const Vector3& target_position, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions, eCollisionFilter filter);
+		void getCollisions(const Vector3& target_position, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions, eCollisionFilter filter = ALL);
 
 		int getLayer() { return layer; }
 		void setLayer(int new_layer) { layer = new_layer; }

@@ -4,6 +4,7 @@
 #include "graphics/texture.h"
 #include "graphics/shader.h"
 #include "framework/entities/entityPlayer.h"
+#include "framework/entities/entityCollider.h"
 #include <framework/input.h>
 #include <fstream>
 
@@ -20,17 +21,6 @@ World::World()
 	camera->lookAt(Vector3(0.f, 100.f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.f, 1.f, 0.f)); //position the camera and point to 0,0,0
 	camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f); //set the projection, we want to be perspective
 
-	
-	//Mesh* spitfire_mesh = Mesh::Get("data/meshes/spitfire.ASE");
-	//Material spitfire_mat;
-	//spitfire_mat.diffuse = Texture::Get("data/meshes/spitfire_color_spec.tga");
-
-	//EntityMesh* spitfire = new EntityMesh(spitfire_mesh, spitfire_mat);
-
-	//spitfire->model.setTranslation(0.f, 10.f, 0.f);
-
-	//spitfire->addLOD({ Mesh::Get("data/meshes/spitfire_low.ASE"),10.0f });
-	//
 
 	Mesh* wheels_mesh = Mesh::Get("data/meshes/player/wheels.obj");
 	Material wheels_mat;
@@ -54,14 +44,6 @@ World::World()
 
 	root_player->model.setTranslation(0.f, 12.f, 0.f);
 
-	//Mesh* player_mesh = Mesh::Get("data/meshes/race.obj");
-	//Material player_mat;
-	//player_mat.diffuse = Texture::Get("data/textures/colormap.png");
-
-	//player = new EntityPlayer(player_mesh, player_mat);
-
-	//player->model.setTranslation(0.f, 10.f, 0.f);
-
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -81,7 +63,7 @@ World::World()
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
 
-	parseScene("data/scene/mysceneMario.scene", &root);
+	parseScene("data/scene/road.scene", &root);
 
 
 }
@@ -114,7 +96,6 @@ void World::render() {
 
 	root.render(camera);
 	root_player->render(camera);
-	//player->render(camera);
 
 
 	// Render the FPS, Draw Calls, etc
@@ -128,7 +109,6 @@ void World::update(float seconds_elapsed) {
 
 
 	if (Input::wasKeyPressed(SDL_SCANCODE_C)) free_camera = !free_camera; 
-
 	//printf("%d\n", free_camera);
 
 
@@ -188,12 +168,47 @@ void World::update(float seconds_elapsed) {
 
 	}
 
-
 	for (auto e : entities_to_destroy) {
 		root.removeChild(e);
 		delete e;
 	}
 	entities_to_destroy.clear();
+
+
+
+
+	//Sirve para "disparar objetos"
+	if (Input::wasKeyPressed(SDL_SCANCODE_T)) {
+		
+		Vector2 mouse_pos = Input::mouse_position;
+		Vector3 ray_origin = camera->eye;
+		Vector3 ray_direction = camera->getRayDirection(mouse_pos.x, mouse_pos.y, Game::instance->window_width, Game::instance->window_height);
+
+		std::vector<Vector3> collisions;
+
+		for (Entity* e : root.children) {
+			EntityCollider* collider = dynamic_cast<EntityCollider*>(e);
+
+			if (!collider) {
+				continue;
+			}
+
+			Vector3 col_point;
+			Vector3 col_normal;
+
+			if (collider->mesh->testRayCollision(collider->model, ray_origin, ray_direction, col_point, col_normal)) {
+				collisions.push_back(col_point);
+			}
+		}
+
+
+		////Generate entities
+		//for (auto& col_point : collisions){
+		//	Mesh* mesh = Mesh::Get();
+		//	EntityMesh* new_entity = new EntityMesh(mesh, {});
+		//	addEntity(new_entity);
+		//}
+	}
 
 }
 
@@ -298,12 +313,6 @@ void World::removeEntity(Entity* entity)
 
 
 
-
-
-//ENTITY MESH DEL CUBO Y EL MATERIAL il shader � diverso infatti dobbiammo crearci uno che si chiami cubemap.fs
-
-//glDisable()
-//flEnable()
 
 
 

@@ -3,6 +3,7 @@
 #include "game/world.h"
 #include <framework/input.h>
 #include "framework/camera.h"
+#include "entityCollider.h"
 
 
 EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
@@ -121,12 +122,67 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	velocity += move_dir;
 
+	//Check collisions with the world entitites
+
+	std::vector<sCollisionData> collisions;
+	std::vector<sCollisionData> ground_collisions;
+
+
+	for (auto e : World::get_instance()->root.children) {
+		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
+		if (ec != nullptr)
+			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions);
+	}
+
+	if (!collisions.empty() || !ground_collisions.empty()) {
+		std::cout << "¡Colisión detectada!" << std::endl;
+	}
+	else {
+		std::cout << "Sin colisiones." << std::endl;
+	}
+
+
+	for (const sCollisionData& collision : collisions) {
+		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
+		velocity.x -= newDir.x;
+		velocity.y -= newDir.y;
+		velocity.z -= newDir.z;
+	}
+
+
+	bool is_grounded = false;
+
+	for (const sCollisionData& collision : ground_collisions) {
+		
+		
+		//Si la normal apunta hacia arriba, collision con suelo
+		float up_factor = fabsf(collision.col_normal.dot(Vector3::UP));
+		if (up_factor > 0.8f) {
+			is_grounded = true;
+		}
+
+		if (collision.col_point.y > (position.y + velocity.y * seconds_elapsed)) {
+			position.y = collision.col_point.y;
+		}
+	}
+
+
+	if (!is_grounded) {
+		velocity.y -= 9.8f * seconds_elapsed;
+	}
+	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
+		velocity.y = 2.0f;
+	}
+
+
+
 	position += velocity * seconds_elapsed;
-	
+
 
 	//Decrease velocity when not moving
 	velocity.x *= 0.5f;
 	velocity.z *= 0.5f;
+
 
 	model.setTranslation(position);
 	model.rotate(rotation, Vector3(0, 1, 0));
@@ -155,9 +211,9 @@ void EntityPlayer::render(Camera* camera)
 	shader->enable();
 
 
-	//First sphere
+	//First sphere (para el ground)
 	{
-		m.translate(0.0f, sphere_ground_radius, 0.0f);
+		m.translate(0.0f, 2.0f, 0.0f);
 		m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
 
 		shader->setUniform("u_color", Vector4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -168,7 +224,7 @@ void EntityPlayer::render(Camera* camera)
 	}
 
 
-	//Second sphere
+	////Second sphere
 	{
 		m = model;
 		m.translate(0.0f, player_height, 0.0f);
@@ -181,9 +237,9 @@ void EntityPlayer::render(Camera* camera)
 		mesh->render(GL_LINES);
 
 	}
-	
-	shader->disable();
 
+	shader->disable();
+	
 
 }
 

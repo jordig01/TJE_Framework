@@ -11,10 +11,7 @@ public:
     Vector3 velocity;
     Vector3 position;
     float rotation = -1.0f;
-    Vector3 front;
-
-
-    
+    Vector3 front;    
 
     ~EntityPlayer();
     EntityPlayer(Mesh* mesh, Material material);
