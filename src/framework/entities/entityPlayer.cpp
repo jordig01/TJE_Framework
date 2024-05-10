@@ -30,47 +30,7 @@ EntityPlayer::~EntityPlayer()
 
 }
 
-//void EntityPlayer::render(Camera* camera)
-// 
-// //REnder mesh
-// EntityMesh::render(camera);
-// 
-// //Debug spheres...
-// 
-// Shader* shader = Shader::Get
-// Mesh* mesh = Mesh::Get
-// Matrix44 m = model;
-// 
-// m.model;
-// m.translate(0.0f, player_height, 0.0f);
-// m.scale(sphere_radius)
-// 
-// 
-// //Check collisions with world entities
-// for(auto e: World::get_instance()->root.childern()
-// 
-// 
-// //Ground collisions
-// bool is_grounded = false;
-// 
-// for(const sCollisionDAta& collision : ground_collisions){
-// 
-// float up_factor = fabs(collision.com_normal.dot(Vector3::UP));
-// if(up_factor>0.8){
-// is_grounded = true;
-// }
-// if(collision.col_point.y>(position.y + veloxity.y * seconds_elapsed)){
-// position.y = collision.col_point.y
-// }
-// 
-// if(!is_grounded){
-// veloscity.y -= //Añadir gravedad
-// }else if(){
-// 
-// }
-// 
-// 
-//void EntityPlayer::render(Camera* camera)
+
 
 void EntityPlayer::update(float seconds_elapsed) {
 
@@ -135,10 +95,10 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	if (!collisions.empty() || !ground_collisions.empty()) {
-		std::cout << "¡Colisión detectada!" << std::endl;
+		std::cout << "Collision detected" << std::endl;
 	}
 	else {
-		std::cout << "Sin colisiones." << std::endl;
+		std::cout << "No collisions" << std::endl;
 	}
 
 
@@ -224,7 +184,7 @@ void EntityPlayer::render(Camera* camera)
 	}
 
 
-	////Second sphere
+	//Second sphere
 	{
 		m = model;
 		m.translate(0.0f, player_height, 0.0f);
@@ -244,3 +204,44 @@ void EntityPlayer::render(Camera* camera)
 }
 
 
+
+// void EntityPlayer::render(Camera * camera)
+// 
+// //REnder mesh
+// EntityMesh::render(camera);
+// 
+// //Debug spheres...
+// 
+// Shader* shader = Shader::Get
+// Mesh* mesh = Mesh::Get
+// Matrix44 m = model;
+// 
+// m.model;
+// m.translate(0.0f, player_height, 0.0f);
+// m.scale(sphere_radius)
+// 
+// 
+// //Check collisions with world entities
+// for(auto e: World::get_instance()->root.childern()
+// 
+// 
+// //Ground collisions
+// bool is_grounded = false;
+// 
+// for(const sCollisionDAta& collision : ground_collisions){
+// 
+// float up_factor = fabs(collision.com_normal.dot(Vector3::UP));
+// if(up_factor>0.8){
+// is_grounded = true;
+// }
+// if(collision.col_point.y>(position.y + veloxity.y * seconds_elapsed)){
+// position.y = collision.col_point.y
+// }
+// 
+// if(!is_grounded){
+// veloscity.y -= //Añadir gravedad
+// }else if(){
+// 
+// }
+// 
+// 
