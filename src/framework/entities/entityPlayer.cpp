@@ -89,7 +89,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 
 	for (auto e : World::get_instance()->root.children) {
+
 		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
+
 		if (ec != nullptr)
 			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions);
 	}

@@ -62,8 +62,7 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-
-	parseScene("data/scene/road.scene", &root);
+	parseScene("data/mario.scene", &root);
 
 
 }
@@ -116,6 +115,16 @@ void World::update(float seconds_elapsed) {
 	float speed = seconds_elapsed * 30.0f;
 
 
+
+	for (auto& entity : root.children) {
+		EntityMesh* ec = dynamic_cast<EntityMesh*>(entity);
+		if (ec) std::cout << "ENTITY MESH [OK]" << std::endl;
+
+		EntityCollider* e = dynamic_cast<EntityCollider*>(ec);
+		if(e) std::cout << "ENTITY COLLIDER [OK]" << std::endl;
+	}
+
+
 	if (free_camera)
 	{
 		float speed = seconds_elapsed * camera_speed;
@@ -156,6 +165,8 @@ void World::update(float seconds_elapsed) {
 		Vector3 center;
 
 		float orbit_dist = 35.0f;
+
+		root.update(seconds_elapsed);
 		root_player->update(seconds_elapsed);
 
 		eye = root_player->model.getTranslation() + front * orbit_dist;
@@ -164,7 +175,6 @@ void World::update(float seconds_elapsed) {
 		center = root_player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
 		camera->lookAt(eye, center, Vector3(0, 100, 0)); //Revisar, no va bien
-		root.update(seconds_elapsed);
 
 	}
 
@@ -173,9 +183,6 @@ void World::update(float seconds_elapsed) {
 		delete e;
 	}
 	entities_to_destroy.clear();
-
-
-
 
 	//Sirve para "disparar objetos"
 	if (Input::wasKeyPressed(SDL_SCANCODE_T)) {

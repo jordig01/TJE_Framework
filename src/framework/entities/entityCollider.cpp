@@ -34,6 +34,12 @@ void EntityCollider::getCollisionsWithModel(const Matrix44 model, const Vector3&
 
 }
 
+//inicialize su parte de EntityMesh (creo)
+EntityCollider::EntityCollider(Mesh* mesh, const Material& material): EntityMesh(mesh, material)
+{
+	
+}
+
 void EntityCollider::getCollisions(const Vector3& target_position, std::vector<sCollisionData>& collisions, std::vector<sCollisionData>& ground_collisions, eCollisionFilter filter){
 	if (!(layer & filter)) return;
 	
@@ -41,7 +47,7 @@ void EntityCollider::getCollisions(const Vector3& target_position, std::vector<s
 		getCollisionsWithModel(model, target_position, collisions, ground_collisions, filter);
 	}
 	 else{
-		 for(int i =0; i<models.size();++i){
+		 for(int i = 0; i<models.size();++i){
 			 getCollisionsWithModel(models[i], target_position, collisions, ground_collisions, filter);
 		 }
 	 }
