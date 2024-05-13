@@ -96,13 +96,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions);
 	}
 
-	if (!collisions.empty() || !ground_collisions.empty()) {
-		std::cout << "Collision detected" << std::endl;
-	}
-	else {
-		std::cout << "No collisions" << std::endl;
-	}
-
 
 	for (const sCollisionData& collision : collisions) {
 		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
