@@ -168,12 +168,23 @@ void World::update(float seconds_elapsed) {
 		root.update(seconds_elapsed);
 		root_player->update(seconds_elapsed);
 
-		eye = root_player->model.getTranslation() + front * orbit_dist;
+		eye = root_player->model.getTranslation()  + front * orbit_dist; //porque lo tenemos con el + ???
 		eye.y += 18.0f;
 
 		center = root_player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
 		camera->lookAt(eye, center, Vector3(0, 100, 0)); //Revisar, no va bien
+
+		/*
+		* float orbit_dist = 0.6f;
+		* eye = player-model.gettranslation - front*orbit_dist quello che abbiamo giá
+		* center = quello che abbiamo giá
+		* Vector3 dir = eye - center;
+		* sCollision data = World::get instance ray cast(center, dir.normalize(), eCollissionFilter::ALL, dir.length();
+		* if (data.collided){
+		* eye = data.col_point;
+		*
+		*/
 
 	}
 
@@ -209,7 +220,7 @@ void World::update(float seconds_elapsed) {
 
 
 	//	// Obtener la altura del jugador
-	//	float player_height = root_player->model.getTranslation().y;
+	//	float player_height = root_player->model.getTranslation().y;  //stessa cosa con ray cast 
 
 	//	// Generar entidades en la altura del jugador
 	//	for (auto& col_point : collisions) {
@@ -266,7 +277,7 @@ bool World::parseScene(const char* filename, Entity* root)
 	// Iterate through meshes loaded and create corresponding entities
 	for (auto data : meshes_to_load) {
 
-		mesh_name = "data/scene/" + data.first;
+		mesh_name = "data/" + data.first;
 		sRenderData& render_data = data.second;
 
 		// No transforms, nothing to do here

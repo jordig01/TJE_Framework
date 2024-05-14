@@ -145,6 +145,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	EntityMesh::update(seconds_elapsed);
 
 
+
 }
 
 void EntityPlayer::render(Camera* camera)

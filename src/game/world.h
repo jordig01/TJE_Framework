@@ -40,7 +40,7 @@ public:
 
 	
 	//Para Entity Collider
-	float sphere_radius = 2.f;
+	float sphere_radius = 3.f;
 	float sphere_ground_radius = 2.5f;
 	float player_height = 5.0f;
 
@@ -61,4 +61,19 @@ public:
 	bool parseScene(const char* filename, Entity* root);
 	void addEntity(Entity* entity);
 	void removeEntity(Entity* entity);
+
+	//get collision //come nel caso di entity collider  
+	/*
+	* for(auto e: root_children){
+	*	Entitucollider = dynamicCast
+	* if(ec = nullptr)
+	*	
+	*/
+
+	//layer serve per vedere con quali vogliamo collider 
+
+	//if(!ec->testRayCollision)
+	//se questo succede dobbiamo riempire nel data con gli elementi della colisione piú vicino 
+	/*
+	*/
 };
