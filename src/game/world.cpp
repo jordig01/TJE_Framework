@@ -62,6 +62,14 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
+	/*Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
+	if (mesh) std::cout << "FIREBALL [OK]" << std::endl;
+	Material fireball_mat;
+	fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
+	EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
+
+	root.addChild(new_entity);*/
+
 	parseScene("data/mario.scene", &root);
 
 
@@ -176,7 +184,7 @@ void World::update(float seconds_elapsed) {
 	entities_to_destroy.clear();
 
 	//Sirve para "disparar objetos"
-	if (Input::wasKeyPressed(SDL_SCANCODE_T)) {
+	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
 		
 		Vector2 mouse_pos = Input::mouse_position;
 		Vector3 ray_origin = camera->eye;
@@ -200,12 +208,19 @@ void World::update(float seconds_elapsed) {
 		}
 
 
-		////Generate entities
-		//for (auto& col_point : collisions){
-		//	Mesh* mesh = Mesh::Get();
-		//	EntityMesh* new_entity = new EntityMesh(mesh, {});
-		//	addEntity(new_entity);
-		//}
+	//	// Obtener la altura del jugador
+	//	float player_height = root_player->model.getTranslation().y;
+
+	//	// Generar entidades en la altura del jugador
+	//	for (auto& col_point : collisions) {
+	//		Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
+	//		if (mesh) std::cout << "FIREBALL [OK]" << std::endl;
+	//		Material fireball_mat;
+	//		fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
+	//		EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
+	//		new_entity->model.setTranslation(col_point);
+	//		addEntity(new_entity);
+	//	}
 	}
 
 }
@@ -301,12 +316,12 @@ bool World::parseScene(const char* filename, Entity* root)
 
 void World::addEntity(Entity* entity)
 {
-
+	root.addChild(entity);
 }
 
 void World::removeEntity(Entity* entity)
 {
-
+	root.removeChild(entity);
 }
 
 
