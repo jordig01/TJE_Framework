@@ -62,6 +62,9 @@ public:
 	void addEntity(Entity* entity);
 	void removeEntity(Entity* entity);
 
+	
+	sCollisionData  ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
+	
 	//get collision //come nel caso di entity collider  
 	/*
 	* for(auto e: root_children){

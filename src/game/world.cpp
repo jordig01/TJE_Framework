@@ -44,6 +44,8 @@ World::World()
 
 	root_player->model.setTranslation(0.f, 12.f, 0.f);
 
+	//EntityAI* enemy = 
+	//setLayer
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -61,14 +63,6 @@ World::World()
 	Mesh* cubemapMesh = Mesh::Get("data/meshes/cubemap.obj");
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
-
-	/*Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
-	if (mesh) std::cout << "FIREBALL [OK]" << std::endl;
-	Material fireball_mat;
-	fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
-	EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
-
-	root.addChild(new_entity);*/
 
 	parseScene("data/mario.scene", &root);
 
@@ -173,18 +167,15 @@ void World::update(float seconds_elapsed) {
 
 		center = root_player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
 
-		camera->lookAt(eye, center, Vector3(0, 100, 0)); //Revisar, no va bien
+		/*Vector3 dir = eye - center;
+		sCollisionData data = World::get_instance()->ray_cast(center, dir.normalize(), eCollisionFilter::ALL, dir.length());
 
-		/*
-		* float orbit_dist = 0.6f;
-		* eye = player-model.gettranslation - front*orbit_dist quello che abbiamo giá
-		* center = quello che abbiamo giá
-		* Vector3 dir = eye - center;
-		* sCollision data = World::get instance ray cast(center, dir.normalize(), eCollissionFilter::ALL, dir.length();
-		* if (data.collided){
-		* eye = data.col_point;
-		*
-		*/
+		if (data.collided) {
+			eye = data.col_point;
+		}*/
+
+		camera->lookAt(eye, center, Vector3(0, 1, 0)); //Revisar, no va bien
+
 
 	}
 
@@ -196,7 +187,7 @@ void World::update(float seconds_elapsed) {
 
 	//Sirve para "disparar objetos"
 	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
-		
+
 		Vector2 mouse_pos = Input::mouse_position;
 		Vector3 ray_origin = camera->eye;
 		Vector3 ray_direction = camera->getRayDirection(mouse_pos.x, mouse_pos.y, Game::instance->window_width, Game::instance->window_height);
@@ -219,19 +210,26 @@ void World::update(float seconds_elapsed) {
 		}
 
 
-	//	// Obtener la altura del jugador
-	//	float player_height = root_player->model.getTranslation().y;  //stessa cosa con ray cast 
+		// Obtener la altura del jugador
+		float player_height = root_player->model.getTranslation().y;  //stessa cosa con ray cast 
 
-	//	// Generar entidades en la altura del jugador
-	//	for (auto& col_point : collisions) {
-	//		Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
-	//		if (mesh) std::cout << "FIREBALL [OK]" << std::endl;
-	//		Material fireball_mat;
-	//		fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
-	//		EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
-	//		new_entity->model.setTranslation(col_point);
-	//		addEntity(new_entity);
-	//	}
+		// Generar entidades en la altura del jugador
+
+
+		//TODO: FIX THE FIREBALLS DIRECTION
+		for (auto& col_point : collisions) {
+			Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
+			if (mesh) std::cout << "FIREBALL [OK]" << std::endl;
+			Material fireball_mat;
+			fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
+			EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
+
+			Vector3 fireball_position = col_point;
+			fireball_position.y = root_player->model.getTranslation().y; // Ensure the fireball is at the player's height
+			new_entity->model.setTranslation(fireball_position);
+
+			addEntity(new_entity);
+		}
 	}
 
 }
@@ -333,6 +331,37 @@ void World::addEntity(Entity* entity)
 void World::removeEntity(Entity* entity)
 {
 	root.removeChild(entity);
+}
+
+sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist)
+{
+	sCollisionData data;
+	
+	for (auto e : root.children) {
+		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
+		if (ec == nullptr || !(ec->getLayer() & layer)) {
+			continue;
+		}
+		
+		Vector3 col_point;
+		Vector3 col_normal;
+
+		if (!ec->mesh->testRayCollision(ec->model, origin, direction, col_point, col_normal, player_height + 0.01f)){
+			continue;
+		}
+
+		data.collided = true;
+
+		float new_distance = (col_point - origin).length();
+		if (new_distance < data.distance){
+			data.col_point = col_point;
+			data.col_normal = col_normal;
+			data.distance = new_distance;
+			data.collided = ec;
+		}
+	}
+	
+	return data;
 }
 
 

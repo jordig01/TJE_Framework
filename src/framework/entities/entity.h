@@ -20,6 +20,7 @@ struct sCollisionData {
 	Vector3 col_point;
 	Vector3 col_normal;
 	float distance = 0.f;
+	bool collided;
 };
 
 class Entity {
