@@ -160,6 +160,8 @@ void EntityPlayer::render(Camera* camera)
 	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
 	float player_height = World::get_instance()->player_height;
 
+
+	//TODO: Pensarlo de hacerlo con cubos
 	Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
 	Matrix44 m = model;
