@@ -148,7 +148,13 @@ void World::update(float seconds_elapsed) {
 		
 		Matrix44 mYaw;
 
-		mYaw.setRotation(root_player->rotation, Vector3(0, 1, 0));
+		/*if (num_steps == 100) {
+			rot = root_player->rotation;
+			num_steps = 0;
+		}
+		num_steps++;*/
+
+		mYaw.setRotation(root_player->cam_rotation, Vector3(0, 1, 0));
 
 		Matrix44 mPitch;
 		mPitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
@@ -162,7 +168,7 @@ void World::update(float seconds_elapsed) {
 		root.update(seconds_elapsed);
 		root_player->update(seconds_elapsed);
 
-		eye = root_player->model.getTranslation()  + front * orbit_dist; //porque lo tenemos con el + ???
+		eye = root_player->model.getTranslation()  + front * orbit_dist;
 		eye.y += 18.0f;
 
 		center = root_player->model.getTranslation() + Vector3(0.0f, 0.1f, 0.0f);
@@ -174,7 +180,7 @@ void World::update(float seconds_elapsed) {
 			eye = data.col_point;
 		}*/
 
-		camera->lookAt(eye, center, Vector3(0, 1, 0)); //Revisar, no va bien
+		camera->lookAt(eye, center, Vector3(0, 1, 0));
 
 
 	}
@@ -225,7 +231,7 @@ void World::update(float seconds_elapsed) {
 			EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
 
 			Vector3 fireball_position = col_point;
-			fireball_position.y = root_player->model.getTranslation().y; // Ensure the fireball is at the player's height
+			//fireball_position.y = root_player->model.getTranslation().y; // Ensure the fireball is at the player's height
 			new_entity->model.setTranslation(fireball_position);
 
 			addEntity(new_entity);

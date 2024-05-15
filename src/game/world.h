@@ -38,6 +38,10 @@ public:
 
 	Camera* camera = nullptr;
 
+	//Prueba giro
+	int num_steps = 0;
+	float rot = -1.0f;
+
 	
 	//Para Entity Collider
 	float sphere_radius = 3.f;

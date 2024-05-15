@@ -51,25 +51,41 @@ void EntityPlayer::update(float seconds_elapsed) {
 	position = model.getTranslation();
 
 	Vector3 move_dir;
-	bool moving = false;
+	float moving = 0.0f;
 
 	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) {
 		move_dir += front;
-		moving = true;
+		moving = 1.0f;
+		last_moving = 1.0f;
 	}
 
 	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) {
 		move_dir -= front;
-		moving = true;
+		moving = -1.0f;
+		last_moving = -1.0f;
 	}
 
-	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && moving) {
-		rotation -= 0.005f;
+	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT))) {
+		right = false;
+		left = true;
+		rotation -= 0.004f * moving;
+		cam_rotation -= 0.001f * moving;
 	}
 
 
-	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && moving) {
-		rotation += 0.005f;
+	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT))) {
+		right = true;
+		left = false;
+		rotation += 0.004f * last_moving;
+		cam_rotation += 0.001f * last_moving;
+	}
+	if (cam_rotation != rotation) {
+		if (left) {
+			cam_rotation -= 0.001f * last_moving;
+		}
+		else if (right) {
+			cam_rotation += 0.001f * last_moving;
+		}
 	}
 	front = Vector3(sin(rotation), 0, -cos(rotation));
 

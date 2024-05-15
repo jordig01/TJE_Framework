@@ -11,7 +11,11 @@ public:
     Vector3 velocity;
     Vector3 position;
     float rotation = -1.0f;
-    Vector3 front;    
+    float cam_rotation = -1.0f;
+    bool left = false;
+    bool right = false;
+    float last_moving = 0.0f;
+    Vector3 front;
 
     ~EntityPlayer();
     EntityPlayer(Mesh* mesh, Material material);
