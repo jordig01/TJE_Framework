@@ -8,7 +8,13 @@
 #define RENDER_DEBUG
 
 
-EntityAI::~EntityAI() 
+EntityAI::EntityAI(Mesh* mesh, const Material& material, const std::string& name)
+{
+	this->mesh = mesh;
+	this->material = material;
+}
+
+EntityAI::~EntityAI()
 {
 
 }
@@ -104,9 +110,25 @@ void EntityAI::lookAtTarget(const Vector3& position, float seconds_elapsed)
 }
 
 
-//TODO: Complete from the slides
+//TODO: Complete from the slides (DONE) 
 void EntityAI::followPath(float seconds_elapsed)
 {
+	if (path.size()) {
+		Vector3 origin = model.getTranslation();
+		Vector3 target = path[waypoint_index].position;
+
+		lookAtTarget(target, seconds_elapsed);
+		
+		model.translate(0.f, 0.f, seconds_elapsed);
+
+		float distance_to_target = (target - origin).length();
+		if (distance_to_target < 0.1f) {
+			if (walk_forwards && waypoint_index + 1 == path.size() || !walk_forwards && waypoint_index - 1 < 0) {
+				walk_forwards = !walk_forwards;
+			}
+			waypoint_index += (walk_forwards ? 1 : -1);
+		}
+	}
 
 }
 
