@@ -40,6 +40,7 @@ void EntityMesh::render(Camera* camera) {
 	std::vector<Matrix44>* final_models = &models;
 	std::vector<Matrix44> models_instanced;
 
+
 	
 	if (isInstanced) {
 		for (int i = 0; i < models.size(); ++i) {
@@ -77,7 +78,7 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
 
-	//Para el cubomap
+	//Para el cubemap
 	material.shader->setUniform("u_camera_position", camera->eye);
 
 	if (material.diffuse) {

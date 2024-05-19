@@ -142,8 +142,6 @@ void Game::goToStage(int new_stage)
 }
 
 
-//añadir parse scene  colgado en el aula global pero en una clase llamada World
-//lee linea por linea  # son comentarios para skippear
 
 	/*añadir una model a ese render data con el contador
 	tag para identificar diferentes entities

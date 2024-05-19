@@ -42,7 +42,7 @@ World::World()
 	root_player->addChild(character);
 
 
-	root_player->model.setTranslation(0.f, 12.f, 0.f);
+	//root_player->model.setTranslation(0.f, 12.f, 0.f);
 
 	//EntityAI* enemy = 
 	//setLayer
@@ -64,7 +64,7 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/mario.scene", &root);
+	parseScene("data/sample.scene", &root);
 
 
 }
@@ -85,7 +85,7 @@ void World::render() {
 	drawGrid();
 
 
-	//// Set flags
+	// Set flags
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
@@ -94,10 +94,8 @@ void World::render() {
 	//Matrix44 m;
 	//m.rotate(angle * DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
 
-
 	root.render(camera);
 	root_player->render(camera);
-
 
 	// Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
@@ -154,7 +152,7 @@ void World::update(float seconds_elapsed) {
 		}
 		num_steps++;*/
 
-		mYaw.setRotation(root_player->cam_rotation, Vector3(0, 1, 0));
+		mYaw.setRotation(root_player->rotation, Vector3(0, 1, 0));
 
 		Matrix44 mPitch;
 		mPitch.setRotation(camera_pitch, Vector3(-1, 0, 0));
@@ -192,52 +190,24 @@ void World::update(float seconds_elapsed) {
 	entities_to_destroy.clear();
 
 	//Sirve para "disparar objetos"
-	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
+	//if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
+	//	Vector3 ray_origin = root_player->model.getTranslation();
+	//	Vector3 ray_direction = root_player->model.frontVector();
 
-		Vector2 mouse_pos = Input::mouse_position;
-		Vector3 ray_origin = camera->eye;
-		Vector3 ray_direction = camera->getRayDirection(mouse_pos.x, mouse_pos.y, Game::instance->window_width, Game::instance->window_height);
+	//	sCollisionData collisionData = ray_cast(ray_origin, ray_direction, eCollisionFilter::ALL, 1000.0f);
 
-		std::vector<Vector3> collisions;
+	//	if (collisionData.collided) {
+	//		Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
+	//		Material fireball_mat;
+	//		fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
+	//		EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
 
-		for (Entity* e : root.children) {
-			EntityCollider* collider = dynamic_cast<EntityCollider*>(e);
+	//		Vector3 fireball_position = ray_origin + ray_direction * 2.0f; // Posición inicial un poco frente al jugador
+	//		new_entity->model.setTranslation(fireball_position);
 
-			if (!collider) {
-				continue;
-			}
-
-			Vector3 col_point;
-			Vector3 col_normal;
-
-			if (collider->mesh->testRayCollision(collider->model, ray_origin, ray_direction, col_point, col_normal)) {
-				collisions.push_back(col_point);
-			}
-		}
-
-
-		// Obtener la altura del jugador
-		float player_height = root_player->model.getTranslation().y;  //stessa cosa con ray cast 
-
-		// Generar entidades en la altura del jugador
-
-
-		//TODO: FIX THE FIREBALLS DIRECTION
-		for (auto& col_point : collisions) {
-			Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
-			if (mesh) std::cout << "FIREBALL [OK]" << std::endl;
-			Material fireball_mat;
-			fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
-			EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
-
-			Vector3 fireball_position = col_point;
-			//fireball_position.y = root_player->model.getTranslation().y; // Ensure the fireball is at the player's height
-			new_entity->model.setTranslation(fireball_position);
-
-			addEntity(new_entity);
-		}
-	}
-
+	//		addEntity(new_entity);
+	//	}
+	//}
 }
 
 bool World::parseScene(const char* filename, Entity* root)
@@ -293,12 +263,15 @@ bool World::parseScene(const char* filename, Entity* root)
 		EntityCollider* new_entity = nullptr;
 
 
-		size_t tag = data.first.find("@tag");
-
-		if (tag != std::string::npos) {
-			Mesh* mesh = Mesh::Get("...");
-			// Create a different type of entity
-			// new_entity = new ...
+		size_t tag_pipe = data.first.find("@pipe");
+		size_t tag_cube = data.first.find("@cube");
+		if (tag_pipe != std::string::npos) {
+			Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new PipeCollider(mesh, mat);
+		}
+		else if (tag_cube != std::string::npos) {
+			Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new CubeCollider(mesh, mat);
 		}
 		else {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
@@ -337,12 +310,15 @@ void World::addEntity(Entity* entity)
 void World::removeEntity(Entity* entity)
 {
 	root.removeChild(entity);
+
 }
 
+// --- RAY CAST FUNCTION ---
 sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist)
 {
 	sCollisionData data;
-	
+	data.distance = max_ray_dist;
+
 	for (auto e : root.children) {
 		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
 		if (ec == nullptr || !(ec->getLayer() & layer)) {
@@ -363,7 +339,7 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 			data.col_point = col_point;
 			data.col_normal = col_normal;
 			data.distance = new_distance;
-			data.collided = ec;
+			data.collider_entity = ec;
 		}
 	}
 	

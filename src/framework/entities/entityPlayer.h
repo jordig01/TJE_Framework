@@ -2,7 +2,7 @@
 
 
 
-class EntityPlayer: public EntityMesh{
+class EntityPlayer : public EntityMesh {
 
 public:
 
@@ -15,6 +15,10 @@ public:
     bool left = false;
     bool right = false;
     float last_moving = 0.0f;
+
+    int total_lives = 3;
+    int total_points = 0;
+
     Vector3 front;
 
     ~EntityPlayer();
@@ -22,4 +26,12 @@ public:
     void update(float seconds_elapsed);
 
     void render(Camera* camera);
+    void handleCollisions(float seconds_elapsed);
+
+
+    void addPoints(int point);
+    void losePoints(int point);
+
+    void addLife(int life);
+    void loseLife(int life);
 };

@@ -4,6 +4,7 @@
 #include "framework/framework.h"
 
 class Camera;
+class EntityCollider;
 
 enum eCollisionFilter {
 	NONE = 0,
@@ -21,6 +22,8 @@ struct sCollisionData {
 	Vector3 col_normal;
 	float distance = 0.f;
 	bool collided;
+	EntityCollider* collider_entity;
+
 };
 
 class Entity {

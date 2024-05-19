@@ -28,3 +28,20 @@ public:
 
 
 };
+
+
+class PipeCollider : public EntityCollider {
+
+public:
+	PipeCollider(Mesh* mesh, const Material& material) : EntityCollider(mesh, material) {};
+};
+
+
+class CubeCollider : public EntityCollider {
+
+public:	
+	bool collected;
+	CubeCollider(Mesh* mesh, const Material& material) : EntityCollider(mesh, material) { collected = false; };
+	
+	void render(Camera* camera) override;
+};

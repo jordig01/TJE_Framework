@@ -5,7 +5,6 @@
 
 
 class EntityPlayer;
-
 class Camera;
 
 

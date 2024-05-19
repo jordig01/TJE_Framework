@@ -30,6 +30,59 @@ EntityPlayer::~EntityPlayer()
 
 }
 
+void EntityPlayer::render(Camera* camera)
+{
+
+	EntityMesh::render(camera);
+
+
+	//Render debug spheres...
+
+	float sphere_radius = World::get_instance()->sphere_radius;
+	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
+	float player_height = World::get_instance()->player_height;
+
+
+	//TODO: Pensarlo de hacerlo con cubos
+	Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+	Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
+	Matrix44 m = model;
+
+	shader->enable();
+
+
+	//First sphere (para el ground)
+	{
+		m.translate(0.0f, 2.0f, 0.0f);
+		m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
+
+		shader->setUniform("u_color", Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+		shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
+		shader->setUniform("u_model", m);
+
+		mesh->render(GL_LINES);
+	}
+
+
+	//Second sphere
+	{
+		m = model;
+		m.translate(0.0f, player_height, 0.0f);
+		m.scale(sphere_radius, sphere_radius, sphere_radius);
+
+		shader->setUniform("u_color", Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+
+		shader->setUniform("u_model", m);
+
+		mesh->render(GL_LINES);
+
+	}
+
+	shader->disable();
+
+
+}
+
 
 
 void EntityPlayer::update(float seconds_elapsed) {
@@ -99,56 +152,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 	velocity += move_dir;
 
 	//Check collisions with the world entitites
-
-	std::vector<sCollisionData> collisions;
-	std::vector<sCollisionData> ground_collisions;
-
-
-	for (auto e : World::get_instance()->root.children) {
-
-		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
-
-		if (ec != nullptr)
-			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions);
-	}
-
-
-	for (const sCollisionData& collision : collisions) {
-		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
-		velocity.x -= newDir.x;
-		velocity.y -= newDir.y;
-		velocity.z -= newDir.z;
-	}
-
-
-	bool is_grounded = false;
-
-	for (const sCollisionData& collision : ground_collisions) {
-		
-		
-		//Si la normal apunta hacia arriba, collision con suelo
-		float up_factor = fabsf(collision.col_normal.dot(Vector3::UP));
-		if (up_factor > 0.8f) {
-			is_grounded = true;
-		}
-
-		if (collision.col_point.y > (position.y + velocity.y * seconds_elapsed)) {
-			position.y = collision.col_point.y;
-		}
-	}
-
-
-	if (!is_grounded) {
-		velocity.y -= 9.8f * seconds_elapsed;
-	}
-	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
-		velocity.y = 2.0f;
-	}
-
-
+	handleCollisions(seconds_elapsed);
 
 	position += velocity * seconds_elapsed;
-
 
 	//Decrease velocity when not moving
 	velocity.x *= 0.5f;
@@ -164,55 +170,89 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 }
 
-void EntityPlayer::render(Camera* camera)
+
+//--- NEW FUNCTION TO HANDLE COLLISIONS ---
+void EntityPlayer::handleCollisions(float seconds_elapsed) {
+	std::vector<sCollisionData> collisions;
+	std::vector<sCollisionData> ground_collisions;
+
+
+	for (auto e : World::get_instance()->root.children) {
+		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
+
+		if (ec != nullptr) {
+			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions);
+		}
+
+		// Check for CubeCollider 
+		CubeCollider* cube = dynamic_cast<CubeCollider*>(e);
+		if (cube != nullptr && !cube->collected) {
+			std::vector<sCollisionData> cube_collisions;
+			cube->getCollisions(position + velocity * seconds_elapsed, cube_collisions, ground_collisions);
+			if (!cube_collisions.empty()) {
+				cube->collected = true;
+				std::cout << "CUBE SURPRISE COLLIDED"<< cube->collected << std::endl;
+			}
+		}
+
+		PipeCollider* pipe = dynamic_cast<PipeCollider*>(e);
+		if (pipe != nullptr) {
+			std::vector<sCollisionData> pipe_collisions;
+			pipe->getCollisions(position + velocity * seconds_elapsed, pipe_collisions, ground_collisions);
+			if (!pipe_collisions.empty() && velocity.x > 30.0f) { 
+				std::cout << "PIPE COLLIDED" << std::endl;
+			}
+		}
+
+	}
+
+	for (const sCollisionData& collision : collisions) {
+		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
+		velocity.x -= newDir.x;
+		velocity.y -= newDir.y;
+		velocity.z -= newDir.z;
+	}
+
+	bool is_grounded = false;
+	for (const sCollisionData& collision : ground_collisions) {
+		float up_factor = fabsf(collision.col_normal.dot(Vector3::UP));
+		if (up_factor > 0.8f) {
+			is_grounded = true;
+		}
+
+		if (collision.col_point.y > (position.y + velocity.y * seconds_elapsed)) {
+			position.y = collision.col_point.y;
+		}
+	}
+
+	if (!is_grounded) {
+		velocity.y -= 9.8f * seconds_elapsed;
+	}
+	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
+		velocity.y = 2.0f;
+	}
+}
+
+
+
+//--- SCORE AND LIFES MECHANICS ---
+void EntityPlayer::addPoints(int point)
 {
+	total_points += point;
+}
 
-	EntityMesh::render(camera);
+void EntityPlayer::losePoints(int point)
+{
+	total_points -= point;
+}
 
+void EntityPlayer::addLife(int life) {
+	total_lives += life;
+	if (total_lives > 3) total_points += 200;
+}
 
-	//Render debug spheres...
+void EntityPlayer::loseLife(int life) {
+	total_lives -= life;
 
-	float sphere_radius = World::get_instance()->sphere_radius;
-	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
-	float player_height = World::get_instance()->player_height;
-
-
-	//TODO: Pensarlo de hacerlo con cubos
-	Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
-	Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
-	Matrix44 m = model;
-
-	shader->enable();
-
-
-	//First sphere (para el ground)
-	{
-		m.translate(0.0f, 2.0f, 0.0f);
-		m.scale(sphere_ground_radius, sphere_ground_radius, sphere_ground_radius);
-
-		shader->setUniform("u_color", Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-		shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
-		shader->setUniform("u_model", m);
-
-		mesh->render(GL_LINES);
-	}
-
-
-	//Second sphere
-	{
-		m = model;
-		m.translate(0.0f, player_height, 0.0f);
-		m.scale(sphere_radius, sphere_radius, sphere_radius);
-
-		shader->setUniform("u_color", Vector4(0.0f, 1.0f, 0.0f, 1.0f));
-
-		shader->setUniform("u_model", m);
-
-		mesh->render(GL_LINES);
-
-	}
-
-	shader->disable();
-	
-
+	if (total_lives == 0) std::cout << "GAME OVER" << std::endl;
 }

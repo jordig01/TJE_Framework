@@ -29,12 +29,9 @@ void EntityCollider::getCollisionsWithModel(const Matrix44 model, const Vector3&
 		ground_collisions.push_back({ collision_point, collision_normal.normalize(), character_center.distance(collision_point) });
 	}
 
-
-
-
 }
 
-//inicialize su parte de EntityMesh (creo)
+//inicialize su parte de EntityMesh
 EntityCollider::EntityCollider(Mesh* mesh, const Material& material): EntityMesh(mesh, material)
 {
 	
@@ -54,5 +51,9 @@ void EntityCollider::getCollisions(const Vector3& target_position, std::vector<s
 
 }
 
+void CubeCollider::render(Camera* camera)
+{
+	if (collected) return;
 
-
+	EntityMesh::render(camera);
+}

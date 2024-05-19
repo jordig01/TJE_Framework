@@ -47,6 +47,8 @@ public:
 
 	bool inLineOfSight(const Vector3& position);
 	void lookAtTarget(const Vector3& position, float seconds_elapsed);
+
+	//--- TO DO --- 
 	void followPath(float seconds_elapsed);
 
 

@@ -1,11 +1,12 @@
 #include "entity.h"
 #include "framework/camera.h"
+#include "entityCollider.h"
 
 #include <algorithm>
 
 void Entity::render(Camera* camera)
 {
-	for (int i = 0; i < children.size(); ++i) {
+	for (int i = 0; i < children.size(); ++i) {		
 		children[i]->render(camera);
 	}
 }
