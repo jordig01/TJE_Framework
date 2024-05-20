@@ -28,7 +28,6 @@ public:
     void render(Camera* camera);
     void handleCollisions(float seconds_elapsed);
 
-
     void addPoints(int point);
     void losePoints(int point);
 

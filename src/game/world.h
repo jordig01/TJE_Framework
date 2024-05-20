@@ -2,6 +2,7 @@
 
 #include "framework/entities/entityMesh.h"
 #include "framework/utils.h"
+#include "framework/entities/entityAI.h"
 
 
 class EntityPlayer;
@@ -36,6 +37,8 @@ public:
 	EntityPlayer* player;
 
 	Camera* camera = nullptr;
+
+	std::vector<WayPoint> waypoints;
 
 	//Prueba giro
 	int num_steps = 0;

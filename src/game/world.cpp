@@ -5,6 +5,7 @@
 #include "graphics/shader.h"
 #include "framework/entities/entityPlayer.h"
 #include "framework/entities/entityCollider.h"
+#include "framework/entities/entityFireball.h"
 #include <framework/input.h>
 #include <fstream>
 
@@ -44,8 +45,9 @@ World::World()
 
 	//root_player->model.setTranslation(0.f, 12.f, 0.f);
 
-	//EntityAI* enemy = 
-	//setLayer
+	EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
+	enemy->setLayer(eCollisionFilter::ENEMY);
+	root.addChild(enemy);
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -189,25 +191,23 @@ void World::update(float seconds_elapsed) {
 	}
 	entities_to_destroy.clear();
 
-	//Sirve para "disparar objetos"
-	//if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
-	//	Vector3 ray_origin = root_player->model.getTranslation();
-	//	Vector3 ray_direction = root_player->model.frontVector();
+	std::cout << root_player->model.getTranslation().x << std::endl;
 
-	//	sCollisionData collisionData = ray_cast(ray_origin, ray_direction, eCollisionFilter::ALL, 1000.0f);
+	// Sirve para "disparar objetos"
+	if (Input::wasKeyPressed(SDL_SCANCODE_T)) {
+		
+		Vector3 player_pos = root_player->model.getTranslation();
 
-	//	if (collisionData.collided) {
-	//		Mesh* mesh = Mesh::Get("data/meshes/fireball.obj");
-	//		Material fireball_mat;
-	//		fireball_mat.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
-	//		EntityMesh* new_entity = new EntityMesh(mesh, fireball_mat);
+		Vector3 fireball_dir = root_player->model.frontVector().normalize();
 
-	//		Vector3 fireball_position = ray_origin + ray_direction * 2.0f; // Posición inicial un poco frente al jugador
-	//		new_entity->model.setTranslation(fireball_position);
+		Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f; 
 
-	//		addEntity(new_entity);
-	//	}
-	//}
+		EntityFireball* fireball_entity = new EntityFireball();
+		fireball_entity->model.setTranslation(fireball_start_pos);
+
+		addEntity(fireball_entity);
+	}
+
 }
 
 bool World::parseScene(const char* filename, Entity* root)
@@ -265,6 +265,9 @@ bool World::parseScene(const char* filename, Entity* root)
 
 		size_t tag_pipe = data.first.find("@pipe");
 		size_t tag_cube = data.first.find("@cube");
+		size_t tag_player = data.first.find("@player");
+		size_t tag_waypoints = data.first.find("@waypoint");
+
 		if (tag_pipe != std::string::npos) {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
 			new_entity = new PipeCollider(mesh, mat);
@@ -272,6 +275,14 @@ bool World::parseScene(const char* filename, Entity* root)
 		else if (tag_cube != std::string::npos) {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
 			new_entity = new CubeCollider(mesh, mat);
+		}
+		else if (tag_player != std::string::npos) { //FUNCIONA Pone el jugador donde queremos 
+			assert(root_player);
+			root_player->model.setTranslation(render_data.models[0].getTranslation());
+		}
+		else if (tag_waypoints != std::string::npos) {
+			waypoints.push_back(render_data.models[0].getTranslation());
+			continue;
 		}
 		else {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
