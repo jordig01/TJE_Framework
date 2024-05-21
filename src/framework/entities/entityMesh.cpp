@@ -94,8 +94,12 @@ void EntityMesh::render(Camera* camera) {
 	//si instanciado renderInstance
 	if (isInstanced)
 		mesh->renderInstanced(GL_TRIANGLES, final_models->data(), final_models->size());
-	else
+	else 
 		mesh->render(GL_TRIANGLES);
+
+	/*
+	* if(isAnimated)
+	*/
 
 	// Disable shader after finishing rendering
 	material.shader->disable();
@@ -117,6 +121,10 @@ void EntityMesh::update(float seconds_elapsed) {
 	for (int i = 0; i < children.size(); ++i) {
 		children[i]->update(seconds_elapsed);
 
+	}
+
+	if (isAnimated) {
+		animator.update(seconds_elapsed);
 	}
 }
 

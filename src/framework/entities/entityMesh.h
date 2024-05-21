@@ -4,6 +4,7 @@
 #include "graphics/mesh.h"
 #include "graphics/material.h"
 #include "framework/includes.h"
+#include "framework/animation.h"
 
 class Shader;
 class Camera;
@@ -29,6 +30,9 @@ public:
 	Mesh* mesh = nullptr;
 	Material material;
 
+	Animator animator;
+
+	bool isAnimated = false;
 
 	//Instancing
 	bool isInstanced = false;

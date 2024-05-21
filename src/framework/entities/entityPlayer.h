@@ -1,6 +1,20 @@
 #include "entityMesh.h"
 
 
+enum eAnimatedState{ //En nuesto caso rotar derecha izquierda 
+    MOVE_RIGHT,
+    MOVE_LEFT
+};
+
+
+/*
+* CALLBACK usare per mettere audio
+* 
+* 
+* animator.addCallback [&](float t){
+* SoundModule.playSoung("gyusj")
+* }, 0.5f); //segundos con f y frame numero entero 
+*/
 
 class EntityPlayer : public EntityMesh {
 

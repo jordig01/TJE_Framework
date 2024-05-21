@@ -113,6 +113,7 @@ void EntityAI::lookAtTarget(const Vector3& position, float seconds_elapsed)
 //TODO: Complete from the slides (DONE) 
 void EntityAI::followPath(float seconds_elapsed)
 {
+	path = World::get_instance()->waypoints; //Funciona :)
 	if (path.size()) {
 		Vector3 origin = model.getTranslation();
 		Vector3 target = path[waypoint_index].position;

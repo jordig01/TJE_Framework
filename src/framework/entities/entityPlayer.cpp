@@ -14,6 +14,8 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->walk_speed = 100.0f;
 	this->front = Vector3(0, 0, -1);
 	this->rotation = -1.0f;
+
+	//animator.playAnimation();
 }
 
 

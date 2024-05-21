@@ -43,6 +43,8 @@ World::World()
 	root_player->addChild(character);
 
 
+	//root_player.shader
+
 	//root_player->model.setTranslation(0.f, 12.f, 0.f);
 
 	EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
@@ -198,9 +200,9 @@ void World::update(float seconds_elapsed) {
 		
 		Vector3 player_pos = root_player->model.getTranslation();
 
-		Vector3 fireball_dir = root_player->model.frontVector().normalize();
+		Vector3 fireball_dir = root_player->model.frontVector().normalize()*root_player->rotation; 
 
-		Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f; 
+		Vector3 fireball_start_pos = player_pos + fireball_dir*2.0f; 
 
 		EntityFireball* fireball_entity = new EntityFireball();
 		fireball_entity->model.setTranslation(fireball_start_pos);
