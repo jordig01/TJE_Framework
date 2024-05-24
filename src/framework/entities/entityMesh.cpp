@@ -94,38 +94,33 @@ void EntityMesh::render(Camera* camera) {
 	//si instanciado renderInstance
 	if (isInstanced)
 		mesh->renderInstanced(GL_TRIANGLES, final_models->data(), final_models->size());
-	else 
-		mesh->render(GL_TRIANGLES);
+	else {
+		if (isAnimated) {
+			mesh->renderAnimated(GL_TRIANGLES, &animator.getCurrentSkeleton());
+		}
+		else {
+			mesh->render(GL_TRIANGLES);
+		}
 
-	/*
-	* if(isAnimated)
-	*/
+	}
+
 
 	// Disable shader after finishing rendering
 	material.shader->disable();
 
-	//render(camera) pero podria hacer mi Entity::render(camera);
-
-	for (int i = 0; i < children.size(); ++i) {
-		children[i]->render(camera);
-	}
+	Entity::render(camera);
 }
 
 
 void EntityMesh::update(float seconds_elapsed) {
 
-	//for i  i< children.size(); ++i
-	//children[i]->update(seconds_elapsed)
-	//otra opción Entity::render(camera)
-
-	for (int i = 0; i < children.size(); ++i) {
-		children[i]->update(seconds_elapsed);
-
-	}
 
 	if (isAnimated) {
 		animator.update(seconds_elapsed);
 	}
+
+	Entity::update(seconds_elapsed);
+
 }
 
 

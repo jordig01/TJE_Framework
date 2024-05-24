@@ -11,7 +11,7 @@ class Camera;
 enum eStages {
 
 	MENU,
-	INTRO,
+	PLAY,
 	STAGES_SIZE
 };
 
@@ -32,10 +32,21 @@ public:
 
 };
 
-class MenuStage {
+class MenuStage: public Stage {
 
 	eStages type = MENU;
 
 
 
+};
+
+class PlayStage : public Stage {
+
+	eStages type = PLAY;
+
+	PlayStage() {};
+	virtual void render() {};
+	virtual void update(float seconds_elapsed) {};
+	virtual void onEnterStage() {};
+	virtual void onExitStage() {};
 };

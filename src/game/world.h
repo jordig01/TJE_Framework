@@ -67,6 +67,8 @@ public:
 	bool parseScene(const char* filename, Entity* root);
 	void addEntity(Entity* entity);
 	void removeEntity(Entity* entity);
+	
+	void shootFireball();
 
 	
 	sCollisionData  ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);

@@ -42,6 +42,8 @@ World::World()
 	root_player->addChild(kart);
 	root_player->addChild(character);
 
+	//player->isAnimated = true; //el body tendría que ser
+
 
 	//root_player.shader
 
@@ -195,19 +197,12 @@ void World::update(float seconds_elapsed) {
 
 	std::cout << root_player->model.getTranslation().x << std::endl;
 
+	
+	
 	// Sirve para "disparar objetos"
-	if (Input::wasKeyPressed(SDL_SCANCODE_T)) {
+	if (Input::wasKeyPressed(SDL_SCANCODE_T)) { 
 		
-		Vector3 player_pos = root_player->model.getTranslation();
-
-		Vector3 fireball_dir = root_player->model.frontVector().normalize()*root_player->rotation; 
-
-		Vector3 fireball_start_pos = player_pos + fireball_dir*2.0f; 
-
-		EntityFireball* fireball_entity = new EntityFireball();
-		fireball_entity->model.setTranslation(fireball_start_pos);
-
-		addEntity(fireball_entity);
+		shootFireball();
 	}
 
 }
@@ -358,6 +353,23 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 	
 	return data;
 }
+
+
+//----- FUNCTION TO SHOOT A FIREBALL ----
+void World::shootFireball()
+{
+	Vector3 player_pos = root_player->model.getTranslation();
+
+	Vector3 fireball_dir = root_player->model.frontVector().normalize() * root_player->rotation;
+
+	Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f;
+
+	EntityFireball* fireball_entity = new EntityFireball();
+	fireball_entity->model.setTranslation(fireball_start_pos);
+
+	addEntity(fireball_entity);
+}
+
 
 
 

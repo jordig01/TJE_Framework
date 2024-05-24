@@ -156,6 +156,13 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//Check collisions with the world entitites
 	handleCollisions(seconds_elapsed);
 
+	/*if (animation == eAnimatedState::HANDLE && velocity.length() > 1.f) {
+		animator.playAnimation("data/animations/yoshi_movement.skanim");
+	}
+
+	*/
+
+
 	position += velocity * seconds_elapsed;
 
 	//Decrease velocity when not moving
@@ -165,6 +172,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	model.setTranslation(position);
 	model.rotate(rotation, Vector3(0, 1, 0));
+
+
+
 
 	EntityMesh::update(seconds_elapsed);
 

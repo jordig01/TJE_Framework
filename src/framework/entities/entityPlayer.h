@@ -1,9 +1,8 @@
 #include "entityMesh.h"
 
 
-enum eAnimatedState{ //En nuesto caso rotar derecha izquierda 
-    MOVE_RIGHT,
-    MOVE_LEFT
+enum eAnimatedState{ //En nuesto caso rotar derecha izquierda  estado Handle
+    MOVE
 };
 
 
@@ -32,6 +31,8 @@ public:
 
     int total_lives = 3;
     int total_points = 0;
+
+    eAnimatedState animation;
 
     Vector3 front;
 
