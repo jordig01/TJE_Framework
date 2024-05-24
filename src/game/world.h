@@ -40,6 +40,8 @@ public:
 
 	std::vector<WayPoint> waypoints;
 
+	std::vector<WayPoint> cubewaypoints;
+
 	//Prueba giro
 	int num_steps = 0;
 	float rot = -1.0f;

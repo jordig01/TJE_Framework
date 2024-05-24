@@ -14,7 +14,7 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->walk_speed = 100.0f;
 	this->front = Vector3(0, 0, -1);
 	this->rotation = -1.0f;
-
+	this->turbo = 1000.0f;
 	//animator.playAnimation();
 }
 
@@ -183,7 +183,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 }
 
 
-//--- NEW FUNCTION TO HANDLE COLLISIONS ---
+//--- FUNCTION TO HANDLE COLLISIONS ---
 void EntityPlayer::handleCollisions(float seconds_elapsed) {
 	std::vector<sCollisionData> collisions;
 	std::vector<sCollisionData> ground_collisions;
@@ -202,19 +202,12 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			std::vector<sCollisionData> cube_collisions;
 			cube->getCollisions(position + velocity * seconds_elapsed, cube_collisions, ground_collisions);
 			if (!cube_collisions.empty()) {
-				cube->collected = true;
+				handleCubePickup(cube);
 				std::cout << "CUBE SURPRISE COLLIDED"<< cube->collected << std::endl;
 			}
 		}
 
-		PipeCollider* pipe = dynamic_cast<PipeCollider*>(e);
-		if (pipe != nullptr) {
-			std::vector<sCollisionData> pipe_collisions;
-			pipe->getCollisions(position + velocity * seconds_elapsed, pipe_collisions, ground_collisions);
-			if (!pipe_collisions.empty() && velocity.x > 30.0f) { 
-				std::cout << "PIPE COLLIDED" << std::endl;
-			}
-		}
+		checkPipeCollision(seconds_elapsed, ground_collisions);
 
 	}
 
@@ -246,6 +239,53 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 }
 
 
+//---- COLLISION CON PIPE -----
+void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
+	for (auto e : World::get_instance()->root.children) {
+		PipeCollider* pipe = dynamic_cast<PipeCollider*>(e);
+		if (pipe != nullptr) {
+			std::vector<sCollisionData> pipe_collisions;
+			pipe->getCollisions(position + velocity * seconds_elapsed, pipe_collisions, ground_collisions);
+
+			// Check collision with pipe and velocity condition
+			if (!pipe_collisions.empty() && velocity.length() > 250.0f) {
+				// Se la condizione è soddisfatta, chiamiamo la funzione per perdere una vita
+				loseLife(1);
+				std::cout << "PIPE COLLIDED! Life lost." << std::endl;
+				break; // Possiamo uscire dal ciclo una volta trovata una collisione con una pipe
+			}
+		}
+	}
+}
+
+
+
+//---- COLLISION CON SURPRISE CUBE -----
+void EntityPlayer::handleCubePickup(CubeCollider* cube) {
+	// Generate a random number to determine the type of object in the cube
+	int random_value = rand() % 100 + 1; // Generate a random number between 1 and 100
+
+	if (random_value <= 33) {
+		// 33% chance of the cube containing a heart (recovers a life)
+		addLife(1);
+	}
+	else if (random_value <= 66) {
+		// 33% chance of the cube containing a thunder (increases turbo bar)
+		turbo += turbo * (rand() % 11 + 10) / 100.0f; // Increase turbo bar by 10-20%
+		if (turbo > 1000.0f) {
+			total_points += 200; // If turbo bar is full, add 200 points to score
+		}
+	}
+	else {
+		// 33% chance of the cube containing bullets (increase bullet counter)
+		bullet_count+=1;
+	}
+
+	// Mark the cube as collected
+	cube->collected = true;
+
+}
+
 
 //--- SCORE AND LIFES MECHANICS ---
 void EntityPlayer::addPoints(int point)
@@ -264,7 +304,11 @@ void EntityPlayer::addLife(int life) {
 }
 
 void EntityPlayer::loseLife(int life) {
-	total_lives -= life;
 
-	if (total_lives == 0) std::cout << "GAME OVER" << std::endl;
+	if (total_lives > 0) {
+		total_lives -= life;
+	}
+	else {
+		std::cout << "GAME OVER" << std::endl;
+	}
 }

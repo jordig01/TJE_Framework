@@ -1,5 +1,7 @@
 #include "entityMesh.h"
 
+class CubeCollider;
+
 
 enum eAnimatedState{ //En nuesto caso rotar derecha izquierda  estado Handle
     MOVE
@@ -31,6 +33,8 @@ public:
 
     int total_lives = 3;
     int total_points = 0;
+    int bullet_count = 5;
+    float turbo;
 
     eAnimatedState animation;
 
@@ -43,6 +47,8 @@ public:
     void render(Camera* camera);
     void handleCollisions(float seconds_elapsed);
 
+    void checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
+    void handleCubePickup(CubeCollider* cube);
     void addPoints(int point);
     void losePoints(int point);
 

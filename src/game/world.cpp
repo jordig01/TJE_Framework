@@ -107,6 +107,19 @@ void World::render() {
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
 
+	//NOTA: es provisional lo substituiremos con el HUD
+	std::string lives_info = "LIVES: " + std::to_string(root_player->total_lives); 
+	drawText(350, 30, lives_info, Vector3(1, 1, 1), 2); 
+
+
+	std::string score_info = "SCORE: " + std::to_string(root_player->total_points);
+	drawText(5, 570, score_info, Vector3(1, 1, 1), 2);
+
+
+	std::string turbo_info = "TURBO: " + std::to_string(root_player->turbo);
+	drawText(660, 570, turbo_info, Vector3(1, 1, 1), 2);
+
+
 }
 
 
@@ -358,16 +371,25 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 //----- FUNCTION TO SHOOT A FIREBALL ----
 void World::shootFireball()
 {
-	Vector3 player_pos = root_player->model.getTranslation();
+	if (root_player->bullet_count > 0) {
+		Vector3 player_pos = root_player->model.getTranslation();
+		Vector3 fireball_dir = root_player->model.frontVector().normalize() * root_player->rotation;
+		Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f;
 
-	Vector3 fireball_dir = root_player->model.frontVector().normalize() * root_player->rotation;
+		// Create a new fireball entity
+		EntityFireball* fireball_entity = new EntityFireball();
+		fireball_entity->model.setTranslation(fireball_start_pos);
 
-	Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f;
+		// Add the fireball entity to the world
+		addEntity(fireball_entity);
 
-	EntityFireball* fireball_entity = new EntityFireball();
-	fireball_entity->model.setTranslation(fireball_start_pos);
-
-	addEntity(fireball_entity);
+		// Decrease the bullet count
+		root_player->bullet_count--;
+	}
+	else {
+		// Output a message indicating that the player is out of bullets
+		std::cout << "Cannot shoot fireball." << std::endl;
+	}
 }
 
 
