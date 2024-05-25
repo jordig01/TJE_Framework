@@ -115,9 +115,12 @@ void World::render() {
 	std::string score_info = "SCORE: " + std::to_string(root_player->total_points);
 	drawText(5, 570, score_info, Vector3(1, 1, 1), 2);
 
-
 	std::string turbo_info = "TURBO: " + std::to_string(root_player->turbo);
 	drawText(660, 570, turbo_info, Vector3(1, 1, 1), 2);
+
+	std::string bullet_info = "BULLET: " + std::to_string(root_player->bullet_count) + "/5";
+	drawText(660, 3, bullet_info, Vector3(1, 1, 1), 2);
+
 
 
 }

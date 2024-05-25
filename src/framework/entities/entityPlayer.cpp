@@ -146,7 +146,14 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 
 	float speed_mult = walk_speed;
-	if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 3.0f;
+	//if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 3.0f;
+
+	// ---- TURBO LOGIC ----
+	if (Input::isKeyPressed(SDL_SCANCODE_X) && turbo > 0) {
+		speed_mult *= 1.5f;
+		turbo -= seconds_elapsed * 50.0f;  // Decrease turbo over time
+		if (turbo < 0) turbo = 0;
+	}
 
 	move_dir.normalize();
 	move_dir *= speed_mult;
@@ -208,6 +215,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 		}
 
 		checkPipeCollision(seconds_elapsed, ground_collisions);
+		checkEnemyCollision(seconds_elapsed, ground_collisions);
 
 	}
 
@@ -249,10 +257,10 @@ void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollis
 
 			// Check collision with pipe and velocity condition
 			if (!pipe_collisions.empty() && velocity.length() > 250.0f) {
-				// Se la condizione è soddisfatta, chiamiamo la funzione per perdere una vita
 				loseLife(1);
-				std::cout << "PIPE COLLIDED! Life lost." << std::endl;
-				break; // Possiamo uscire dal ciclo una volta trovata una collisione con una pipe
+				losePoints(500);
+				std::cout << "PIPE COLLIDED: Life lost, points deducted." << std::endl;
+				break;
 			}
 		}
 	}
@@ -281,9 +289,39 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 		bullet_count+=1;
 	}
 
+
+	// 20% chance of losing a life and subtracting points
+	if (rand() % 100 < 20) {
+		loseLife(1);
+		losePoints(500);
+		std::cout << "SURPRISE CUBE COLLIDED: Life lost, points deducted." << std::endl;
+	}
+
 	// Mark the cube as collected
 	cube->collected = true;
 
+}
+
+
+
+//--- COLLISION CON ENEMIGO ----
+void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
+	for (auto e : World::get_instance()->root.children) {
+		// Verifica si la entidad es un EntityAI
+		EntityAI* enemy = dynamic_cast<EntityAI*>(e);
+		if (enemy != nullptr) {
+			std::vector<sCollisionData> enemy_collisions;
+			enemy->getCollisions(position + velocity * seconds_elapsed, enemy_collisions, ground_collisions);
+
+			// Verifica si hubo una colisión con el enemigo
+			if (!enemy_collisions.empty()) {
+				loseLife(1);
+				losePoints(500);
+				std::cout << "ENEMY COLLIDED: Life lost, points deducted." << std::endl;
+				break; // Sal del ciclo una vez que se encuentre una colisión con un enemigo
+			}
+		}
+	}
 }
 
 
