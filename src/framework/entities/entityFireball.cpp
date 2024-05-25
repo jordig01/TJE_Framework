@@ -4,6 +4,7 @@
 #include "game/world.h"
 #include <framework/input.h>
 #include "framework/camera.h"
+#include "entityPlayer.h"
 
 
 EntityFireball::EntityFireball() {
@@ -24,4 +25,5 @@ EntityFireball::~EntityFireball()
 void EntityFireball::update(float seconds_elapsed) {
 	
 	this->model.translate(direction * seconds_elapsed * 200.0f); // Move forward by 200 units per seconds
+
 }

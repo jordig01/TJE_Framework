@@ -276,6 +276,7 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 	if (random_value <= 33) {
 		// 33% chance of the cube containing a heart (recovers a life)
 		addLife(1);
+		object_collected = "life";
 	}
 	else if (random_value <= 66) {
 		// 33% chance of the cube containing a thunder (increases turbo bar)
@@ -283,10 +284,15 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 		if (turbo > 1000.0f) {
 			total_points += 200; // If turbo bar is full, add 200 points to score
 		}
+
+		object_collected = "turbo";
+
 	}
 	else {
 		// 33% chance of the cube containing bullets (increase bullet counter)
 		bullet_count+=1;
+		object_collected = "turbo";
+
 	}
 
 

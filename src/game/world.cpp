@@ -121,6 +121,10 @@ void World::render() {
 	std::string bullet_info = "BULLET: " + std::to_string(root_player->bullet_count) + "/5";
 	drawText(660, 3, bullet_info, Vector3(1, 1, 1), 2);
 
+	std::string obj_info = "OBJECT: " + root_player->object_collected;
+	drawText(10, 30, obj_info, Vector3(1, 1, 1), 2);
+
+
 
 
 }

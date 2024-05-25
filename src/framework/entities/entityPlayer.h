@@ -36,6 +36,7 @@ public:
     int bullet_count = 5;
     float turbo;
 
+    std::string object_collected;
 
     eAnimatedState animation;
 
