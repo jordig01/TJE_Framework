@@ -57,3 +57,12 @@ void CubeCollider::render(Camera* camera)
 
 	EntityMesh::render(camera);
 }
+
+
+void CubeCollider::update(float seconds_elapsed)
+{
+	float rotation_speed = 2.f;
+	model.rotate(seconds_elapsed * rotation_speed, Vector3(0,1,1));
+
+	EntityMesh::update(seconds_elapsed);
+}

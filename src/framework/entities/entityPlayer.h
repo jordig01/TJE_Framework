@@ -36,6 +36,7 @@ public:
     int bullet_count = 5;
     float turbo;
 
+
     eAnimatedState animation;
 
     Vector3 front;

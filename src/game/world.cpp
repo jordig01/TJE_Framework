@@ -70,7 +70,7 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/sample.scene", &root);
+	parseScene("data/sample2.scene", &root);
 
 
 }
@@ -211,12 +211,12 @@ void World::update(float seconds_elapsed) {
 	}
 	entities_to_destroy.clear();
 
-	std::cout << root_player->model.getTranslation().x << std::endl;
+	//std::cout << root_player->model.getTranslation().x << std::endl;
 
 	
 	
-	// Sirve para "disparar objetos"
-	if (Input::wasKeyPressed(SDL_SCANCODE_T)) { 
+	// Sirve para "disparar"
+	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) { 
 		
 		shootFireball();
 	}
@@ -276,8 +276,8 @@ bool World::parseScene(const char* filename, Entity* root)
 		EntityCollider* new_entity = nullptr;
 
 
-		size_t tag_pipe = data.first.find("@pipe");
-		size_t tag_cube = data.first.find("@cube");
+		size_t tag_pipe = data.first.find("pipe");
+		size_t tag_cube = data.first.find("cube");
 		size_t tag_player = data.first.find("@player");
 		size_t tag_waypoints = data.first.find("@waypoint");
 
@@ -289,7 +289,7 @@ bool World::parseScene(const char* filename, Entity* root)
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
 			new_entity = new CubeCollider(mesh, mat);
 		}
-		else if (tag_player != std::string::npos) { //FUNCIONA Pone el jugador donde queremos 
+		else if (tag_player != std::string::npos) { 
 			assert(root_player);
 			root_player->model.setTranslation(render_data.models[0].getTranslation());
 		}
