@@ -9,6 +9,8 @@ public:
 	EntityFireball(Mesh* mesh, Material material);
 	~EntityFireball();
 
+	Vector3 direction; 
+
 	void update(float seconds_elapsed);
 
 

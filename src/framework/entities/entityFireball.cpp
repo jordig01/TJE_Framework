@@ -22,6 +22,6 @@ EntityFireball::~EntityFireball()
 
 
 void EntityFireball::update(float seconds_elapsed) {
-	Vector3 forward = this->model.frontVector();
-	this->model.translate(forward * seconds_elapsed * 100.0f); // Move forward by 100 units per seconds
+	
+	this->model.translate(direction * seconds_elapsed * 200.0f); // Move forward by 200 units per seconds
 }

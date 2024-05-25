@@ -382,6 +382,7 @@ void World::shootFireball()
 		// Create a new fireball entity
 		EntityFireball* fireball_entity = new EntityFireball();
 		fireball_entity->model.setTranslation(fireball_start_pos);
+		fireball_entity->direction = fireball_dir; 
 
 		// Add the fireball entity to the world
 		addEntity(fireball_entity);
