@@ -178,7 +178,7 @@ void World::update(float seconds_elapsed) {
 		}
 		num_steps++;*/
 
-		mYaw.setRotation(root_player->rotation, Vector3(0, 1, 0));
+		mYaw.setRotation(root_player->cam_rotation, Vector3(0, 1, 0));
 
 		Matrix44 mPitch;
 		mPitch.setRotation(camera_pitch, Vector3(-1, 0, 0));

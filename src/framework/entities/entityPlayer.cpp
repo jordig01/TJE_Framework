@@ -112,6 +112,8 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	Vector3 move_dir;
 	float moving = 0.0f;
+	bool turning = false;
+	float drift = 1.0f;
 
 	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) {
 		move_dir += front;
@@ -125,26 +127,36 @@ void EntityPlayer::update(float seconds_elapsed) {
 		last_moving = -1.0f;
 	}
 
-	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT))) {
+	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && moving != 0) {
+		if (Input::isKeyPressed(SDL_SCANCODE_V)) drift = 2.0f;
 		right = false;
 		left = true;
-		rotation -= 0.004f * moving;
-		cam_rotation -= 0.001f * moving;
+		turning = true;
+		rotation -= 0.004f * moving * drift;
+		cam_rotation -= 0.001f * moving * drift;
+		if (cam_rotation < rotation) cam_rotation += 0.003f * drift;
+		cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
 	}
 
 
-	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT))) {
+	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && moving != 0) {
+		if (Input::isKeyPressed(SDL_SCANCODE_V)) drift = 2.0f;
 		right = true;
 		left = false;
-		rotation += 0.004f * last_moving;
-		cam_rotation += 0.001f * last_moving;
+		turning = true;
+		rotation += 0.004f * moving * drift;
+		cam_rotation += 0.001f * moving * drift;
+		if (cam_rotation > rotation)cam_rotation -= 0.003f * drift;
+		cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
 	}
-	if (cam_rotation != rotation) {
+	if (cam_rotation != rotation && !turning) {
 		if (left) {
-			cam_rotation -= 0.001f * last_moving;
+			cam_rotation -= 0.004f * last_moving * drift;
+			cam_rotation = clamp(cam_rotation, rotation, rotation + 0.5f * drift);
 		}
 		else if (right) {
-			cam_rotation += 0.001f * last_moving;
+			cam_rotation += 0.004f * last_moving * drift;
+			cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation);
 		}
 	}
 	front = Vector3(sin(rotation), 0, -cos(rotation));
