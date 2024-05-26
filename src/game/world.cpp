@@ -47,11 +47,11 @@ World::World()
 
 	//root_player.shader
 
-	//root_player->model.setTranslation(0.f, 12.f, 0.f);
+	root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
 
-	EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
+	/*EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
 	enemy->setLayer(eCollisionFilter::ENEMY);
-	root.addChild(enemy);
+	root.addChild(enemy);*/
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -70,7 +70,7 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
+	parseScene("data/circuit_test/circuitv1.scene", &root);//sample2.scene
 
 
 }
@@ -268,7 +268,7 @@ bool World::parseScene(const char* filename, Entity* root)
 	// Iterate through meshes loaded and create corresponding entities
 	for (auto data : meshes_to_load) {
 
-		mesh_name = "data/circuit_test2/" + data.first;
+		mesh_name = "data/circuit_test/" + data.first;
 		sRenderData& render_data = data.second;
 
 		// No transforms, nothing to do here
@@ -286,14 +286,14 @@ bool World::parseScene(const char* filename, Entity* root)
 		size_t tag_waypoints = data.first.find("@waypoint");
 
 		if (tag_pipe != std::string::npos) {
-			//Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			new_entity = new PipeCollider();
+			Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new PipeCollider(mesh, mat);
 			//assert(new_entity);
 			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
 		else if (tag_cube != std::string::npos) {
-			//Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			new_entity = new CubeCollider();
+			Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new CubeCollider(mesh, mat);
 			//assert(new_entity);
 			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
