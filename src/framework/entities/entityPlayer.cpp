@@ -6,6 +6,7 @@
 #include "entityCollider.h"
 
 
+
 EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->mesh = mesh;
 	this->material = material;
@@ -16,6 +17,10 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->rotation = -1.0f;
 	this->turbo = 1000.0f;
 	//animator.playAnimation();
+
+	//To reset the random each time in this way when we start a new game 
+	//we have different seed each time
+	std::srand(time(0));
 }
 
 
@@ -268,46 +273,45 @@ void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollis
 
 
 
-//---- COLLISION CON SURPRISE CUBE -----
+// ---- COLLISION CON SURPRISE CUBE -----
 void EntityPlayer::handleCubePickup(CubeCollider* cube) {
-	// Generate a random number to determine the type of object in the cube
-	int random_value = rand() % 100 + 1; // Generate a random number between 1 and 100
+	// Generate a random number to determine if it's an obstacle (20%) or a collectible (80%)
+	int random_value = std::rand() % 100 + 1; // Generate a random number between 1 and 100
 
-	if (random_value <= 33) {
-		// 33% chance of the cube containing a heart (recovers a life)
-		addLife(1);
-		object_collected = "life";
-	}
-	else if (random_value <= 66) {
-		// 33% chance of the cube containing a thunder (increases turbo bar)
-		turbo += turbo * (rand() % 11 + 10) / 100.0f; // Increase turbo bar by 10-20%
-		if (turbo > 1000.0f) {
-			total_points += 200; // If turbo bar is full, add 200 points to score
-		}
-
-		object_collected = "turbo";
-
-	}
-	else {
-		// 33% chance of the cube containing bullets (increase bullet counter)
-		bullet_count+=1;
-		object_collected = "turbo";
-
-	}
-
-
-	// 20% chance of losing a life and subtracting points
-	if (rand() % 100 < 20) {
+	if (random_value <= 20) {
+		// 20% chance of being an obstacle
 		loseLife(1);
 		losePoints(500);
 		std::cout << "SURPRISE CUBE COLLIDED: Life lost, points deducted." << std::endl;
 	}
+	else {
+		// 80% chance of being a collectible
+		int collectible_value = std::rand() % 3; // Generate a random number between 0 and 2
 
-	// Mark the cube as collected
-	cube->collected = true;
+		if (collectible_value == 0) {
+			// 33% chance of the cube containing a heart (recovers a life)
+			addLife(1);
+			object_collected = "life";
+		}
+		else if (collectible_value == 1) {
+			// 33% chance of the cube containing a thunder (increases turbo bar)
+			turbo += turbo * (std::rand() % 11 + 10) / 100.0f; // Increase turbo bar by 10-20%
+			if (turbo > 1000.0f) {
+				total_points += 200; // If turbo bar is full, add 200 points to score
+			}
+			object_collected = "turbo";
+		}
+		else {
+			// 33% chance of the cube containing bullets (increase bullet counter)
+			addBullet(1);
+			object_collected = "bullet";
+		}
 
+		// Mark the cube as collected and remove it from the scene and from the root's list
+		cube->collected = true;
+		World::get_instance()->removeEntity(cube);
+	}
 }
-
 
 
 //--- COLLISION CON ENEMIGO ----
@@ -331,7 +335,11 @@ void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sColli
 }
 
 
-//--- SCORE AND LIFES MECHANICS ---
+
+
+
+
+//--- SCORE, LIFES, BULLET MECHANICS ---
 void EntityPlayer::addPoints(int point)
 {
 	total_points += point;
@@ -344,7 +352,11 @@ void EntityPlayer::losePoints(int point)
 
 void EntityPlayer::addLife(int life) {
 	total_lives += life;
-	if (total_lives > 3) total_points += 200;
+	if (total_lives > 3) {
+		total_points += 200; 
+		total_lives = 3;
+	}
+
 }
 
 void EntityPlayer::loseLife(int life) {
@@ -354,5 +366,14 @@ void EntityPlayer::loseLife(int life) {
 	}
 	else {
 		std::cout << "GAME OVER" << std::endl;
+	}
+}
+
+void EntityPlayer::addBullet(int bullet) {
+	bullet_count += bullet;
+
+	if (bullet_count > 5) {
+		total_points += 200;
+		bullet_count = 5;
 	}
 }

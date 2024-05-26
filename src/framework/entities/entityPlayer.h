@@ -36,6 +36,7 @@ public:
     int bullet_count = 5;
     float turbo;
 
+
     std::string object_collected;
 
     eAnimatedState animation;
@@ -52,9 +53,15 @@ public:
     void checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
     void checkEnemyCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
     void handleCubePickup(CubeCollider* cube);
+   
+    //Functions to collect objects
     void addPoints(int point);
     void losePoints(int point);
 
     void addLife(int life);
     void loseLife(int life);
+
+    void addBullet(int bullet);
+
+
 };

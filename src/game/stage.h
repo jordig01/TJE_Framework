@@ -11,7 +11,8 @@ class Camera;
 enum eStages {
 
 	MENU,
-	PLAY,
+	PLAY_STAGE,
+	GAME_OVER,
 	STAGES_SIZE
 };
 
@@ -27,26 +28,51 @@ public:
 	Stage() {};
 	virtual void render() {};
 	virtual void update(float seconds_elapsed) {};
+	
 	virtual void onEnterStage() {};
 	virtual void onExitStage() {};
 
 };
 
+//Implementar con el HUD
 class MenuStage: public Stage {
 
 	eStages type = MENU;
 
+public:
+	MenuStage();
+	void render() {};
+	void update(float seconds_elapsed) {};
+	void onEnterStage() {};
+	void onExitStage() {};
 
 
 };
 
 class PlayStage : public Stage {
 
-	eStages type = PLAY;
+	eStages type = PLAY_STAGE;
 
-	PlayStage() {};
-	virtual void render() {};
-	virtual void update(float seconds_elapsed) {};
-	virtual void onEnterStage() {};
-	virtual void onExitStage() {};
+public:
+	PlayStage();
+	void render() override;
+	void update(float seconds_elapsed) override;
+	void onEnterStage() {};
+	void onExitStage() {};
+
+};
+
+
+
+//Implementar con el HUD
+class GameOverStage : public Stage {
+
+	eStages type = GAME_OVER;
+
+public:
+	GameOverStage();
+	void render() {};
+	void update(float seconds_elapsed) {};
+	void onEnterStage() {};
+	void onExitStage() {};
 };

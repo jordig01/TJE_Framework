@@ -19,6 +19,9 @@ float mouse_speed = 100.0f;
 
 Game* Game::instance = NULL;
 
+Stage* current_stage;
+Stage* stages[STAGES_SIZE];
+
 
 Game::Game(int window_width, int window_height, SDL_Window* window)
 {
@@ -42,14 +45,35 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//// Hide the cursor
 	SDL_ShowCursor(!mouse_locked); //hide or show the mouse
 
-	world = new World();
+	//world = new World();
+
+
+	stages[PLAY_STAGE] = new PlayStage();
+
+	current_stage = stages[PLAY_STAGE];
 
 }
+
+
+
+// ---- TO MANAGE THE CHANGE OF STAGES ----
+void Game::goToStage(int new_stage) {
+
+	if (current_stage) {
+		current_stage->onExitStage();
+	}
+
+	current_stage = stages[new_stage];
+	current_stage->onEnterStage();
+
+
+}
+
+
 
 //what to do when the image has to be draw
 void Game::render(void)
 {
-	// Tendrá que ir un PlayStage que renderice el mundo del stage
 
 
 	// Set the clear color (the background color)
@@ -61,7 +85,8 @@ void Game::render(void)
 
 	
 	//render of the world
-	world->render();
+
+	current_stage->render();
 
 	//StageManager::get_instance()->render();
 
@@ -72,7 +97,8 @@ void Game::render(void)
 void Game::update(double seconds_elapsed)
 {
 
-	world->update(seconds_elapsed);
+	//world->update(seconds_elapsed);
+	current_stage->update(seconds_elapsed);
 }
 
 //Keyboard event handler (sync input)
@@ -130,20 +156,3 @@ void Game::onResize(int width, int height)
 }
 
 
-//Metodo go to stage
-void Game::goToStage(int new_stage)
-{
-	/*if (current_stage) {
-		current_stage->onExitStage();
-	}
-
-	current_stage = stages[new_stage];
-	current_stage->onEnterStage();*/
-}
-
-
-
-	/*añadir una model a ese render data con el contador
-	tag para identificar diferentes entities
-	models 3D si la mesh se repite
-	*/
