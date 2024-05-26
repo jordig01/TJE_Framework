@@ -124,8 +124,10 @@ void World::render() {
 	std::string obj_info = "OBJECT: " + root_player->object_collected;
 	drawText(10, 30, obj_info, Vector3(1, 1, 1), 2);
 
-
-
+	if (root_player->total_lives == 0) {
+		std::string game_info = "GAME OVER";
+		drawText(355, 140, game_info, Vector3(1, 1, 1), 2);
+	}
 
 }
 
@@ -134,13 +136,10 @@ void World::update(float seconds_elapsed) {
 
 
 	if (Input::wasKeyPressed(SDL_SCANCODE_C)) free_camera = !free_camera; 
-	//printf("%d\n", free_camera);
 
 
 	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 	float speed = seconds_elapsed * 30.0f;
-
-
 
 	if (free_camera)
 	{
@@ -171,12 +170,6 @@ void World::update(float seconds_elapsed) {
 		camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI* 0.4f);
 		
 		Matrix44 mYaw;
-
-		/*if (num_steps == 100) {
-			rot = root_player->rotation;
-			num_steps = 0;
-		}
-		num_steps++;*/
 
 		mYaw.setRotation(root_player->rotation, Vector3(0, 1, 0));
 
@@ -214,12 +207,8 @@ void World::update(float seconds_elapsed) {
 		delete e;
 	}
 	entities_to_destroy.clear();
-
-	//std::cout << root_player->model.getTranslation().x << std::endl;
-
 	
-	
-	// Sirve para "disparar"
+	// Sirve para "disparar fireballs"
 	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) { 
 		
 		shootFireball();
