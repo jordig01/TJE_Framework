@@ -2,6 +2,8 @@
 
 #include "framework//includes.h"
 #include "framework/framework.h"
+#include "graphics/shader.h"
+#include "graphics/texture.h"
 #include "entityMesh.h"
 
 
@@ -33,6 +35,12 @@ public:
 class PipeCollider : public EntityCollider {
 
 public:
+	PipeCollider() {
+		Mesh* mesh = Mesh::Get("data/meshes/pipe/pipe.obj");
+		Material material;
+		material.diffuse = Texture::Get("data/meshes/pipe/pipe.png");
+		EntityCollider(mesh, material);
+	};
 	PipeCollider(Mesh* mesh, const Material& material) : EntityCollider(mesh, material) {};
 };
 
@@ -41,6 +49,12 @@ class CubeCollider : public EntityCollider {
 
 public:	
 	bool collected;
+	CubeCollider() {
+		Mesh* mesh = Mesh::Get("data/meshes/cube/box.obj");
+		Material cube_mat;
+		cube_mat.diffuse = Texture::Get("data/meshes/cube/box_mat.png");
+		EntityCollider(mesh, cube_mat);
+	};
 	CubeCollider(Mesh* mesh, const Material& material) : EntityCollider(mesh, material) { collected = false; };
 	
 	void render(Camera* camera) override;

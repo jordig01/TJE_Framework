@@ -70,7 +70,7 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/sample2.scene", &root);
+	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
 
 
 }
@@ -268,7 +268,7 @@ bool World::parseScene(const char* filename, Entity* root)
 	// Iterate through meshes loaded and create corresponding entities
 	for (auto data : meshes_to_load) {
 
-		mesh_name = "data/" + data.first;
+		mesh_name = "data/circuit_test2/" + data.first;
 		sRenderData& render_data = data.second;
 
 		// No transforms, nothing to do here
@@ -280,18 +280,22 @@ bool World::parseScene(const char* filename, Entity* root)
 		EntityCollider* new_entity = nullptr;
 
 
-		size_t tag_pipe = data.first.find("pipe");
-		size_t tag_cube = data.first.find("cube");
-		size_t tag_player = data.first.find("@player");
+		size_t tag_pipe = data.first.find("Pipe");
+		size_t tag_cube = data.first.find("Cube");
+		size_t tag_player = data.first.find("@Player");
 		size_t tag_waypoints = data.first.find("@waypoint");
 
 		if (tag_pipe != std::string::npos) {
-			Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			new_entity = new PipeCollider(mesh, mat);
+			//Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new PipeCollider();
+			//assert(new_entity);
+			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
 		else if (tag_cube != std::string::npos) {
-			Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			new_entity = new CubeCollider(mesh, mat);
+			//Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new CubeCollider();
+			//assert(new_entity);
+			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
 		else if (tag_player != std::string::npos) { 
 			assert(root_player);
