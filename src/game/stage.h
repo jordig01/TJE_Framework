@@ -51,8 +51,8 @@ public:
 	EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;
 
-	void render() {};
-	void update(float seconds_elapsed) {};
+	void render();
+	void update(float seconds_elapsed);
 	void onEnterStage() {};
 	void onExitStage() {};
 	void onButtonPressed(eButtonId buttonId);
