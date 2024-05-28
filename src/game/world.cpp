@@ -47,7 +47,7 @@ World::World()
 
 	//root_player.shader
 
-	root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
+	//root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
 
 	/*EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
 	enemy->setLayer(eCollisionFilter::ENEMY);
@@ -70,8 +70,10 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/circuit_test/circuitv1.scene", &root);//sample2.scene
+	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
 
+
+	//channel = Audio::Play("data/audio/,  BASS_SAMPLE_LOOP); //riproduce musica in loop
 
 }
 
@@ -268,7 +270,7 @@ bool World::parseScene(const char* filename, Entity* root)
 	// Iterate through meshes loaded and create corresponding entities
 	for (auto data : meshes_to_load) {
 
-		mesh_name = "data/circuit_test/" + data.first;
+		mesh_name = "data/circuit_test2/" + data.first;
 		sRenderData& render_data = data.second;
 
 		// No transforms, nothing to do here
@@ -282,7 +284,7 @@ bool World::parseScene(const char* filename, Entity* root)
 
 		size_t tag_pipe = data.first.find("Pipe");
 		size_t tag_cube = data.first.find("Cube");
-		size_t tag_player = data.first.find("@Player");
+		size_t tag_player = data.first.find("Player");
 		size_t tag_waypoints = data.first.find("@waypoint");
 
 		if (tag_pipe != std::string::npos) {
