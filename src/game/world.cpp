@@ -23,6 +23,11 @@ World::World()
 	camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f); //set the projection, we want to be perspective
 
 
+	camera2D = new Camera();
+	camera2D->view_matrix.setIdentity();
+	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
+
+
 	Mesh* wheels_mesh = Mesh::Get("data/meshes/player/wheels.obj");
 	Material wheels_mat;
 	wheels_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Tire_S.png");

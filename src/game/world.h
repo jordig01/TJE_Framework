@@ -37,6 +37,7 @@ public:
 	EntityPlayer* player;
 
 	Camera* camera = nullptr;
+	Camera* camera2D = nullptr;
 
 	std::vector<WayPoint> waypoints;
 

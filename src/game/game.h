@@ -60,5 +60,4 @@ public:
 
 	void goToStage(int new_stage);
 
-
 };

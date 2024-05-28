@@ -2,8 +2,10 @@
 #include "framework/includes.h"
 #include "framework/utils.h"
 #include "framework/input.h"
+#include "framework/entities/entityUI.h"
 #include "world.h"
 #include "game.h"
+
 
 class Camera;
 
@@ -32,6 +34,9 @@ public:
 	virtual void onEnterStage() {};
 	virtual void onExitStage() {};
 
+
+	virtual void onButtonPressed(eButtonId buttonId) {};
+
 };
 
 //Implementar con el HUD
@@ -41,11 +46,16 @@ class MenuStage: public Stage {
 
 public:
 	MenuStage();
+
+	EntityUI* background = nullptr;
+	EntityUI* play_button = nullptr;
+	EntityUI* exit_button = nullptr;
+
 	void render() {};
 	void update(float seconds_elapsed) {};
 	void onEnterStage() {};
 	void onExitStage() {};
-
+	void onButtonPressed(eButtonId buttonId);
 
 };
 

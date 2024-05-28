@@ -1,18 +1,17 @@
 #include "entityMesh.h"
 
 
-enum eButtonID{
+enum eButtonId{
 	PlayButton,
 	ExitButton,
 	UndefinedButton
 };
 
-// --- TO COMPLETE ---
 class EntityUI : public EntityMesh {
 	public:
 
-		/*EntityUI(Vector2 size, const Material& material);
-		EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonId button_id = UndefinedButton, );*/
+		EntityUI(Vector2 size, const Material& material);
+		EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonId button_id = UndefinedButton);
 		~EntityUI() {};
 
 		Vector2 position;
@@ -25,7 +24,7 @@ class EntityUI : public EntityMesh {
 		bool is3D = false;
 		Vector3 pos3d;
 
-		eButtonID button_id = UndefinedButton;
+		eButtonId button_id = UndefinedButton;
 
 		void render(Camera* camera);
 		void update(double seconds_elapsed);

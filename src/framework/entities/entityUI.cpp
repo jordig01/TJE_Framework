@@ -2,28 +2,30 @@
 #include "game/game.h"
 #include <framework/input.h>
 
-//EntityUI::EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonID button_id = UndefinedButton, ) {
-//	position = pos;
-//	this->size = size;
-//	this->button_id = button_id;
-//
-//	mesh = new Mesh();
-//	mesh->createQuad(pos.x, pos.y, size.x, size.y, true);
-//
-//	this->material = material;
-//
-//	if (this->material.shader) {
-//		//this->material.shader = Shader::Get("data/shaders/basic.vs", material.diffuse ? "data/shaders/texture.fs");
-//	}
-//
-//};
+EntityUI::EntityUI(Vector2 size, const Material& material)
+{
+
+}
+
+EntityUI::EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonId button_id)
+{
+	position = pos;
+	this->size = size;
+	this->button_id = button_id;
+
+	mesh = new Mesh();
+	mesh->createQuad(pos.x, pos.y, size.x, size.y, true);
+
+	this->material = material;
+
+	if (this->material.shader) {
+		this->material.shader = Shader::Get("data/shaders/basic.vs", material.diffuse ? "data/shaders/texture.fs" : "data/shaders/flat.fs");
+	}
+}
 
 
-//EntityUI::EntityUI() {
-//
-//}
 
-void EntityUI::render(Camera* camera) {
+void EntityUI::render(Camera* camera2d) {
 	//shader
 	//enviar unifrom ...
 	//Igual que EntityMesh, pero cambiando cámara y:
@@ -71,6 +73,33 @@ void EntityUI::render(Camera* camera) {
 	//MenuStage
 
 
+	if (!visible) return;
+
+	if (!is3D) {
+		glDisable(GL_DEPTH_TEST);
+	}
+
+	glDisable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	material.shader->enable();
+
+	World* world = World::get_instance();
+	Matrix44 viewProj = camera2d->viewprojection_matrix;
+
+	material.shader->setUniform("u_model", model);
+	material.shader->setUniform("u_viewprojection", viewProj);
+	material.shader->setUniform("u_color", material.color);
+	material.shader->setUniform("u_mask", mask);
+
+
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	Entity::render(camera2d);
 
 }
 
