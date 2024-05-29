@@ -17,6 +17,8 @@ EntityUI::EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonI
 	mesh->createQuad(pos.x, pos.y, size.x, size.y, true);
 
 	this->material = material;
+	
+	this->original_texture = material.diffuse;
 
 	if (!this->material.shader) {
 		if (material.diffuse) {
@@ -142,14 +144,14 @@ void EntityUI::update(double seconds_elapsed) {
 		mousepos.y >(position.y - size.y * 0.5f) &&
 		mousepos.y < (position.y + size.y * 0.5f)) {
 		
-		material.color = Vector4::RED;
+		material.diffuse = over_texture;
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			//Stage::get_instance()->current->onButtonPressed(button_id);
 		}
 
 	}
 	else {
-		material.color = Vector4::WHITE;
+		material.diffuse = original_texture;
 	}
 
 	Entity::update(seconds_elapsed);

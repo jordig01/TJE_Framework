@@ -10,16 +10,17 @@ MenuStage::MenuStage()
 	background_mat.diffuse = Texture::Get("data/Icons/start_menu.png");
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
 
-	//Material play_mat;
-	//play_mat.diffuse = Texture::Get("data");
-	//play_button = new EntityUI(Vector2(width * 0.5, 400), Vector2(240,60), play_mat, eButtonId::PlayButton);
+	Material play_mat;
+	play_mat.diffuse = Texture::Get("data/hud/start_button2.png");
+	play_button = new EntityUI(Vector2(width * 0.5, 400), Vector2(800,400), play_mat, eButtonId::PlayButton);
+	play_button->over_texture = Texture::Get("data/hud/start_button.png");
 
 
 	//Material exit_mat;
 	//exit_mat.diffuse = Texture::Get("data");
 	//exit_button = new EntityUI(Vector2(width * 0.5, 400), Vector2(240, 60), exit_mat, eButtonId::ExitButton);
 
-	//background->addChild(play_button);
+	background->addChild(play_button);
 	//background->addChild(exit_button);
 
 }
@@ -80,7 +81,7 @@ GameOverStage::GameOverStage()
 	int height = Game::instance->window_height;
 
 	Material background_mat;
-	background_mat.diffuse = Texture::Get("data/hud/game_over.png");
+	background_mat.diffuse = Texture::Get("data/hud/game_over2.png");
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
 }
 

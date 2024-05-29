@@ -48,6 +48,7 @@ public:
 	MenuStage();
 
 	EntityUI* background = nullptr;
+	EntityUI* play_button = nullptr;
 	/*EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;*/
 

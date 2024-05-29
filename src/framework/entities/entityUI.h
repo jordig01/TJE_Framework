@@ -20,6 +20,10 @@ class EntityUI : public EntityMesh {
 		bool visible = true;
 		float mask;
 
+
+		Texture* original_texture;
+		Texture* over_texture;
+
 		//3D HUD
 		bool is3D = false;
 		Vector3 pos3d;
