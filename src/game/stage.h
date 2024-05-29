@@ -49,8 +49,8 @@ public:
 
 	EntityUI* background = nullptr;
 	EntityUI* play_button = nullptr;
-	/*EntityUI* play_button = nullptr;
-	EntityUI* exit_button = nullptr;*/
+	EntityUI* exit_button = nullptr;
+	
 
 	void render();
 	void update(float seconds_elapsed);

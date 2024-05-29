@@ -12,8 +12,14 @@ MenuStage::MenuStage()
 
 	Material play_mat;
 	play_mat.diffuse = Texture::Get("data/hud/start_button2.png");
-	play_button = new EntityUI(Vector2(width * 0.5, 400), Vector2(800,400), play_mat, eButtonId::PlayButton);
+	play_button = new EntityUI(Vector2(width * 0.5, 350), Vector2(800,400), play_mat, eButtonId::PlayButton);
 	play_button->hover_texture = Texture::Get("data/hud/start_button.png");
+
+
+	Material exit_mat;
+	exit_mat.diffuse = Texture::Get("data/hud/exit_button2.png");
+	exit_button = new EntityUI(Vector2(width * 0.5, 450), Vector2(800, 400), exit_mat, eButtonId::ExitButton);
+	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 
 	//Material exit_mat;
@@ -21,7 +27,7 @@ MenuStage::MenuStage()
 	//exit_button = new EntityUI(Vector2(width * 0.5, 400), Vector2(240, 60), exit_mat, eButtonId::ExitButton);
 
 	background->addChild(play_button);
-	//background->addChild(exit_button);
+	background->addChild(exit_button);
 
 }
 
@@ -38,7 +44,7 @@ void MenuStage::render() {
 
 	
 	if (Input::wasKeyPressed(SDL_SCANCODE_1)) {
-		Game::instance->goToStage(GAME_OVER);
+		Game::instance->goToStage(PLAY_STAGE);
 	}
 }
 

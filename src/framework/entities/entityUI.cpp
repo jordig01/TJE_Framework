@@ -141,7 +141,7 @@ void EntityUI::update(double seconds_elapsed) {
 	if (button_id != UndefinedButton &&
 		mousepos.x > (position.x - size.x * 0.5f) &&
 		mousepos.x < (position.x + size.x * 0.5f) &&
-		mousepos.y >(position.y - size.y * 0.5f) &&
+		mousepos.y > (position.y - size.y * 0.5f) &&
 		mousepos.y < (position.y + size.y * 0.5f)) {
 		
 		material.diffuse = hover_texture;
@@ -149,7 +149,7 @@ void EntityUI::update(double seconds_elapsed) {
 		printf("MOUSE OVER");
 
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
-		
+			//Aggiungere logica del cambiare stato
 		}
 
 	}
