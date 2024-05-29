@@ -48,8 +48,8 @@ public:
 	MenuStage();
 
 	EntityUI* background = nullptr;
-	EntityUI* play_button = nullptr;
-	EntityUI* exit_button = nullptr;
+	/*EntityUI* play_button = nullptr;
+	EntityUI* exit_button = nullptr;*/
 
 	void render();
 	void update(float seconds_elapsed);
@@ -80,9 +80,14 @@ class GameOverStage : public Stage {
 	eStages type = GAME_OVER;
 
 public:
+
+	EntityUI* background = nullptr;
+	/*EntityUI* play_button = nullptr;
+	EntityUI* exit_button = nullptr;*/
+
 	GameOverStage();
-	void render() {};
-	void update(float seconds_elapsed) {};
+	void render();
+	void update(float seconds_elapsed);
 	void onEnterStage() {};
 	void onExitStage() {};
 };

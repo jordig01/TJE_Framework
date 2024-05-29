@@ -18,8 +18,19 @@ EntityUI::EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonI
 
 	this->material = material;
 
-	if (this->material.shader) {
-		this->material.shader = Shader::Get("data/shaders/basic.vs", material.diffuse ? "data/shaders/texture.fs" : "data/shaders/flat.fs");
+	if (!this->material.shader) {
+		if (material.diffuse) {
+			std::cout << "Loading texture shader." << std::endl;
+			this->material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+		}
+		else {
+			std::cout << "Loading flat shader." << std::endl;
+			this->material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/flat.fs");
+		}
+
+		if (this->material.shader == nullptr) {
+			std::cerr << "Error: Shader not found or failed to load." << std::endl;
+		}
 	}
 }
 
@@ -72,7 +83,6 @@ void EntityUI::render(Camera* camera2d) {
 	// 
 	//MenuStage
 
-
 	if (!visible) return;
 
 	if (!is3D) {
@@ -82,6 +92,8 @@ void EntityUI::render(Camera* camera2d) {
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	if (material.shader == nullptr) printf("NO SHADER");
 
 	material.shader->enable();
 
@@ -93,6 +105,22 @@ void EntityUI::render(Camera* camera2d) {
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_mask", mask);
 
+	if (material.diffuse) {
+		material.shader->setUniform("u_texture", material.diffuse, 0);
+	}
+
+	if (is3D) {
+		Vector2 _size = size;
+		float max_dist = 5.0f;
+		float dist = clamp(world->camera->eye.distance(pos3d), 0.01f, max_dist);
+		_size *= 1.f - dist / max_dist;
+		mesh->createQuad(position.x, position.y, _size.x, _size.y, true);
+		mesh->render(GL_TRIANGLES);
+	}
+	else {
+		mesh->render(GL_TRIANGLES);
+	}
+
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -100,6 +128,8 @@ void EntityUI::render(Camera* camera2d) {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Entity::render(camera2d);
+	
+
 
 }
 
@@ -132,6 +162,8 @@ void EntityUI::update(double seconds_elapsed) {
 }
 
 
+
+//--- Para healtbars??? --- 
 void EntityUI::update3D(Vector3 position3d) {
 	pos3d = position3d;
 

@@ -24,7 +24,7 @@ World::World()
 
 
 	camera2D = new Camera();
-	camera2D->view_matrix.setIdentity();
+	//camera2D->view_matrix.setIdentity();
 	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
 
 

@@ -47,10 +47,11 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
 	//world = new World();
 
-
+	stages[MENU] = new MenuStage();
 	stages[PLAY_STAGE] = new PlayStage();
+	stages[GAME_OVER] = new GameOverStage();
 
-	current_stage = stages[PLAY_STAGE];
+	current_stage = stages[MENU];
 
 }
 
