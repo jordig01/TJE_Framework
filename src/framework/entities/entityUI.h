@@ -28,7 +28,7 @@ class EntityUI : public EntityMesh {
 		bool is3D = false;
 		Vector3 pos3d;
 
-		eButtonId button_id = UndefinedButton;
+		eButtonId button_id;
 
 		void render(Camera* camera);
 		void update(double seconds_elapsed);

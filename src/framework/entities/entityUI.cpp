@@ -150,6 +150,8 @@ void EntityUI::update(double seconds_elapsed) {
 
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			//Aggiungere logica del cambiare stato
+			if (button_id == PlayButton) Game::instance->goToStage(1);
+			if (button_id == ExitButton) exit(0);
 		}
 
 	}

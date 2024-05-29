@@ -12,13 +12,13 @@ MenuStage::MenuStage()
 
 	Material play_mat;
 	play_mat.diffuse = Texture::Get("data/hud/start_button2.png");
-	play_button = new EntityUI(Vector2(width * 0.5, 350), Vector2(800,400), play_mat, eButtonId::PlayButton);
+	play_button = new EntityUI(Vector2(width * 0.5, 350), Vector2(200,100), play_mat, eButtonId::PlayButton);
 	play_button->hover_texture = Texture::Get("data/hud/start_button.png");
 
 
 	Material exit_mat;
 	exit_mat.diffuse = Texture::Get("data/hud/exit_button2.png");
-	exit_button = new EntityUI(Vector2(width * 0.5, 450), Vector2(800, 400), exit_mat, eButtonId::ExitButton);
+	exit_button = new EntityUI(Vector2(width * 0.5, 450), Vector2(200, 100), exit_mat, eButtonId::ExitButton);
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 
@@ -34,6 +34,8 @@ MenuStage::MenuStage()
 
 void MenuStage::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
+	play_button->update(seconds_elapsed);
+	exit_button->update(seconds_elapsed);
 }
 
 void MenuStage::render() {
