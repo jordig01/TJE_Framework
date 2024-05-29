@@ -144,9 +144,12 @@ void EntityUI::update(double seconds_elapsed) {
 		mousepos.y >(position.y - size.y * 0.5f) &&
 		mousepos.y < (position.y + size.y * 0.5f)) {
 		
-		material.diffuse = over_texture;
+		material.diffuse = hover_texture;
+
+		printf("MOUSE OVER");
+
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
-			//Stage::get_instance()->current->onButtonPressed(button_id);
+		
 		}
 
 	}

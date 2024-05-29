@@ -22,7 +22,7 @@ class EntityUI : public EntityMesh {
 
 
 		Texture* original_texture;
-		Texture* over_texture;
+		Texture* hover_texture;
 
 		//3D HUD
 		bool is3D = false;
