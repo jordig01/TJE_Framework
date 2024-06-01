@@ -64,6 +64,11 @@ class PlayStage : public Stage {
 
 	eStages type = PLAY_STAGE;
 
+	EntityUI* life0 = nullptr;
+	EntityUI* life1 = nullptr;
+	EntityUI* life2 = nullptr;
+	EntityUI* life3 = nullptr;
+
 public:
 	PlayStage();
 	void render() override;

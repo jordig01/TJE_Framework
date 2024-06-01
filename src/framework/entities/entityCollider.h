@@ -36,9 +36,9 @@ class PipeCollider : public EntityCollider {
 
 public:
 	PipeCollider() {
-		Mesh* mesh = Mesh::Get("data/meshes/pipe/pipe.obj");
+		Mesh* mesh = Mesh::Get("data/circuit_test2/objects/pipe/pipe.obj");
 		Material material;
-		material.diffuse = Texture::Get("data/meshes/pipe/pipe.png");
+		material.diffuse = Texture::Get("data/circuit_test2/objects/pipe/pipe.png");
 		EntityCollider(mesh, material);
 	};
 	PipeCollider(Mesh* mesh, const Material& material) : EntityCollider(mesh, material) {};

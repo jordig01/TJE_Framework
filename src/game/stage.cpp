@@ -12,13 +12,13 @@ MenuStage::MenuStage()
 
 	Material play_mat;
 	play_mat.diffuse = Texture::Get("data/hud/start_button2.png");
-	play_button = new EntityUI(Vector2(width * 0.5, 350), Vector2(200,100), play_mat, eButtonId::PlayButton);
+	play_button = new EntityUI(Vector2(width * 0.5, 350), Vector2(200,75), play_mat, eButtonId::PlayButton);
 	play_button->hover_texture = Texture::Get("data/hud/start_button.png");
 
 
 	Material exit_mat;
 	exit_mat.diffuse = Texture::Get("data/hud/exit_button2.png");
-	exit_button = new EntityUI(Vector2(width * 0.5, 450), Vector2(200, 100), exit_mat, eButtonId::ExitButton);
+	exit_button = new EntityUI(Vector2(width * 0.5, 450), Vector2(200, 75), exit_mat, eButtonId::ExitButton);
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 
@@ -65,18 +65,46 @@ void MenuStage::onButtonPressed(eButtonId buttonId)
 
 //----- PLAY STAGE -----
 PlayStage::PlayStage() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
 
+	Material life0_mat;
+	life0_mat.diffuse = Texture::Get("data/hud/lives0.png");
+	life0 = new EntityUI(Vector2(width * 0.5, 10), Vector2(100, 75), life0_mat);
+
+	Material life1_mat;
+	life1_mat.diffuse = Texture::Get("data/hud/lives1.png");
+	life1 = new EntityUI(Vector2(width * 0.5, 10), Vector2(100, 75), life1_mat);
+
+	Material life2_mat;
+	life2_mat.diffuse = Texture::Get("data/hud/lives2.png");
+	life2 = new EntityUI(Vector2(width * 0.5, 10), Vector2(100, 75), life2_mat);
+
+	Material life3_mat;
+	life3_mat.diffuse = Texture::Get("data/hud/lives3.png");
+	life3 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life3_mat);
 }
 
 
-void PlayStage::render()
+void PlayStage::render()	
 {
+
+	Camera* camera2D = World::get_instance()->camera2D;
+	//EntityPlayer* player = World::get_instance()->root_player;
+
 	World::get_instance()->render();
+	life3->render(camera2D);
+
+	//if (player.total_lives == 3) life3->render(camera2D);
+	//if (player.total_lives == 2) life2->render(camera2D);
+	//if (player.total_lives == 1) life1->render(camera2D);
+	//if (player.total_lives == 0) life0->render(camera2D);
 }
 
 void PlayStage::update(float seconds_elapsed) {
 
 	World::get_instance()->update(seconds_elapsed);
+	life3->update(seconds_elapsed);
 }
 
 

@@ -110,7 +110,7 @@ void World::render() {
 	root.render(camera);
 	root_player->render(camera);
 
-	// Render the FPS, Draw Calls, etc
+	//Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
 
@@ -174,7 +174,7 @@ void World::update(float seconds_elapsed) {
 	}
 	else {
 		camera_yaw -= Input::mouse_delta.x * 0.001;
-		camera_pitch -= Input::mouse_delta.y * 0.001;
+		//camera_pitch -= Input::mouse_delta.y * 0.001;
 		camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI* 0.4f);
 		
 		Matrix44 mYaw;
@@ -295,6 +295,7 @@ bool World::parseScene(const char* filename, Entity* root)
 		if (tag_pipe != std::string::npos) {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
 			new_entity = new PipeCollider(mesh, mat);
+
 			//assert(new_entity);
 			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
