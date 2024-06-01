@@ -49,6 +49,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 
 	stages[MENU] = new MenuStage();
 	stages[PLAY_STAGE] = new PlayStage();
+	stages[WIN_STAGE] = new WinStage();
 	stages[GAME_OVER] = new GameOverStage();
 
 	current_stage = stages[MENU];

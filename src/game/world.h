@@ -51,7 +51,7 @@ public:
 	//Para Entity Collider
 	float sphere_radius = 4.f;
 	float sphere_ground_radius = 2.5f;
-	float player_height = 5.0f;
+	float player_height = 1000.0f;
 
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;

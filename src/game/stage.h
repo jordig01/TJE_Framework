@@ -15,6 +15,7 @@ enum eStages {
 	MENU,
 	PLAY_STAGE,
 	GAME_OVER,
+	WIN_STAGE,
 	STAGES_SIZE
 };
 
@@ -68,6 +69,7 @@ class PlayStage : public Stage {
 	EntityUI* life1 = nullptr;
 	EntityUI* life2 = nullptr;
 	EntityUI* life3 = nullptr;
+	EntityUI* boost = nullptr;
 
 public:
 	PlayStage();
@@ -78,7 +80,22 @@ public:
 
 };
 
+class WinStage : public Stage {
 
+	eStages type = WIN_STAGE;
+
+public:
+	WinStage();
+
+	EntityUI* background = nullptr;
+
+
+	void render();
+	void update(float seconds_elapsed);
+	void onEnterStage() {};
+	void onExitStage() {};
+
+};
 
 //Implementar con el HUD
 class GameOverStage : public Stage {

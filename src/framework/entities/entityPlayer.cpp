@@ -198,8 +198,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 	model.rotate(rotation, Vector3(0, 1, 0));
 
 
-
-
 	EntityMesh::update(seconds_elapsed);
 
 

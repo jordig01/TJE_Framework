@@ -106,6 +106,7 @@ void EntityUI::render(Camera* camera2d) {
 	material.shader->setUniform("u_viewprojection", viewProj);
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_mask", mask);
+	material.shader->setUniform("u_boost", World::get_instance()->player_height);
 
 	if (material.diffuse) {
 		material.shader->setUniform("u_texture", material.diffuse, 0);
