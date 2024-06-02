@@ -1,5 +1,6 @@
 #include "entityUI.h"
 #include "game/game.h"
+#include "entityPlayer.h"
 #include <framework/input.h>
 
 EntityUI::EntityUI(Vector2 size, const Material& material)
@@ -106,7 +107,7 @@ void EntityUI::render(Camera* camera2d) {
 	material.shader->setUniform("u_viewprojection", viewProj);
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_mask", mask);
-	material.shader->setUniform("u_boost", World::get_instance()->player_height);
+	material.shader->setUniform("u_boost", World::get_instance()->root_player->turbo);
 
 	if (material.diffuse) {
 		material.shader->setUniform("u_texture", material.diffuse, 0);
@@ -151,7 +152,7 @@ void EntityUI::update(double seconds_elapsed) {
 
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			//Aggiungere logica del cambiare stato
-			if (button_id == PlayButton) Game::instance->goToStage(1);
+			if (button_id == PlayButton || button_id == RestartButton) Game::instance->goToStage(1);
 			if (button_id == ExitButton) exit(0);
 		}
 
@@ -171,7 +172,7 @@ void EntityUI::update(double seconds_elapsed) {
 
 
 
-//--- Para healtbars??? --- 
+//--- Para healtbars --- 
 void EntityUI::update3D(Vector3 position3d) {
 	pos3d = position3d;
 

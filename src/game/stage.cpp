@@ -1,4 +1,5 @@
 #include "stage.h"
+#include "framework/entities/entityPlayer.h"
 
 //----- MENU STAGE -----
 MenuStage::MenuStage()
@@ -46,7 +47,11 @@ void MenuStage::render() {
 
 	
 	if (Input::wasKeyPressed(SDL_SCANCODE_1)) {
-		Game::instance->goToStage(PLAY_STAGE);
+		Game::instance->goToStage(WIN_STAGE);
+	}
+	if (Input::wasKeyPressed(SDL_SCANCODE_2)) {
+		Game::instance->goToStage(GAME_OVER);
+
 	}
 }
 
@@ -97,19 +102,35 @@ void PlayStage::render()
 	EntityPlayer* player = World::get_instance()->root_player;
 
 	World::get_instance()->render();
-	life3->render(camera2D);
+
+
+	switch (player->total_lives) {
+		case 3:
+			life3->render(camera2D);
+			break;
+		case 2:
+			life2->render(camera2D);
+			break;
+		case 1:
+			life1->render(camera2D);
+			break;
+		case 0:
+			life0->render(camera2D);
+			break;
+		default:
+			// Handle unexpected values, if necessary
+		break;
+	}
+
 	boost->render(camera2D);
 
-	//if (player->total_lives == 3) life3->render(camera2D);
-	//if (player.total_lives == 2) life2->render(camera2D);
-	//if (player.total_lives == 1) life1->render(camera2D);
-	//if (player.total_lives == 0) life0->render(camera2D);
-	//if (player.position.y < 68.0f) Game::instance->goToStage(WIN_STAGE);
+	if (player->position.y < 68.0f) Game::instance->goToStage(WIN_STAGE);
+
 }
 
 void PlayStage::update(float seconds_elapsed) {
 
-	World::get_instance()->update(seconds_elapsed);
+	World::instance->update(seconds_elapsed);
 	life3->update(seconds_elapsed);
 	boost->update(seconds_elapsed);
 }
@@ -123,6 +144,21 @@ WinStage::WinStage()
 	Material background_mat;
 	background_mat.diffuse = Texture::Get("data/hud/win.png");
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
+
+	Material play_mat;
+	play_mat.diffuse = Texture::Get("data/hud/restart_button2.png");
+	play_button = new EntityUI(Vector2(280, 350), Vector2(200, 75), play_mat, eButtonId::RestartButton);
+	play_button->hover_texture = Texture::Get("data/hud/restart_button.png");
+
+
+	Material exit_mat;
+	exit_mat.diffuse = Texture::Get("data/hud/exit_button2.png");
+	exit_button = new EntityUI(Vector2(280, 450), Vector2(200, 75), exit_mat, eButtonId::ExitButton);
+	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
+
+	background->addChild(play_button);
+	background->addChild(exit_button);
+
 }
 
 void WinStage::render()
@@ -134,6 +170,8 @@ void WinStage::render()
 
 void WinStage::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
+	play_button->update(seconds_elapsed);
+	exit_button->update(seconds_elapsed);
 }
 
 
@@ -146,6 +184,20 @@ GameOverStage::GameOverStage()
 	Material background_mat;
 	background_mat.diffuse = Texture::Get("data/hud/game_over2.png");
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
+	
+	Material play_mat;
+	play_mat.diffuse = Texture::Get("data/hud/restart_button2.png");
+	play_button = new EntityUI(Vector2(200, 350), Vector2(200, 75), play_mat, eButtonId::RestartButton);
+	play_button->hover_texture = Texture::Get("data/hud/restart_button.png");
+
+
+	Material exit_mat;
+	exit_mat.diffuse = Texture::Get("data/hud/exit_button2.png");
+	exit_button = new EntityUI(Vector2(200, 450), Vector2(200, 75), exit_mat, eButtonId::ExitButton);
+	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
+
+	background->addChild(play_button);
+	background->addChild(exit_button);
 }
 
 void GameOverStage::render()
@@ -153,8 +205,12 @@ void GameOverStage::render()
 	Camera* camera2D = World::get_instance()->camera2D;
 
 	background->render(camera2D);
+
 }
 
 void GameOverStage::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
+	play_button->update(seconds_elapsed);
+	exit_button->update(seconds_elapsed);
+
 }

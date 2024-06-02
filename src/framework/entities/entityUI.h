@@ -4,6 +4,7 @@
 enum eButtonId{
 	PlayButton,
 	ExitButton,
+	RestartButton,
 	UndefinedButton
 };
 

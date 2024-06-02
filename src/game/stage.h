@@ -88,6 +88,8 @@ public:
 	WinStage();
 
 	EntityUI* background = nullptr;
+	EntityUI* play_button = nullptr;
+	EntityUI* exit_button = nullptr;
 
 
 	void render();
@@ -105,8 +107,8 @@ class GameOverStage : public Stage {
 public:
 
 	EntityUI* background = nullptr;
-	/*EntityUI* play_button = nullptr;
-	EntityUI* exit_button = nullptr;*/
+	EntityUI* play_button = nullptr;
+	EntityUI* exit_button = nullptr;
 
 	GameOverStage();
 	void render();

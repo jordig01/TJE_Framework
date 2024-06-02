@@ -30,7 +30,7 @@ public:
 
 	Entity root;
 
-	EntityPlayer*  root_player;
+	EntityPlayer* root_player;
 
 	EntityMesh * skybox;
 
