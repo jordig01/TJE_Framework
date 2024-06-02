@@ -100,7 +100,7 @@ void PlayStage::render()
 	life3->render(camera2D);
 	boost->render(camera2D);
 
-	//if (player.total_lives == 3) life3->render(camera2D);
+	//if (player->total_lives == 3) life3->render(camera2D);
 	//if (player.total_lives == 2) life2->render(camera2D);
 	//if (player.total_lives == 1) life1->render(camera2D);
 	//if (player.total_lives == 0) life0->render(camera2D);
