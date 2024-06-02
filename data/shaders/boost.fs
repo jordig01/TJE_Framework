@@ -6,7 +6,7 @@ uniform float u_boost;
 void main()
 {
     vec3 final_color;
-    if(v_uv.y > u_boost){
+    if(v_uv.y > u_boost * 0.001){
         final_color = vec3(0.1,0.1, 0.1);
     }else{
         final_color = vec3(0, 0, 1);
