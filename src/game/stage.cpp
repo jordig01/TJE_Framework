@@ -75,6 +75,13 @@ PlayStage::PlayStage() {
 	int width = Game::instance->window_width;
 	int height = Game::instance->window_height;
 
+
+	// ---- Square ----
+	Material square_material;
+	square_material.diffuse = Texture::Get("data/hud/cuadrado.png");
+	square = new EntityUI(Vector2(width * 0.5, 50), Vector2(75, 75), square_material);
+
+	// ---- Lifes ----
 	Material life0_mat;
 	life0_mat.diffuse = Texture::Get("data/hud/lives0.png");
 	life0 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life0_mat);
@@ -126,6 +133,9 @@ void PlayStage::render()
 
 	boost->render(camera2D);
 
+
+	square->render(camera2D);
+
 	if (player->position.y < 68.0f) Game::instance->goToStage(WIN_STAGE);
 
 }
@@ -135,6 +145,7 @@ void PlayStage::update(float seconds_elapsed) {
 	World::instance->update(seconds_elapsed);
 	life3->update(seconds_elapsed);
 	boost->update(seconds_elapsed);
+	square->update(seconds_elapsed);
 }
 
 //----- WIN STAGE -----
