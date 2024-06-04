@@ -267,7 +267,6 @@ void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollis
 	for (auto e : World::get_instance()->root.children) {
 		PipeCollider* pipe = dynamic_cast<PipeCollider*>(e);
 		if (pipe != nullptr) {
-			std::cout << "pipe" << std::endl;
 			std::vector<sCollisionData> pipe_collisions;
 			pipe->getCollisions(position + velocity * seconds_elapsed, pipe_collisions, ground_collisions);
 

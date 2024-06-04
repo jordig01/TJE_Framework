@@ -43,6 +43,8 @@ void MenuStage::render() {
 	Camera* camera2D = World::get_instance()->camera2D;
 
 	background->render(camera2D);
+	play_button->render(camera2D);
+	exit_button->render(camera2D);
 
 
 	
@@ -75,15 +77,15 @@ PlayStage::PlayStage() {
 
 	Material life0_mat;
 	life0_mat.diffuse = Texture::Get("data/hud/lives0.png");
-	life0 = new EntityUI(Vector2(width * 0.5, 10), Vector2(100, 75), life0_mat);
+	life0 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life0_mat);
 
 	Material life1_mat;
 	life1_mat.diffuse = Texture::Get("data/hud/lives1.png");
-	life1 = new EntityUI(Vector2(width * 0.5, 10), Vector2(100, 75), life1_mat);
+	life1 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life1_mat);
 
 	Material life2_mat;
 	life2_mat.diffuse = Texture::Get("data/hud/lives2.png");
-	life2 = new EntityUI(Vector2(width * 0.5, 10), Vector2(100, 75), life2_mat);
+	life2 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life2_mat);
 
 	Material life3_mat;
 	life3_mat.diffuse = Texture::Get("data/hud/lives3.png");
