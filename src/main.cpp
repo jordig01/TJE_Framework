@@ -15,7 +15,7 @@
 #include "framework/utils.h"
 #include "framework/input.h"
 #include "game/game.h"
-
+#include "framework/audio.h"
 #include <iostream> //to output
 
 long last_time = 0; //this is used to calcule the elapsed time between frames
@@ -197,6 +197,13 @@ int main(int argc, char **argv)
 
 	Input::init(window);
 
+	// Initialize the audio system
+	if (!Audio::Init()) {
+		// Error initializing audio system
+		std::cerr << "Failed to initialize audio system." << std::endl;
+		return -1;
+	}
+
 	//launch the game (game is a global variable)
 	game = new Game(window_width, window_height, window);
 
@@ -204,6 +211,5 @@ int main(int argc, char **argv)
 	mainLoop();
 
 	//save state and free memory
-
 	return 0;
 }

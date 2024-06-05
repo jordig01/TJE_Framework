@@ -5,6 +5,7 @@
 #include "framework/entities/entityUI.h"
 #include "world.h"
 #include "game.h"
+#include "framework/audio.h"
 
 
 class Camera;
@@ -48,6 +49,11 @@ class MenuStage: public Stage {
 public:
 	MenuStage();
 
+
+	//--- Audio Part ---
+	HCHANNEL background_channel;
+
+
 	EntityUI* background = nullptr;
 	EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;
@@ -55,8 +61,8 @@ public:
 
 	void render();
 	void update(float seconds_elapsed);
-	void onEnterStage() {};
-	void onExitStage() {};
+	void onEnterStage();
+	void onExitStage();
 	void onButtonPressed(eButtonId buttonId);
 
 };
@@ -86,12 +92,16 @@ class PlayStage : public Stage {
 	EntityUI* fake_cube = nullptr;
 
 
+	HCHANNEL sound;
+
+
 public:
+
 	PlayStage();
 	void render() override;
 	void update(float seconds_elapsed) override;
 	void onEnterStage() {};
-	void onExitStage() {};
+	void onExitStage();
 
 };
 

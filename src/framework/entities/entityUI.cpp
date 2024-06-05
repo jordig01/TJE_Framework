@@ -1,6 +1,7 @@
 #include "entityUI.h"
 #include "game/game.h"
 #include "entityPlayer.h"
+#include "framework/audio.h"
 #include <framework/input.h>
 
 EntityUI::EntityUI(Vector2 size, const Material& material)
@@ -149,7 +150,7 @@ void EntityUI::update(double seconds_elapsed) {
 		material.diffuse = hover_texture;
 
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
-			//Aggiungere logica del cambiare stato
+			Audio::Play("data/sounds/option.wav", 0.7f, BASS_SAMPLE_OVER_POS);
 			if (button_id == PlayButton) Game::instance->goToStage(1);
 			if (button_id == RestartButton){ World::get_instance()->reset = true;  Game::instance->goToStage(1);}
 			if (button_id == ExitButton) exit(0);

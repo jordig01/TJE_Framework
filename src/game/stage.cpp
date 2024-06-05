@@ -30,6 +30,7 @@ MenuStage::MenuStage()
 	background->addChild(play_button);
 	background->addChild(exit_button);
 
+	background_channel = Audio::Play("data/sounds/intro_audio.wav", 0.2f, BASS_SAMPLE_LOOP);
 }
 
 
@@ -37,6 +38,11 @@ void MenuStage::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
 	play_button->update(seconds_elapsed);
 	exit_button->update(seconds_elapsed);
+}
+
+void MenuStage::onEnterStage()
+{
+	
 }
 
 void MenuStage::render() {
@@ -67,6 +73,11 @@ void MenuStage::onButtonPressed(eButtonId buttonId)
 		exit(0);
 		break;
 	}
+}
+
+void MenuStage::onExitStage()
+{
+	Audio::Stop(background_channel);
 }
 
 
@@ -123,9 +134,6 @@ PlayStage::PlayStage() {
 	fireball_mat.diffuse = Texture::Get("data/Icons/fireball.png");
 	fireball = new EntityUI(Vector2(700, 40), Vector2(75, 75), fireball_mat);
 
-	if (World::get_instance()->reset) {
-		World::get_instance()->resetWorld();
-	}
 
 }
 
@@ -181,7 +189,6 @@ void PlayStage::render()
 
 
 
-
 	if (player->position.y < 68.0f) Game::instance->goToStage(WIN_STAGE);
 
 }
@@ -192,6 +199,11 @@ void PlayStage::update(float seconds_elapsed) {
 	life3->update(seconds_elapsed);
 	boost->update(seconds_elapsed);
 	square->update(seconds_elapsed);
+}
+
+
+void PlayStage::onExitStage() {
+	Audio::Stop(sound);
 }
 
 //----- WIN STAGE -----

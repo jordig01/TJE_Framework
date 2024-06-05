@@ -4,6 +4,7 @@
 #include <framework/input.h>
 #include "framework/camera.h"
 #include "entityCollider.h"
+#include "framework/audio.h"
 
 
 
@@ -227,7 +228,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			cube->getCollisions(position + velocity * seconds_elapsed, cube_collisions, ground_collisions);
 			if (!cube_collisions.empty()) {
 				handleCubePickup(cube);
-				std::cout << "CUBE SURPRISE COLLIDED"<< cube->collected << std::endl;
+				std::cout << "CUBE SURPRISE COLLIDED "<< cube->collected << std::endl;
 			}
 		}
 
@@ -331,6 +332,8 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 			addBullet(1);
 			object_collected = "bullet";
 		}
+
+		Audio::Play("data/sounds/cube_taken.wav", 0.7f, BASS_SAMPLE_OVER_POS);
 	}
 	// Mark the cube as collected and remove it from the scene and from the root's list
 	cube->collected = true;
@@ -372,10 +375,12 @@ void EntityPlayer::addPoints(int point)
 void EntityPlayer::losePoints(int point)
 {
 	total_points -= point;
+
 }
 
 void EntityPlayer::addLife(int life) {
 	total_lives += life;
+	Audio::Play("data/sounds/yoshi_happy.wav", 0.3f, BASS_SAMPLE_OVER_POS);
 	if (total_lives > 3) {
 		total_points += 200; 
 		total_lives = 3;
@@ -387,6 +392,7 @@ void EntityPlayer::loseLife(int life) {
 
 	if (total_lives > 0) {
 		total_lives -= life;
+		Audio::Play("data/sounds/yoshi_hit.mp3", 0.3f, BASS_SAMPLE_OVER_POS);
 	}
 	else {
 		std::cout << "GAME OVER" << std::endl;
@@ -400,13 +406,4 @@ void EntityPlayer::addBullet(int bullet) {
 		total_points += 200;
 		bullet_count = 5;
 	}
-}
-
-void EntityPlayer::reset()
-{
-	total_lives = 3;
-	total_points = 0;
-	bullet_count = 5;
-	turbo = 1000;
-	object_collected = "";
 }

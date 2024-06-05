@@ -77,6 +77,5 @@ public:
 	sCollisionData ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
 
 	bool reset = false;
-	void resetWorld();
 
 };
