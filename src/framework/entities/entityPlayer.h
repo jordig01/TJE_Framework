@@ -20,7 +20,7 @@ enum eAnimatedState{ //En nuesto caso rotar derecha izquierda  estado Handle
 class EntityPlayer : public EntityMesh {
 
 public:
-
+    float collide = 0.0f;
 
     int walk_speed;
     Vector3 velocity;

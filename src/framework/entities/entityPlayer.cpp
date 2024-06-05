@@ -185,6 +185,8 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 
 	*/
+	velocity += front * collide * 5;
+	collide = 0.0f;
 
 
 	position += velocity * seconds_elapsed;
@@ -236,9 +238,19 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 
 	for (const sCollisionData& collision : collisions) {
 		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
+		float up_factor = fabsf(collision.col_normal.dot(Vector3::UP));
+		if (up_factor < 0.8f) {
+			if (newDir.length() < 0/*cambiar condición*/) {
+				collide = 1.0f;
+			}
+			else {
+				collide = -1.0f;
+			}
+		}
 		velocity.x -= newDir.x;
 		velocity.y -= newDir.y;
 		velocity.z -= newDir.z;
+		
 	}
 
 	bool is_grounded = false;

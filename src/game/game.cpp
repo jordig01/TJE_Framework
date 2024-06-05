@@ -152,10 +152,13 @@ void Game::onResize(int width, int height)
 {
     std::cout << "window resized: " << width << "," << height << std::endl;
 	glViewport( 0,0, width, height );
-	World::get_instance()->camera->aspect = width / (float)height;
-	World::get_instance()->camera2D->aspect =  width / (float)height;
 	window_width = width;
 	window_height = height;
+
+	World::get_instance()->camera->aspect = width / (float)height;
+	World::get_instance()->camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f);
+	World::get_instance()->camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
+
 }
 
 
