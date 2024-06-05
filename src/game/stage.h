@@ -66,11 +66,25 @@ class PlayStage : public Stage {
 	eStages type = PLAY_STAGE;
 
 	EntityUI* square = nullptr;
+
+	//--- LIFES ---
 	EntityUI* life0 = nullptr;
 	EntityUI* life1 = nullptr;
 	EntityUI* life2 = nullptr;
 	EntityUI* life3 = nullptr;
+
+	//--- BOOST ---
 	EntityUI* boost = nullptr;
+
+	//--- FIREBALLS ---
+	EntityUI* fireball = nullptr;
+
+	//--- OBJECT OF CUBE SURPRISE ---
+	EntityUI* bullet = nullptr;
+	EntityUI* thunder = nullptr;
+	EntityUI* heart = nullptr;
+	EntityUI* fake_cube = nullptr;
+
 
 public:
 	PlayStage();

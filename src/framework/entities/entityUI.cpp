@@ -148,8 +148,6 @@ void EntityUI::update(double seconds_elapsed) {
 		
 		material.diffuse = hover_texture;
 
-		printf("MOUSE OVER");
-
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			//Aggiungere logica del cambiare stato
 			if (button_id == PlayButton || button_id == RestartButton) Game::instance->goToStage(1);

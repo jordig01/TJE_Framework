@@ -293,6 +293,7 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 		loseLife(1);
 		losePoints(500);
 		std::cout << "SURPRISE CUBE COLLIDED: Life lost, points deducted." << std::endl;
+		object_collected = "obstacle";
 	}
 	else {
 		// 80% chance of being a collectible
@@ -310,17 +311,18 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 				total_points += 200; // If turbo bar is full, add 200 points to score
 			}
 			object_collected = "turbo";
+
+			turbo = clamp(0, 1000);
 		}
 		else {
 			// 33% chance of the cube containing bullets (increase bullet counter)
 			addBullet(1);
 			object_collected = "bullet";
 		}
-
-		// Mark the cube as collected and remove it from the scene and from the root's list
-		cube->collected = true;
-		World::get_instance()->removeEntity(cube);
 	}
+	// Mark the cube as collected and remove it from the scene and from the root's list
+	cube->collected = true;
+	World::get_instance()->removeEntity(cube);
 }
 
 

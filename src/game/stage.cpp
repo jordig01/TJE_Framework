@@ -76,23 +76,40 @@ PlayStage::PlayStage() {
 	int height = Game::instance->window_height;
 
 
-	// ---- Square ----
+	// ---- Square and Surprise Objects ----
 	Material square_material;
 	square_material.diffuse = Texture::Get("data/hud/cuadrado.png");
-	square = new EntityUI(Vector2(width * 0.5, 50), Vector2(75, 75), square_material);
+	square = new EntityUI(Vector2(50, 45), Vector2(75, 75), square_material);
 
-	// ---- Lifes ----
+	Material thunder_material;
+	thunder_material.diffuse = Texture::Get("data/Icons/thunder.png");
+	thunder = new EntityUI(Vector2(50, 45), Vector2(50, 50), thunder_material);
+
+	Material bullet_material;
+	bullet_material.diffuse = Texture::Get("data/Icons/fireball.png");
+	bullet = new EntityUI(Vector2(50, 45), Vector2(50, 50), bullet_material);
+
+	Material heart_material;
+	heart_material.diffuse = Texture::Get("data/Icons/fullheart.png");
+	heart = new EntityUI(Vector2(50, 45), Vector2(50, 50), heart_material);
+
+	Material cube_mat;
+	cube_mat.diffuse = Texture::Get("data/Icons/fake_cube.png");
+	fake_cube = new EntityUI(Vector2(50, 45), Vector2(50, 50), cube_mat);
+
+
+	// ---- Lifes, Turbo and Fireballs ----
 	Material life0_mat;
 	life0_mat.diffuse = Texture::Get("data/hud/lives0.png");
-	life0 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life0_mat);
+	life0 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life0_mat);
 
 	Material life1_mat;
 	life1_mat.diffuse = Texture::Get("data/hud/lives1.png");
-	life1 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life1_mat);
+	life1 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life1_mat);
 
 	Material life2_mat;
 	life2_mat.diffuse = Texture::Get("data/hud/lives2.png");
-	life2 = new EntityUI(Vector2(width * 0.5, 10), Vector2(175, 50), life2_mat);
+	life2 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life2_mat);
 
 	Material life3_mat;
 	life3_mat.diffuse = Texture::Get("data/hud/lives3.png");
@@ -100,7 +117,13 @@ PlayStage::PlayStage() {
 
 	Material boost_mat;
 	boost_mat.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/boost.fs");
-	boost = new EntityUI(Vector2(760, 450), Vector2(20, 200), boost_mat);
+	boost = new EntityUI(Vector2(760, 470), Vector2(20, 200), boost_mat);
+
+	Material fireball_mat;
+	fireball_mat.diffuse = Texture::Get("data/Icons/fireball.png");
+	fireball = new EntityUI(Vector2(700, 40), Vector2(75, 75), fireball_mat);
+
+
 }
 
 
@@ -126,15 +149,35 @@ void PlayStage::render()
 		case 0:
 			life0->render(camera2D);
 			break;
-		default:
-			// Handle unexpected values, if necessary
-		break;
 	}
 
 	boost->render(camera2D);
 
+	fireball->render(camera2D);
 
+
+
+	// --- Suprise Objects render ---
 	square->render(camera2D);
+
+	if (player->object_collected == "turbo") {
+		thunder->render(camera2D);
+	}
+	else if (player->object_collected == "life") {
+		heart->render(camera2D);
+
+	}
+	else if (player->object_collected == "bullet") {
+		bullet->render(camera2D);
+
+	}
+	else if (player->object_collected == "obstacle") {
+		fake_cube->render(camera2D);
+	}
+
+
+
+
 
 	if (player->position.y < 68.0f) Game::instance->goToStage(WIN_STAGE);
 
