@@ -100,7 +100,7 @@ public:
 	PlayStage();
 	void render() override;
 	void update(float seconds_elapsed) override;
-	void onEnterStage() {};
+	void onEnterStage();
 	void onExitStage();
 
 };

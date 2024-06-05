@@ -201,6 +201,11 @@ void PlayStage::update(float seconds_elapsed) {
 	square->update(seconds_elapsed);
 }
 
+void PlayStage::onEnterStage() {
+	sound = Audio::Play("data/sounds/mainScene.mp3", 0.1f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
+}
+
+
 
 void PlayStage::onExitStage() {
 	Audio::Stop(sound);
@@ -300,7 +305,7 @@ void GameOverStage::update(float seconds_elapsed) {
 
 
 void GameOverStage::onEnterStage() {
-	loseBackground = Audio::Play("data/sounds/GameOver.mp3", 0.5f, BASS_MUSIC_MONO);
+	loseBackground = Audio::Play("data/sounds/GameOver.mp3", 0.2f, BASS_MUSIC_MONO);
 }
 
 void GameOverStage::onExitStage() {

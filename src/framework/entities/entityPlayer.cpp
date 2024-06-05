@@ -335,7 +335,7 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 			object_collected = "bullet";
 		}
 
-		Audio::Play("data/sounds/cube_taken.wav", 0.7f, BASS_SAMPLE_OVER_POS);
+		Audio::Play("data/sounds/cube_taken.wav", 1.f, BASS_SAMPLE_OVER_POS);
 	}
 	// Mark the cube as collected and remove it from the scene and from the root's list
 	cube->collected = true;
@@ -393,9 +393,9 @@ void EntityPlayer::loseLife(int life) {
 
 	if (total_lives > 0) {
 		total_lives -= life;
-		Audio::Play("data/sounds/yoshi_hit.mp3", 0.3f, BASS_SAMPLE_OVER_POS);
+		Audio::Play("data/sounds/yoshi_hit.mp3", 1.f, BASS_SAMPLE_OVER_POS);
 	}
-	else {
+	else if (total_lives == 0){
 		Game::instance->goToStage(GAME_OVER);
 		std::cout << "GAME OVER" << std::endl;
 	}
