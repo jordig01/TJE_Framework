@@ -288,7 +288,7 @@ bool World::parseScene(const char* filename, Entity* root)
 
 
 		size_t tag_pipe = data.first.find("Pipe");
-		size_t tag_cube = data.first.find("cube");
+		size_t tag_cube = data.first.find("Cube");
 		size_t tag_player = data.first.find("Player");
 		size_t tag_waypoints = data.first.find("@waypoint");
 

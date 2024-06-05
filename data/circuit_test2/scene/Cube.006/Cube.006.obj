@@ -1,6 +1,6 @@
 # Blender 4.1.1
 # www.blender.org
-mtllib cube.002.mtl
+mtllib Cube.006.mtl
 o polygon0.003
 v -0.468750 -0.468750 0.468750
 v -0.468750 0.468750 0.468750
