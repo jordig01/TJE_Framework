@@ -74,20 +74,9 @@ public:
 	void shootFireball();
 
 	
-	sCollisionData  ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
-	
-	//get collision //come nel caso di entity collider  
-	/*
-	* for(auto e: root_children){
-	*	Entitucollider = dynamicCast
-	* if(ec = nullptr)
-	*	
-	*/
+	sCollisionData ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
 
-	//layer serve per vedere con quali vogliamo collider 
+	bool reset = false;
+	void resetWorld();
 
-	//if(!ec->testRayCollision)
-	//se questo succede dobbiamo riempire nel data con gli elementi della colisione piú vicino 
-	/*
-	*/
 };

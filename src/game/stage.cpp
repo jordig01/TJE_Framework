@@ -123,6 +123,9 @@ PlayStage::PlayStage() {
 	fireball_mat.diffuse = Texture::Get("data/Icons/fireball.png");
 	fireball = new EntityUI(Vector2(700, 40), Vector2(75, 75), fireball_mat);
 
+	if (World::get_instance()->reset) {
+		World::get_instance()->resetWorld();
+	}
 
 }
 

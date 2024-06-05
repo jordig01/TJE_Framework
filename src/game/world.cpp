@@ -386,6 +386,24 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 	return data;
 }
 
+void World::resetWorld()
+{
+	// Clear dynamic entities
+	for (auto e : root.children) {
+		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
+		if (ec != nullptr) {
+			delete e;
+		}
+	}
+	root.children.clear();
+
+	// Reset player state
+	root_player->reset();  
+
+	// Reload the scene
+	parseScene("data/circuit_test2/circuitv2.scene", &root);
+}
+
 
 //----- FUNCTION TO SHOOT A FIREBALL ----
 void World::shootFireball()

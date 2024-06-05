@@ -64,4 +64,7 @@ public:
     void addBullet(int bullet);
 
 
+    void reset();
+
+
 };

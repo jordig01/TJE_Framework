@@ -389,3 +389,12 @@ void EntityPlayer::addBullet(int bullet) {
 		bullet_count = 5;
 	}
 }
+
+void EntityPlayer::reset()
+{
+	total_lives = 3;
+	total_points = 0;
+	bullet_count = 5;
+	turbo = 1000;
+	object_collected = "";
+}
