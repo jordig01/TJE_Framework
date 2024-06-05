@@ -230,6 +230,8 @@ WinStage::WinStage()
 	background->addChild(play_button);
 	background->addChild(exit_button);
 
+
+
 }
 
 void WinStage::render()
@@ -244,6 +246,16 @@ void WinStage::update(float seconds_elapsed) {
 	play_button->update(seconds_elapsed);
 	exit_button->update(seconds_elapsed);
 }
+
+void WinStage::onEnterStage()
+{
+	winBackground = Audio::Play("data/sounds/WinStage.mp3", 0.3f, BASS_MUSIC_LOOP|BASS_MUSIC_MONO);
+}
+
+void WinStage::onExitStage() {
+	Audio::Stop(winBackground);
+}
+
 
 
 //----- GAME OVER STAGE -----
@@ -284,4 +296,13 @@ void GameOverStage::update(float seconds_elapsed) {
 	play_button->update(seconds_elapsed);
 	exit_button->update(seconds_elapsed);
 
+}
+
+
+void GameOverStage::onEnterStage() {
+	loseBackground = Audio::Play("data/sounds/GameOver.mp3", 0.5f, BASS_MUSIC_MONO);
+}
+
+void GameOverStage::onExitStage() {
+	Audio::Stop(loseBackground);
 }

@@ -5,6 +5,8 @@
 #include "framework/camera.h"
 #include "entityCollider.h"
 #include "framework/audio.h"
+#include "game/game.h"
+#include "game/stage.h"
 
 
 
@@ -380,7 +382,6 @@ void EntityPlayer::losePoints(int point)
 
 void EntityPlayer::addLife(int life) {
 	total_lives += life;
-	Audio::Play("data/sounds/yoshi_happy.wav", 0.3f, BASS_SAMPLE_OVER_POS);
 	if (total_lives > 3) {
 		total_points += 200; 
 		total_lives = 3;
@@ -395,6 +396,7 @@ void EntityPlayer::loseLife(int life) {
 		Audio::Play("data/sounds/yoshi_hit.mp3", 0.3f, BASS_SAMPLE_OVER_POS);
 	}
 	else {
+		Game::instance->goToStage(GAME_OVER);
 		std::cout << "GAME OVER" << std::endl;
 	}
 }

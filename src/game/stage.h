@@ -116,11 +116,13 @@ public:
 	EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;
 
+	HCHANNEL winBackground;
+
 
 	void render();
 	void update(float seconds_elapsed);
-	void onEnterStage() {};
-	void onExitStage() {};
+	void onEnterStage();
+	void onExitStage();
 
 };
 
@@ -131,6 +133,8 @@ class GameOverStage : public Stage {
 
 public:
 
+	HCHANNEL loseBackground;
+
 	EntityUI* background = nullptr;
 	EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;
@@ -138,6 +142,6 @@ public:
 	GameOverStage();
 	void render();
 	void update(float seconds_elapsed);
-	void onEnterStage() {};
-	void onExitStage() {};
+	void onEnterStage();
+	void onExitStage();
 };
