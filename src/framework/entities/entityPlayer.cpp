@@ -221,7 +221,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//Check collisions with the world entitites
 	float last_collision = collide;
 	handleCollisions(seconds_elapsed);
-	if (last_collision != collide) collision_time = 0.0f;
+	//if ((last_collision == 1.0f && collide ==-1.0f) || (last_collision == -1.0f && collide == 1.0f)) collision_time = 0.0f; last_moving *= -1.0f;
 
 	/*if (animation == eAnimatedState::HANDLE && velocity.length() > 1.f) {
 		animator.playAnimation("data/animations/yoshi_movement.skanim");
@@ -231,10 +231,10 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	//Hacer variable timer y sumarle el seconds_elapsed y si ha colisionado
 	if (collide != 0) {
-		velocity += front * last_moving * -1.0f * 10;//100;
+		velocity += front * last_moving * -1.0f * 20;//100;
 		collision_time += seconds_elapsed;
 
-		if (collision_time > 1.0f) {
+		if (collision_time > 0.5f) {
 			collision_time = 0.0f;
 			collide = 0.0f;
 		}
@@ -260,7 +260,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	// --- Logic to handle car movement sound ---
 	if (is_moving) {
 		if (!is_moving_sound_playing) {
-			move_channel = Audio::Play("data/sounds/driving.wav", 0.1f, BASS_SAMPLE_OVER_POS | BASS_POS_LOOP);
+			move_channel = Audio::Play("data/sounds/driving.wav", 0.3f, BASS_SAMPLE_OVER_POS | BASS_POS_LOOP);
 			Audio::fadeInChannel(move_channel, 500);
 			is_moving_sound_playing = true;
 		}
@@ -368,12 +368,13 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			//else {
 			//	collide = -1.0f;
 			//}
-			if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
-				collide = 1.0f;
+			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) collide = true; else collide = false;
+			if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0){
+				collide = -1.0f;
 
 			}
 			else {
-				collide = -1.0f;
+				collide = 1.0f;
 			}
 		}
 		velocity.x -= newDir.x;
