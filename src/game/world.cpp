@@ -54,7 +54,7 @@ World::World()
 
 	//root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
 
-	enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
+	enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
 	enemy->setLayer(eCollisionFilter::ENEMY);
 	root.addChild(enemy);
 
@@ -112,7 +112,7 @@ void World::render() {
 	root_player->render(camera);
 
 	//Render the FPS, Draw Calls, etc
-	//drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
+	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
 
 	//NOTA: es provisional lo substituiremos con el HUD
@@ -217,6 +217,15 @@ void World::update(float seconds_elapsed) {
 
 	}
 
+
+	// Sirve para "disparar"
+	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
+
+		shootFireball();
+	}
+
+
+
 	for (auto e : entities_to_destroy) {
 		root.removeChild(e);
 		delete e;
@@ -226,12 +235,6 @@ void World::update(float seconds_elapsed) {
 	//std::cout << root_player->model.getTranslation().x << std::endl;
 
 	
-	
-	// Sirve para "disparar"
-	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) { 
-		
-		shootFireball();
-	}
 
 }
 
@@ -289,7 +292,6 @@ bool World::parseScene(const char* filename, Entity* root)
 
 
 		size_t tag_pipe = data.first.find("Pipe");
-		size_t tag_cube = data.first.find("Cube");
 		size_t tag_player = data.first.find("Player");
 		size_t tag_waypoints = data.first.find("@waypoint");
 		size_t tag_enemy = data.first.find("@enemy");
@@ -298,15 +300,6 @@ bool World::parseScene(const char* filename, Entity* root)
 		if (tag_pipe != std::string::npos) {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
 			new_entity = new PipeCollider(mesh, mat);
-
-			//assert(new_entity);
-			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
-		}
-		else if (tag_cube != std::string::npos) {
-			/*Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			new_entity = new CubeCollider(mesh, mat);*/
-			//assert(new_entity);
-			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
 		else if (tag_player != std::string::npos) { 
 			assert(root_player);
@@ -422,6 +415,8 @@ void World::shootFireball()
 }
 
 
+
+//Function that load a Cube in the position of the waypoints with tag @cube
 void World::renderCubeWaypoint() {
 	Mesh* cube_mesh = Mesh::Get("data/meshes/cube/box.obj");
 	Material cube_material;
@@ -429,9 +424,21 @@ void World::renderCubeWaypoint() {
 
 	for (const auto& waypoint : cubewaypoints) {
 		CubeCollider* cube_entity = new CubeCollider(cube_mesh, cube_material);
-		if (cube_entity) std::cout << "OK CUBO" << std::endl;
 		cube_entity->model.setTranslation(waypoint.position);
 		root.addChild(cube_entity);
+	}
+}
+
+//Function that load a Pipe in the position of the waypoints with tag @pipe
+void World::renderPipeWaypoint() {
+	Mesh* pipe_mesh = Mesh::Get("data/meshes/cube/box.obj");
+	Material pipe_material;
+	pipe_material.diffuse = Texture::Get("data/meshes/cube/box_mat.png");
+
+	for (const auto& waypoint : pipewaypoints) {
+		PipeCollider* pipe_entity = new PipeCollider(pipe_mesh, pipe_material);
+		pipe_entity->model.setTranslation(waypoint.position);
+		root.addChild(pipe_entity);
 	}
 }
 

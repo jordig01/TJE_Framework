@@ -77,6 +77,7 @@ public:
 	void shootFireball();
 
 	void renderCubeWaypoint();
+	void renderPipeWaypoint();
 
 	
 	sCollisionData ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
