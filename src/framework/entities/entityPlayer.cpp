@@ -13,7 +13,7 @@
 EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->mesh = mesh;
 	this->material = material;
-	this->position = Vector3(0,100,0);
+	this->position = Vector3(0, 100, 0);
 	this->velocity = Vector3(0, 0, 0);
 	this->walk_speed = 100.0f;
 	this->front = Vector3(0, 0, -1);
@@ -193,10 +193,10 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 3.0f;
 
 	// ---- TURBO LOGIC ----
-	if (Input::isKeyPressed(SDL_SCANCODE_X) && turbo > 0 && move_dir.length() >0.1f) {
+	if (Input::isKeyPressed(SDL_SCANCODE_X) && turbo > 0 && move_dir.length() > 0.1f) {
 		speed_mult *= 1.5f;
 		turbo -= seconds_elapsed * 50.0f;  // Decrease turbo over time
-		if (turbo < 0) turbo = 0; 
+		if (turbo < 0) turbo = 0;
 
 		if (!turbo_sound_playing) {
 			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_OVER_VOL);
@@ -326,7 +326,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			cube->getCollisions(position + velocity * seconds_elapsed, cube_collisions, ground_collisions);
 			if (!cube_collisions.empty()) {
 				handleCubePickup(cube);
-				std::cout << "CUBE SURPRISE COLLIDED "<< cube->collected << std::endl;
+				std::cout << "CUBE SURPRISE COLLIDED " << cube->collected << std::endl;
 			}
 		}
 
@@ -340,8 +340,8 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 		if (fabsf(collision.col_normal.dot(Vector3::UP)) < 0.8f) {
 			/*std::cout << "collision point: "<<collision.col_point.x << ","<<collision.col_point.y << "," << collision.col_point.z << std::endl;
 			std::cout << "player position: "<<position.x << ","<< position.y << "," << position.z << std::endl;*/
-			std::cout << "collision point: "<<collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
-			std::cout << "player position: "<< position.dot(Vector3(1, 0, 1)) << std::endl;
+			std::cout << "collision point: " << collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
+			std::cout << "player position: " << position.dot(Vector3(1, 0, 1)) << std::endl;
 			std::cout << position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
 			//position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0
 			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
@@ -369,7 +369,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			//	collide = -1.0f;
 			//}
 			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) collide = true; else collide = false;
-			if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0){
+			if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) {
 				collide = -1.0f;
 
 			}
@@ -380,7 +380,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 		velocity.x -= newDir.x;
 		velocity.y -= newDir.y;
 		velocity.z -= newDir.z;
-		
+
 	}
 
 	bool is_grounded = false;
@@ -479,7 +479,6 @@ void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sColli
 			std::vector<sCollisionData> enemy_collisions;
 			enemy->getCollisions(position + velocity * seconds_elapsed, enemy_collisions, ground_collisions);
 
-			// Verifica si hubo una colisión con el enemigo
 			if (!enemy_collisions.empty()) {
 				loseLife(1);
 				losePoints(500);
@@ -510,7 +509,7 @@ void EntityPlayer::losePoints(int point)
 void EntityPlayer::addLife(int life) {
 	total_lives += life;
 	if (total_lives > 3) {
-		total_points += 200; 
+		total_points += 200;
 		total_lives = 3;
 	}
 
@@ -522,7 +521,7 @@ void EntityPlayer::loseLife(int life) {
 		total_lives -= life;
 		Audio::Play("data/sounds/yoshi_hit.mp3", 1.f, BASS_SAMPLE_OVER_POS);
 	}
-	else if (total_lives == 0){
+	else if (total_lives == 0) {
 		Game::instance->goToStage(GAME_OVER);
 		std::cout << "GAME OVER" << std::endl;
 	}

@@ -54,9 +54,9 @@ World::World()
 
 	//root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
 
-	/*EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
+	enemy = new EntityAI(Mesh::Get("data/meshes/enemy.obj"), {});
 	enemy->setLayer(eCollisionFilter::ENEMY);
-	root.addChild(enemy);*/
+	root.addChild(enemy);
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -76,6 +76,7 @@ World::World()
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
 	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
+	renderCubeWaypoint();
 
 
 	//channel = Audio::Play("data/audio/,  BASS_SAMPLE_LOOP); //riproduce musica in loop
@@ -291,6 +292,8 @@ bool World::parseScene(const char* filename, Entity* root)
 		size_t tag_cube = data.first.find("Cube");
 		size_t tag_player = data.first.find("Player");
 		size_t tag_waypoints = data.first.find("@waypoint");
+		size_t tag_enemy = data.first.find("@enemy");
+		size_t tag_cwaypoints= data.first.find("@cube");
 
 		if (tag_pipe != std::string::npos) {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
@@ -300,8 +303,8 @@ bool World::parseScene(const char* filename, Entity* root)
 			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
 		else if (tag_cube != std::string::npos) {
-			Mesh* mesh = Mesh::Get(mesh_name.c_str());
-			new_entity = new CubeCollider(mesh, mat);
+			/*Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new CubeCollider(mesh, mat);*/
 			//assert(new_entity);
 			//new_entity->model.setTranslation(render_data.models[0].getTranslation());
 		}
@@ -309,10 +312,16 @@ bool World::parseScene(const char* filename, Entity* root)
 			assert(root_player);
 			root_player->model.setTranslation(render_data.models[0].getTranslation());
 		}
-		else if (tag_waypoints != std::string::npos) {
-			waypoints.push_back(render_data.models[0].getTranslation());
+		else if (tag_enemy != std::string::npos) {
+			assert(enemy);
+			enemy->model.setTranslation(render_data.models[0].getTranslation());
+			//waypoints.push_back(render_data.models[0].getTranslation());			
 			continue;
 		}
+		else if (tag_cwaypoints != std::string::npos) {
+			cubewaypoints.push_back(render_data.models[0].getTranslation());
+		}
+
 		else {
 			Mesh* mesh = Mesh::Get(mesh_name.c_str());
 			new_entity = new EntityCollider(mesh, mat);
@@ -409,6 +418,20 @@ void World::shootFireball()
 	else {
 		// Output a message indicating that the player is out of bullets
 		std::cout << "Cannot shoot fireball." << std::endl;
+	}
+}
+
+
+void World::renderCubeWaypoint() {
+	Mesh* cube_mesh = Mesh::Get("data/meshes/cube/box.obj");
+	Material cube_material;
+	cube_material.diffuse = Texture::Get("data/meshes/cube/box_mat.png");
+
+	for (const auto& waypoint : cubewaypoints) {
+		CubeCollider* cube_entity = new CubeCollider(cube_mesh, cube_material);
+		if (cube_entity) std::cout << "OK CUBO" << std::endl;
+		cube_entity->model.setTranslation(waypoint.position);
+		root.addChild(cube_entity);
 	}
 }
 

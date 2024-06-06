@@ -35,13 +35,16 @@ public:
 	EntityMesh * skybox;
 
 	EntityPlayer* player;
+	EntityAI* enemy;
 
 	Camera* camera = nullptr;
 	Camera* camera2D = nullptr;
 
 	std::vector<WayPoint> waypoints;
 
-	std::vector<WayPoint> cubewaypoints;
+	std::vector<WayPoint> pipewaypoints;
+
+	std::vector <WayPoint> cubewaypoints;
 
 	//Prueba giro
 	int num_steps = 0;
@@ -72,6 +75,8 @@ public:
 	void removeEntity(Entity* entity);
 	
 	void shootFireball();
+
+	void renderCubeWaypoint();
 
 	
 	sCollisionData ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);

@@ -19,7 +19,7 @@ public:
 
 	bool transparent =false;
 
-	int tiling = 0.f;
+	int tiling = 0;
 };
 
 struct sRenderData {
