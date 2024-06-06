@@ -24,6 +24,7 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	//To reset the random each time in this way when we start a new game 
 	//we have different seed each time
 	std::srand(time(0));
+
 }
 
 
@@ -112,6 +113,13 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//Vector3 right_cam = mYaw.rightVector();
 
 	position = model.getTranslation();
+	static bool turbo_sound_playing = false;
+	static bool drift_sound_playing = false;
+	static bool is_moving_sound_playing = false;
+	static bool handle_sound_playing = false;
+
+	bool is_moving = false;
+	bool is_dripping = false; // Add logic to check if the player is drifting
 
 	Vector3 move_dir;
 	float moving = 0.0f;
@@ -122,12 +130,18 @@ void EntityPlayer::update(float seconds_elapsed) {
 		move_dir += front;
 		moving = 1.0f;
 		last_moving = 1.0f;
+
+		is_moving = true;
+
 	}
 
 	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) {
 		move_dir -= front;
 		moving = -1.0f;
 		last_moving = -1.0f;
+
+		is_moving = true;
+
 	}
 
 	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && moving != 0) {
@@ -139,11 +153,17 @@ void EntityPlayer::update(float seconds_elapsed) {
 		cam_rotation -= 0.001f * moving * drift;
 		if (cam_rotation < rotation) cam_rotation += 0.003f * drift;
 		cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
+
+		is_moving = true;
+
 	}
 
 
 	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && moving != 0) {
-		if (Input::isKeyPressed(SDL_SCANCODE_V)) drift = 2.0f;
+		if (Input::isKeyPressed(SDL_SCANCODE_V)) {
+			drift = 2.0f;
+			is_dripping = true;
+		}
 		right = true;
 		left = false;
 		turning = true;
@@ -151,7 +171,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 		cam_rotation += 0.001f * moving * drift;
 		if (cam_rotation > rotation)cam_rotation -= 0.003f * drift;
 		cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
+		is_moving = true;
+
 	}
+
+
 	if (cam_rotation != rotation && !turning) {
 		if (left) {
 			cam_rotation -= 0.004f * last_moving * drift;
@@ -169,11 +193,27 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 3.0f;
 
 	// ---- TURBO LOGIC ----
-	if (Input::isKeyPressed(SDL_SCANCODE_X) && turbo > 0) {
+	if (Input::isKeyPressed(SDL_SCANCODE_X) && turbo > 0 && move_dir.length() >0.1f) {
 		speed_mult *= 1.5f;
 		turbo -= seconds_elapsed * 50.0f;  // Decrease turbo over time
-		if (turbo < 0) turbo = 0;
+		if (turbo < 0) turbo = 0; 
+
+		if (!turbo_sound_playing) {
+			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_OVER_VOL);
+			Audio::fadeInChannel(turbo_channel, 500); // 500 milliseconds fade in
+			Audio::fadeOutChannel(move_channel, 500);
+			Audio::Stop(move_channel);
+			turbo_sound_playing = true;
+		}
 	}
+	else {
+		if (turbo_sound_playing) {
+			Audio::fadeOutChannel(turbo_channel, 500); // 500 milliseconds fade out
+			turbo_sound_playing = false;
+		}
+	}
+
+
 
 	move_dir.normalize();
 	move_dir *= speed_mult;
@@ -201,6 +241,49 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	model.setTranslation(position);
 	model.rotate(rotation, Vector3(0, 1, 0));
+
+
+
+	// --- Logic to handle car movement sound ---
+	if (is_moving) {
+		if (!is_moving_sound_playing) {
+			move_channel = Audio::Play("data/sounds/driving.wav", 0.3f, BASS_SAMPLE_OVER_POS | BASS_POS_LOOP);
+			Audio::fadeInChannel(move_channel, 500);
+			is_moving_sound_playing = true;
+		}
+		// Interrompi il suono di "handle" se è attualmente in riproduzione
+		if (handle_sound_playing) {
+			Audio::fadeOutChannel(handle_channel, 300);
+			Audio::Stop(handle_channel);
+			handle_sound_playing = false;
+		}
+	}
+	else {
+		if (!handle_sound_playing) {
+			handle_channel = Audio::Play("data/sounds/handle.wav", 0.5f, BASS_SAMPLE_OVER_POS);
+			handle_sound_playing = true;
+		}
+		if (is_moving_sound_playing) {
+			Audio::fadeOutChannel(move_channel, 300);
+			Audio::Stop(move_channel);
+			is_moving_sound_playing = false;
+		}
+	}
+
+
+
+	// --- Logic to handle drifting sound ---
+	if (is_dripping && !drift_sound_playing) {
+		// Start playing the drifting sound if not already playing
+		drift_sound_channel = Audio::Play("data/sounds/derrape.wav", 1.f, BASS_SAMPLE_OVER_POS | BASS_POS_LOOP);
+		drift_sound_playing = true;
+	}
+	else if (!is_dripping && drift_sound_playing) {
+		// Stop playing the drifting sound if not drifting anymore
+		Audio::fadeOutChannel(drift_sound_channel, 500); // Fade out the sound
+		drift_sound_playing = false;
+	}
+
 
 
 	EntityMesh::update(seconds_elapsed);

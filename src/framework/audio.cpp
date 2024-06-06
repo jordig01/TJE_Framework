@@ -107,3 +107,17 @@ bool Audio::Stop(HCHANNEL channel)
 {
 	return BASS_ChannelStop(channel);
 }
+
+
+
+void Audio::fadeOutChannel(HCHANNEL channel, DWORD time) {
+	if (channel) {
+		BASS_ChannelSlideAttribute(channel, BASS_ATTRIB_VOL, 0.0f, time);
+	}
+}
+
+void Audio::fadeInChannel(HCHANNEL channel, DWORD time) {
+	if (channel) {
+		BASS_ChannelSlideAttribute(channel, BASS_ATTRIB_VOL, 1.0f, time);
+	}
+}

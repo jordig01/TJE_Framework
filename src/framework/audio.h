@@ -41,4 +41,10 @@ public:
 
 	// Stop sounds
 	static bool Stop(HCHANNEL channel);
+
+
+	static void fadeOutChannel(HCHANNEL channel, DWORD time);
+
+	static void fadeInChannel(HCHANNEL channel, DWORD time);
+	
 };

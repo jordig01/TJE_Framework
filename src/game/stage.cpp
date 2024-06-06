@@ -202,13 +202,22 @@ void PlayStage::update(float seconds_elapsed) {
 }
 
 void PlayStage::onEnterStage() {
-	sound = Audio::Play("data/sounds/mainScene.mp3", 0.1f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
+	sound = Audio::Play("data/sounds/mainScene.mp3", 0.05f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
+	//World::instance->root_player->handle_channel = Audio::Play("data/sounds/handle.wav", 1.f, BASS_MUSIC_LOOP);
 }
 
 
 
 void PlayStage::onExitStage() {
 	Audio::Stop(sound);
+
+	EntityPlayer* player = World::instance->root_player;
+
+	Audio::Stop(player->turbo_channel);
+	Audio::Stop(player->handle_channel);
+	Audio::Stop(player->move_channel);
+
+
 }
 
 //----- WIN STAGE -----
@@ -254,7 +263,7 @@ void WinStage::update(float seconds_elapsed) {
 
 void WinStage::onEnterStage()
 {
-	winBackground = Audio::Play("data/sounds/WinStage.mp3", 0.3f, BASS_MUSIC_LOOP|BASS_MUSIC_MONO);
+	winBackground = Audio::Play("data/sounds/WinStage.wav", 0.3f, BASS_MUSIC_LOOP);
 }
 
 void WinStage::onExitStage() {

@@ -1,4 +1,5 @@
 #include "entityMesh.h"
+#include "framework/audio.h"
 
 class CubeCollider;
 
@@ -20,6 +21,15 @@ enum eAnimatedState{ //En nuesto caso rotar derecha izquierda  estado Handle
 class EntityPlayer : public EntityMesh {
 
 public:
+
+    //--- SOUNDS ---
+    HCHANNEL handle_channel;
+    HCHANNEL turbo_channel;
+    HCHANNEL move_channel;
+    HCHANNEL drift_sound_channel;
+    bool was_moving; // Flag to track if the player was moving in the previous frame
+
+    
     float collide = 0.0f;
 
     int walk_speed;
@@ -62,5 +72,6 @@ public:
     void loseLife(int life);
 
     void addBullet(int bullet);
+
 
 };
