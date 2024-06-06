@@ -218,18 +218,31 @@ void EntityPlayer::update(float seconds_elapsed) {
 	move_dir.normalize();
 	move_dir *= speed_mult;
 
-	velocity += move_dir;
-
 	//Check collisions with the world entitites
+	float last_collision = collide;
 	handleCollisions(seconds_elapsed);
+	if (last_collision != collide) collision_time = 0.0f;
 
 	/*if (animation == eAnimatedState::HANDLE && velocity.length() > 1.f) {
 		animator.playAnimation("data/animations/yoshi_movement.skanim");
 	}
 
 	*/
-	velocity += front * collide * 5;
-	collide = 0.0f;
+
+	//Hacer variable timer y sumarle el seconds_elapsed y si ha colisionado
+	if (collide != 0) {
+		velocity += front * last_moving * -1.0f * 10;//100;
+		collision_time += seconds_elapsed;
+
+		if (collision_time > 1.0f) {
+			collision_time = 0.0f;
+			collide = 0.0f;
+		}
+	}
+	else {
+		velocity += move_dir;
+	}
+
 
 
 	position += velocity * seconds_elapsed;
@@ -324,10 +337,40 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 
 	for (const sCollisionData& collision : collisions) {
 		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
-		float up_factor = fabsf(collision.col_normal.dot(Vector3::UP));
-		if (up_factor < 0.8f) {
-			if (newDir.length() < 0/*cambiar condición*/) {
+		if (fabsf(collision.col_normal.dot(Vector3::UP)) < 0.8f) {
+			/*std::cout << "collision point: "<<collision.col_point.x << ","<<collision.col_point.y << "," << collision.col_point.z << std::endl;
+			std::cout << "player position: "<<position.x << ","<< position.y << "," << position.z << std::endl;*/
+			std::cout << "collision point: "<<collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
+			std::cout << "player position: "<< position.dot(Vector3(1, 0, 1)) << std::endl;
+			std::cout << position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
+			//position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0
+			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
+			//	if (fabs(position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1))) < 7) {
+			//		collide = 1.0f;
+			//	}
+			//	else {
+			//		collide = -1.0f;
+			//	}
+			//	
+			//}
+			//else {
+			//	if (fabs(position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1))) < 7) {
+			//		collide = -1.0f;
+			//	}
+			//	else {
+			//		collide = 1.0f;
+			//	}
+			//}
+			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
+			//	collide = 1.0f;
+
+			//}
+			//else {
+			//	collide = -1.0f;
+			//}
+			if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
 				collide = 1.0f;
+
 			}
 			else {
 				collide = -1.0f;

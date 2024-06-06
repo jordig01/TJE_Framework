@@ -31,6 +31,7 @@ public:
 
     
     float collide = 0.0f;
+    float collision_time = 0.0f;
 
     int walk_speed;
     Vector3 velocity;
