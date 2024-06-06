@@ -202,7 +202,7 @@ void PlayStage::update(float seconds_elapsed) {
 }
 
 void PlayStage::onEnterStage() {
-	sound = Audio::Play("data/sounds/mainScene.mp3", 0.05f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
+	sound = Audio::Play("data/sounds/mainScene.mp3", 0.1f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
 	//World::instance->root_player->handle_channel = Audio::Play("data/sounds/handle.wav", 1.f, BASS_MUSIC_LOOP);
 }
 
