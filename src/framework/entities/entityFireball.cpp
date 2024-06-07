@@ -44,9 +44,11 @@ bool EntityFireball::testCollisionWithEnemy() {
         EntityAI* enemy = dynamic_cast<EntityAI*>(e);
         if (enemy) {
             if (this->mesh->testSphereCollision(enemy->model, this->model.getTranslation(), 5.0f, collision_point, collision_normal)) {
-
+      
                 // Add 1500 Points
                 World::instance->root_player->total_points += 1500;
+
+               shoot_channel = Audio::Play("data/sounds/goomba.mp3", 1.f, BASS_SAMPLE_OVER_POS);
 
                 // Remove the enemy entity
                 World::instance->removeEntity(enemy);
