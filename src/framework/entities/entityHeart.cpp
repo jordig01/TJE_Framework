@@ -6,7 +6,7 @@
 EntityHeart::EntityHeart() {
     this->mesh = Mesh::Get("data/meshes/heart/life.obj");
     this->material.diffuse = Texture::Get("data/meshes/heart/MI_heart_alb.png");
-    this->remaining_time = 6.0f; // Heart will be rendered for 4 seconds
+    this->remaining_time = 6.0f; // Heart will be rendered for 6 seconds
     this->rotation_speed = 0.5f;
 }
 
