@@ -58,6 +58,7 @@ void EntityAI::render(Camera* camera)
 
 void EntityAI::update(float seconds_elapsed)
 {
+	
 	Vector3 player_pos = World::get_instance()->root_player->position;
 	if (state == PATROL) {
 		followPath(seconds_elapsed);
@@ -131,5 +132,4 @@ void EntityAI::followPath(float seconds_elapsed)
 	}
 
 }
-
 

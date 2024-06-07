@@ -36,6 +36,8 @@ class EntityAI : public EntityCollider {
 	int waypoint_index = 0;
 	std::vector<WayPoint> path;
 
+	float total_time = 0.0f;
+
 	eFSMStates state = PATROL;
 
 public:
@@ -49,7 +51,6 @@ public:
 	bool inLineOfSight(const Vector3& position);
 	void lookAtTarget(const Vector3& position, float seconds_elapsed);
 	void followPath(float seconds_elapsed);
-
 
 
 };

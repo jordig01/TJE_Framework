@@ -54,9 +54,9 @@ World::World()
 
 	//root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
 
-	enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
-	enemy->setLayer(eCollisionFilter::ENEMY);
-	root.addChild(enemy);
+	//enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
+	//enemy->setLayer(eCollisionFilter::ENEMY);
+	//root.addChild(enemy);
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -77,7 +77,7 @@ World::World()
 
 	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
 	renderCubeWaypoint();
-
+	instantiateEnemies();
 
 	//channel = Audio::Play("data/audio/,  BASS_SAMPLE_LOOP); //riproduce musica in loop
 
@@ -306,9 +306,11 @@ bool World::parseScene(const char* filename, Entity* root)
 			root_player->model.setTranslation(render_data.models[0].getTranslation());
 		}
 		else if (tag_enemy != std::string::npos) {
-			assert(enemy);
-			enemy->model.setTranslation(render_data.models[0].getTranslation());
-			//waypoints.push_back(render_data.models[0].getTranslation());			
+			/*assert(enemy);
+			enemy->model.setTranslation(render_data.models[0].getTranslation());*/
+			//waypoints.push_back(render_data.models[0].getTranslation());	
+
+			enemy_waypoints.push_back(render_data.models[0].getTranslation());
 			continue;
 		}
 		else if (tag_cwaypoints != std::string::npos) {
@@ -431,9 +433,9 @@ void World::renderCubeWaypoint() {
 
 //Function that load a Pipe in the position of the waypoints with tag @pipe
 void World::renderPipeWaypoint() {
-	Mesh* pipe_mesh = Mesh::Get("data/meshes/cube/box.obj");
+	Mesh* pipe_mesh = Mesh::Get("data/meshes/pipe/box.obj"); //PONER EL PIPE .obj
 	Material pipe_material;
-	pipe_material.diffuse = Texture::Get("data/meshes/cube/box_mat.png");
+	pipe_material.diffuse = Texture::Get("data/meshes/pipe/box_mat.png"); //PONER EL PIPE texture
 
 	for (const auto& waypoint : pipewaypoints) {
 		PipeCollider* pipe_entity = new PipeCollider(pipe_mesh, pipe_material);
@@ -441,6 +443,27 @@ void World::renderPipeWaypoint() {
 		root.addChild(pipe_entity);
 	}
 }
+
+
+//Function that load an Enemy in the position of the waypoints with tag @
+void World::instantiateEnemies()
+{
+	for (const auto& waypoint : enemy_waypoints) {
+		Vector3 position = waypoint.position;
+		EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
+		enemy->model.setTranslation(position);
+		enemy->setLayer(eCollisionFilter::ENEMY);
+		root.addChild(enemy);
+
+		waypoints.push_back(waypoint); 
+
+		// Crear un nuevo waypoint al lado del enemy y añadirlo a la lista
+		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f); 
+		WayPoint new_waypoint = WayPoint(new_waypoint_position);
+		waypoints.push_back(new_waypoint); 
+	}
+}
+
 
 
 

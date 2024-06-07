@@ -470,28 +470,45 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 }
 
 
-//--- COLLISION CON ENEMIGO ----
+
+//---- FUNCTION TO HANDLE COLLISION WITH ENEMY ----
 void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
+	static bool invincible = false;
+	static float invincibility_timer = 0.0f;
+	const float invincibility_duration = 3.0f; // Duration of invincibility in seconds
+
+	// If the player is invincible, update the timer and check if it has expired
+	if (invincible) {
+		invincibility_timer += seconds_elapsed;
+		if (invincibility_timer >= invincibility_duration) {
+			invincible = false;
+			invincibility_timer = 0.0f;
+		}
+		return; // Exit the function without checking collisions if the player is invincible
+	}
+
 	for (auto e : World::get_instance()->root.children) {
-		// Verifica si la entidad es un EntityAI
 		EntityAI* enemy = dynamic_cast<EntityAI*>(e);
 		if (enemy != nullptr) {
 			std::vector<sCollisionData> enemy_collisions;
 			enemy->getCollisions(position + velocity * seconds_elapsed, enemy_collisions, ground_collisions);
 
 			if (!enemy_collisions.empty()) {
+				// If the player is not invincible, lose a life and become invincible for a certain period
 				loseLife(1);
 				losePoints(500);
 				std::cout << "ENEMY COLLIDED: Life lost, points deducted." << std::endl;
-				break; // Sal del ciclo una vez que se encuentre una colisión con un enemigo
+
+				// Activate invincibility
+				invincible = true;
+				invincibility_timer = 0.0f;
+
+				// Exit the loop once a collision with an enemy is found
+				break;
 			}
 		}
 	}
 }
-
-
-
-
 
 
 //--- SCORE, LIFES, BULLET MECHANICS ---

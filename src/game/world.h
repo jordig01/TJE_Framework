@@ -40,6 +40,10 @@ public:
 	Camera* camera = nullptr;
 	Camera* camera2D = nullptr;
 
+
+	//List of Waypoints to renderize some objects
+	std::vector<WayPoint> enemy_waypoints;
+	
 	std::vector<WayPoint> waypoints;
 
 	std::vector<WayPoint> pipewaypoints;
@@ -78,6 +82,7 @@ public:
 
 	void renderCubeWaypoint();
 	void renderPipeWaypoint();
+	void instantiateEnemies();
 
 	
 	sCollisionData ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
