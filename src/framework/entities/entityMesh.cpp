@@ -1,6 +1,7 @@
 #include "entityMesh.h"
 #include "graphics/shader.h"
 #include "framework/camera.h"
+#include "game/game.h"
 #include <algorithm>
 
 
@@ -75,6 +76,10 @@ void EntityMesh::render(Camera* camera) {
 	// Enable shader and pass uniforms 
 	material.shader->enable();
 
+
+	Vector2 maps = { 0.0f, 0.0f };
+
+
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
 
@@ -82,8 +87,33 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->setUniform("u_camera_position", camera->eye);
 
 	if (material.diffuse) {
-		material.shader->setTexture("u_texture", material.diffuse, 0);
+		maps.x = 1.0f;
+		material.shader->setUniform("u_texture", material.diffuse, 0);
 	}
+
+
+	if (material.normal) {
+		maps.y = 1.0f;
+		material.shader->setUniform("u_normal_texture", material.normal, 1);
+	}
+
+	//Other Uniform
+	material.shader->setUniform("u_background_color", Vector3(1.0f, 0.0f, 0.0f));
+	material.shader->setUniform("u_time", Game::instance->time);
+
+
+
+	//Light Part
+	material.shader->setUniform("u_Ka", Vector3(0.1f));
+	material.shader->setUniform("u_Kd", Vector3(0.0f));
+	material.shader->setUniform("u_Ks", Vector3(0.0f));
+	material.shader->setUniform("u_light_position", Vector3(0.0f, 10.0f, 0.0f));
+	material.shader->setUniform("u_light_color", Vector3(0.9f, 0.9f, 1.0f));
+	//material.shader->setUniform("u_fog_factor", Vector3(0.1f));
+
+
+
+	material.shader->setUniform("u_maps", maps);
 
 
 	//si no estoy instanciando le envio mi model
