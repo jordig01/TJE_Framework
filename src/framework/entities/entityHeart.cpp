@@ -6,7 +6,7 @@
 EntityHeart::EntityHeart() {
     this->mesh = Mesh::Get("data/meshes/heart/life.obj");
     this->material.diffuse = Texture::Get("data/meshes/heart/MI_heart_alb.png");
-    this->remaining_time = 4.0f; // Heart will be rendered for 4 seconds
+    this->remaining_time = 6.0f; // Heart will be rendered for 4 seconds
     this->rotation_speed = 0.5f;
 }
 
@@ -25,7 +25,7 @@ void EntityHeart::update(float seconds_elapsed) {
     remaining_time -= seconds_elapsed;
 
     // Move up and rotate
-    this->model.translate(Vector3(0, seconds_elapsed, 0));
+    this->model.translate(Vector3(0, seconds_elapsed*10.f, 0));
     this->model.rotate(seconds_elapsed * rotation_speed, Vector3(0, 1, 0));
 
     // Remove entity when time runs out

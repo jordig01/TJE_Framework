@@ -29,7 +29,7 @@ void EntityFireball::update(float seconds_elapsed) {
 
     // Test collision with enemy
     if (testCollisionWithEnemy()) {
-        std::cout << "Fireball collided with an enemy!" << std::endl;
+        std::cout << "Fireball collided with an enemy" << std::endl;
 
         // Mark this fireball for destruction
         World::instance->removeEntity(this);
@@ -43,7 +43,7 @@ bool EntityFireball::testCollisionWithEnemy() {
     for (Entity* e : World::instance->root.children) {
         EntityAI* enemy = dynamic_cast<EntityAI*>(e);
         if (enemy) {
-            if (this->mesh->testSphereCollision(enemy->model, this->model.getTranslation(), 2.0f, collision_point, collision_normal)) {
+            if (this->mesh->testSphereCollision(enemy->model, this->model.getTranslation(), 5.0f, collision_point, collision_normal)) {
 
                 // Add 1500 Points
                 World::instance->root_player->total_points += 1500;
@@ -53,6 +53,7 @@ bool EntityFireball::testCollisionWithEnemy() {
 
                 // Spawn a heart entity
                 EntityHeart* heart = new EntityHeart();
+                if (heart) std::cout << "LIFE OF GOOMBA" << std::endl;
                 heart->model.setTranslation(collision_point);
                 World::instance->addEntity(heart);
 
