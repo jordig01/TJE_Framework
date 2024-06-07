@@ -69,7 +69,7 @@ void EntityMesh::render(Camera* camera) {
 	glEnable(GL_DEPTH_TEST);
 
 	if (!material.shader) {
-		material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
+		material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/phong.fs");
 	}
 	
 
@@ -89,6 +89,7 @@ void EntityMesh::render(Camera* camera) {
 	if (material.diffuse) {
 		maps.x = 1.0f;
 		material.shader->setUniform("u_texture", material.diffuse, 0);
+		//material.shader->setTexture("u_texture", material.diffuse, 0);
 	}
 
 
@@ -108,7 +109,7 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->setUniform("u_Kd", Vector3(0.0f));
 	material.shader->setUniform("u_Ks", Vector3(0.0f));
 	material.shader->setUniform("u_light_position", Vector3(0.0f, 10.0f, 0.0f));
-	material.shader->setUniform("u_light_color", Vector3(0.9f, 0.9f, 1.0f));
+	material.shader->setUniform("u_light_color", Vector3(1.0f));
 	//material.shader->setUniform("u_fog_factor", Vector3(0.1f));
 
 
