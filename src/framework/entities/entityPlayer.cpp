@@ -126,54 +126,67 @@ void EntityPlayer::update(float seconds_elapsed) {
 	bool turning = false;
 	float drift = 1.0f;
 
-	if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) {
-		move_dir += front;
-		moving = 1.0f;
-		last_moving = 1.0f;
+	if (collide != 0.0f) {
+		velocity += front * last_moving * -1.0f * 20;//100;
+		collision_time += seconds_elapsed;
 
-		is_moving = true;
-
-	}
-
-	if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) {
-		move_dir -= front;
-		moving = -1.0f;
-		last_moving = -1.0f;
-
-		is_moving = true;
-
-	}
-
-	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && moving != 0) {
-		if (Input::isKeyPressed(SDL_SCANCODE_V)) drift = 2.0f;
-		right = false;
-		left = true;
-		turning = true;
-		rotation -= 0.004f * moving * drift;
-		cam_rotation -= 0.001f * moving * drift;
-		if (cam_rotation < rotation) cam_rotation += 0.003f * drift;
-		cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
-
-		is_moving = true;
-
-	}
-
-
-	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && moving != 0) {
-		if (Input::isKeyPressed(SDL_SCANCODE_V)) {
-			drift = 2.0f;
-			is_dripping = true;
+		if (collision_time > 0.5f) {
+			collision_time = 0.0f;
+			collide = 0.0f;
 		}
-		right = true;
-		left = false;
-		turning = true;
-		rotation += 0.004f * moving * drift;
-		cam_rotation += 0.001f * moving * drift;
-		if (cam_rotation > rotation)cam_rotation -= 0.003f * drift;
-		cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
-		is_moving = true;
-
 	}
+	else {
+		if (Input::isKeyPressed(SDL_SCANCODE_W) || Input::isKeyPressed(SDL_SCANCODE_UP)) {
+			move_dir += front;
+			moving = 1.0f;
+			last_moving = 1.0f;
+
+			is_moving = true;
+
+		}
+
+		if (Input::isKeyPressed(SDL_SCANCODE_S) || Input::isKeyPressed(SDL_SCANCODE_DOWN)) {
+			move_dir -= front;
+			moving = -1.0f;
+			last_moving = -1.0f;
+
+			is_moving = true;
+
+		}
+
+		if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && moving != 0) {
+			if (Input::isKeyPressed(SDL_SCANCODE_V)) drift = 2.0f;
+			right = false;
+			left = true;
+			turning = true;
+			rotation -= 0.004f * moving * drift;
+			cam_rotation -= 0.001f * moving * drift;
+			if (cam_rotation < rotation) cam_rotation += 0.003f * drift;
+			cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
+
+			is_moving = true;
+
+		}
+
+
+		if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && moving != 0) {
+			if (Input::isKeyPressed(SDL_SCANCODE_V)) {
+				drift = 2.0f;
+				is_dripping = true;
+			}
+			right = true;
+			left = false;
+			turning = true;
+			rotation += 0.004f * moving * drift;
+			cam_rotation += 0.001f * moving * drift;
+			if (cam_rotation > rotation)cam_rotation -= 0.003f * drift;
+			cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
+			is_moving = true;
+
+		}
+	}
+
+	
 
 
 	if (cam_rotation != rotation && !turning) {
@@ -218,30 +231,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 	move_dir.normalize();
 	move_dir *= speed_mult;
 
+	if(collide == 0.0f) velocity += move_dir;
+
 	//Check collisions with the world entitites
 	float last_collision = collide;
 	handleCollisions(seconds_elapsed);
-	//if ((last_collision == 1.0f && collide ==-1.0f) || (last_collision == -1.0f && collide == 1.0f)) collision_time = 0.0f; last_moving *= -1.0f;
-
-	/*if (animation == eAnimatedState::HANDLE && velocity.length() > 1.f) {
-		animator.playAnimation("data/animations/yoshi_movement.skanim");
-	}
-
-	*/
-
-	//Hacer variable timer y sumarle el seconds_elapsed y si ha colisionado
-	if (collide != 0) {
-		velocity += front * last_moving * -1.0f * 20;//100;
-		collision_time += seconds_elapsed;
-
-		if (collision_time > 0.5f) {
-			collision_time = 0.0f;
-			collide = 0.0f;
-		}
-	}
-	else {
-		velocity += move_dir;
-	}
 
 
 
