@@ -87,6 +87,21 @@ class PlayStage : public Stage {
 	//--- FIREBALLS ---
 	EntityUI* fireball = nullptr;
 
+
+	//--- COUNTDOWN ---
+	EntityUI * countdown_num = nullptr;
+	Material number_mat;
+
+	float countdown_timer = 6.0f;
+	bool countdown_finished = false;
+
+
+	//--- FINISH ----
+	EntityUI* finish = nullptr;
+	bool finish_game = false;
+	float timer = 3.0f;
+
+
 	//--- SCORE ---
 	EntityUI* score = nullptr;
 	Material zero_mat;

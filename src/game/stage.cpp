@@ -146,6 +146,19 @@ PlayStage::PlayStage() {
 	fireball_mat.diffuse = Texture::Get("data/Icons/fireball.png");
 	fireball = new EntityUI(Vector2(700, 40), Vector2(75, 75), fireball_mat);
 	
+
+	// --- CountDown ---
+	number_mat.diffuse = Texture::Get("data/Icons/3.png");
+	countdown_num = new EntityUI(Vector2(width * 0.5, height*0.5 - 80), Vector2(150, 150), number_mat);
+	
+
+	// --- Finish ---
+	Material finish_mat;
+	finish_mat.diffuse = Texture::Get("data/Icons/finish_title.png");
+	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(150, 150), finish_mat);
+
+
+	// ---- Score ----
 	Material score_mat;
 	score_mat.diffuse = Texture::Get("data/hud/score.png");
 	score = new EntityUI(Vector2(40, height - 20), Vector2(75, 20), score_mat);
@@ -244,7 +257,33 @@ void PlayStage::render()
 		fake_cube->render(camera2D);
 	}
 
-	if (player->position.y < 68.0f) Game::instance->goToStage(WIN_STAGE);
+	if (player->position.y < 68.0f) {
+		finish->render(camera2D);
+		finish_game = true;
+	}
+
+
+	if (timer < 0.0f) Game::instance->goToStage(WIN_STAGE);
+
+
+
+	// --- COUNTDOWN ---
+	if (!countdown_finished) {
+		countdown_num->render(camera2D);
+	}
+
+	if (countdown_timer <= 5.0f) {
+		countdown_num->material.diffuse = Texture::Get("data/Icons/2.png");
+	}
+	if (countdown_timer <= 3.0f) {
+		countdown_num->material.diffuse = Texture::Get("data/Icons/1.png");
+	}
+	if (countdown_timer <= 2.0f) {
+		countdown_num->material.diffuse = Texture::Get("data/Icons/GO.png");
+	}
+	if (countdown_timer <= 0.0f) {
+		countdown_finished = true;
+	}
 
 
 	// --- Score render ---
@@ -289,11 +328,18 @@ void PlayStage::update(float seconds_elapsed) {
 	boost->update(seconds_elapsed);
 	square->update(seconds_elapsed);
 	score->update(seconds_elapsed);
+
+	if (!countdown_finished) {
+		countdown_timer -= seconds_elapsed;
+	}
+
+	if (finish_game) {
+		timer -= seconds_elapsed;
+	}
 }
 
 void PlayStage::onEnterStage() {
 	sound = Audio::Play("data/sounds/mainScene.mp3", 0.05f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
-	//World::instance->root_player->handle_channel = Audio::Play("data/sounds/handle.wav", 1.f, BASS_MUSIC_LOOP);
 }
 
 
