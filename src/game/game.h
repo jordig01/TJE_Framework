@@ -60,4 +60,6 @@ public:
 
 	void goToStage(int new_stage);
 
+	void restart();
+
 };

@@ -40,6 +40,7 @@ public:
 	Camera* camera = nullptr;
 	Camera* camera2D = nullptr;
 
+	Vector3 old_position_player;
 
 	//List of Waypoints to renderize some objects
 	std::vector<WayPoint> enemy_waypoints;

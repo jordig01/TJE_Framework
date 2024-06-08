@@ -303,7 +303,9 @@ bool World::parseScene(const char* filename, Entity* root)
 		}
 		else if (tag_player != std::string::npos) { 
 			assert(root_player);
+			old_position_player = render_data.models[0].getTranslation();
 			root_player->model.setTranslation(render_data.models[0].getTranslation());
+		
 		}
 		else if (tag_enemy != std::string::npos) {
 			/*assert(enemy);

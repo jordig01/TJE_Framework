@@ -152,7 +152,7 @@ void EntityUI::update(double seconds_elapsed) {
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			Audio::Play("data/sounds/option.wav", 0.7f, BASS_SAMPLE_OVER_POS);
 			if (button_id == PlayButton) Game::instance->goToStage(1);
-			if (button_id == RestartButton){ World::get_instance()->reset = true;  Game::instance->goToStage(1);}
+			if (button_id == RestartButton){  Game::instance->restart();}
 			if (button_id == ExitButton) exit(0);
 		}
 

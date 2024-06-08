@@ -5,6 +5,7 @@
 #include "graphics/fbo.h"
 #include "graphics/shader.h"
 #include "framework/input.h"
+#include "framework/entities/entityPlayer.h"
 
 #include <cmath>
 
@@ -69,6 +70,19 @@ void Game::goToStage(int new_stage) {
 	current_stage->onEnterStage();
 
 
+}
+
+void Game::restart()
+{
+	EntityPlayer * player = World::instance->root_player;
+	player->total_lives = 3;
+	player->total_points = 0;
+	player->bullet_count = 5;
+	player->turbo = 1000.f;
+	World::instance->renderCubeWaypoint();
+	World::instance->instantiateEnemies();
+	player->model.setTranslation((World::instance->old_position_player));
+	goToStage(PLAY_STAGE);
 }
 
 
