@@ -43,7 +43,7 @@ vec3 perturbNormal(vec3 N, vec3 V, vec2 texcoord, vec3 normal_pixel) {
 vec4 applyLight() {
     vec4 Kd = vec4(u_Kd, 1.0);
 
-    if (u_maps.x > 0.0) {
+    if (u_maps.x>0.0) {
         Kd = texture2D(u_texture, v_uv);
     }
 
@@ -51,17 +51,17 @@ vec4 applyLight() {
     vec3 V = normalize(u_camera_position - v_world_position);
     vec3 N = normalize(v_normal);
 
-    if (u_maps.y > 0.0) {
-        vec3 normals_texture = texture2D(u_normals_texture, v_uv).rgb; // Corrected assignment
+    if (u_maps.y>0.0) {
+        vec3 normals_texture = texture2D(u_normals_texture, v_uv).rgb;
         N = perturbNormal(N, -V, v_uv, normals_texture);
     }
 
-    vec3 ambient = u_Ka * u_ambient_light;
+    vec3 ambient = u_Ka * Kd.rgb;
 
     float NdotL = max(0.0, dot(L, N));
     vec3 diffuse = Kd.rgb * u_light_color * NdotL;
 
-    vec3 R = normalize(reflect(-L, N)); // Corrected normalization
+    vec3 R = normalize(reflect(-L, N)); 
     float RdotV = pow(max(0.0, dot(R, V)), 20.0);
     vec3 specular = u_Ks * u_light_color * RdotV;
 
