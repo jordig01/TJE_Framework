@@ -87,6 +87,19 @@ class PlayStage : public Stage {
 	//--- FIREBALLS ---
 	EntityUI* fireball = nullptr;
 
+	//--- SCORE ---
+	EntityUI* score = nullptr;
+	Material zero_mat;
+	Material one_mat;
+	Material two_mat;
+	Material three_mat;
+	Material four_mat;
+	Material five_mat;
+	Material six_mat;
+	Material seven_mat;
+	Material eight_mat;
+	Material nine_mat;
+
 	//--- OBJECT OF CUBE SURPRISE ---
 	EntityUI* bullet = nullptr;
 	EntityUI* thunder = nullptr;
@@ -119,6 +132,19 @@ public:
 	EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;
 
+	//--- SCORE ---
+	EntityUI* score = nullptr;
+	Material zero_mat;
+	Material one_mat;
+	Material two_mat;
+	Material three_mat;
+	Material four_mat;
+	Material five_mat;
+	Material six_mat;
+	Material seven_mat;
+	Material eight_mat;
+	Material nine_mat;
+
 	HCHANNEL winBackground;
 
 
@@ -142,6 +168,19 @@ public:
 	EntityUI* background = nullptr;
 	EntityUI* play_button = nullptr;
 	EntityUI* exit_button = nullptr;
+
+	//--- SCORE ---
+	EntityUI* score = nullptr;
+	Material zero_mat;
+	Material one_mat;
+	Material two_mat;
+	Material three_mat;
+	Material four_mat;
+	Material five_mat;
+	Material six_mat;
+	Material seven_mat;
+	Material eight_mat;
+	Material nine_mat;
 
 	GameOverStage();
 	void render();

@@ -75,10 +75,11 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/circuit_test2/circuitv2.scene", &root);
+	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
 	renderCubeWaypoint();
-	renderPipeWaypoint();
 	instantiateEnemies();
+
+	//channel = Audio::Play("data/audio/,  BASS_SAMPLE_LOOP); //riproduce musica in loop
 
 }
 
@@ -290,14 +291,15 @@ bool World::parseScene(const char* filename, Entity* root)
 		EntityCollider* new_entity = nullptr;
 
 
-		size_t tag_pipe = data.first.find("@pipe");
+		size_t tag_pipe = data.first.find("Pipe");
 		size_t tag_player = data.first.find("Player");
 		size_t tag_waypoints = data.first.find("@waypoint");
 		size_t tag_enemy = data.first.find("@enemy");
 		size_t tag_cwaypoints= data.first.find("@cube");
 
 		if (tag_pipe != std::string::npos) {
-			pipewaypoints.push_back(render_data.models[0].getTranslation());
+			Mesh* mesh = Mesh::Get(mesh_name.c_str());
+			new_entity = new PipeCollider(mesh, mat);
 		}
 		else if (tag_player != std::string::npos) { 
 			assert(root_player);
@@ -433,10 +435,9 @@ void World::renderCubeWaypoint() {
 
 //Function that load a Pipe in the position of the waypoints with tag @pipe
 void World::renderPipeWaypoint() {
-	Mesh* pipe_mesh = Mesh::Get("data/meshes/pipe/pipe.obj"); 
+	Mesh* pipe_mesh = Mesh::Get("data/meshes/pipe/box.obj"); //PONER EL PIPE .obj
 	Material pipe_material;
-	pipe_material.diffuse = Texture::Get("data/meshes/pipe/Dokan1_Alb.png"); 
-
+	pipe_material.diffuse = Texture::Get("data/meshes/pipe/box_mat.png"); //PONER EL PIPE texture
 
 	for (const auto& waypoint : pipewaypoints) {
 		PipeCollider* pipe_entity = new PipeCollider(pipe_mesh, pipe_material);
