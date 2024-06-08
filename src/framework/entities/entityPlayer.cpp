@@ -258,7 +258,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 			Audio::fadeInChannel(move_channel, 500);
 			is_moving_sound_playing = true;
 		}
-		// Interrompi il suono di "handle" se è attualmente in riproduzione
 		if (handle_sound_playing) {
 			Audio::fadeOutChannel(handle_channel, 300);
 			Audio::Stop(handle_channel);
@@ -348,7 +347,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 
 		}
 	}
-	
+
 
 	bool is_grounded = false;
 	for (const sCollisionData& collision : ground_collisions) {
@@ -368,8 +367,14 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
 		velocity.y = 2.0f;
 	}
-}
 
+
+
+	//if (!is_grounded && !cube_collision) {
+	//	Audio::Play("data/sounds/collision_car.wav", 0.5f, BASS_SAMPLE_OVER_POS);
+	//}
+
+}
 
 //---- COLLISION CON PIPE -----
 void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {

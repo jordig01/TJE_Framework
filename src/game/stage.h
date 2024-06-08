@@ -100,6 +100,8 @@ class PlayStage : public Stage {
 	EntityUI* finish = nullptr;
 	bool finish_game = false;
 	float timer = 3.0f;
+	HCHANNEL start_channel;
+	bool start_music = true;
 
 
 	//--- SCORE ---

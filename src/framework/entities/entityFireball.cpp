@@ -43,7 +43,7 @@ bool EntityFireball::testCollisionWithEnemy() {
     for (Entity* e : World::instance->root.children) {
         EntityAI* enemy = dynamic_cast<EntityAI*>(e);
         if (enemy) {
-            if (this->mesh->testSphereCollision(enemy->model, this->model.getTranslation(), 5.0f, collision_point, collision_normal)) {
+            if (this->mesh->testSphereCollision(enemy->model, this->model.getTranslation(), 20.0f, collision_point, collision_normal)) {
       
                 // Add 1500 Points
                 World::instance->root_player->total_points += 1500;

@@ -271,6 +271,13 @@ void PlayStage::render()
 	if (!countdown_finished) {
 		countdown_num->render(camera2D);
 	}
+	
+	if(start_music){
+		start_channel = Audio::Play("data/sounds/race_start.mp3", 0.3f, BASS_MUSIC_MONO);
+	}
+	else {
+		Audio::Stop(start_channel);
+	}
 
 	if (countdown_timer <= 5.0f) {
 		countdown_num->material.diffuse = Texture::Get("data/Icons/2.png");
@@ -280,10 +287,13 @@ void PlayStage::render()
 	}
 	if (countdown_timer <= 2.0f) {
 		countdown_num->material.diffuse = Texture::Get("data/Icons/GO.png");
+		start_music = false;
 	}
-	if (countdown_timer <= 0.0f) {
+	if (countdown_timer  <= 0.0f) {
 		countdown_finished = true;
 	}
+
+
 
 
 	// --- Score render ---
@@ -335,6 +345,7 @@ void PlayStage::update(float seconds_elapsed) {
 
 	if (finish_game) {
 		timer -= seconds_elapsed;
+		Audio::Play("data/sounds/finish.mp3", 0.5f, BASS_MUSIC_MONO);
 	}
 }
 
