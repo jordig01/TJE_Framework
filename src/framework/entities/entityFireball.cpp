@@ -9,14 +9,14 @@
 
 
 EntityFireball::EntityFireball() {
-	this->mesh = Mesh::Get("data/meshes/fireball/fireball.obj");
+    this->mesh = Mesh::Get("data/meshes/fireball/fireball.obj");
 	this->material.diffuse = Texture::Get("data/textures/PlayerFireBall_alb.png");
 }
 
 EntityFireball::EntityFireball(Mesh* mesh, Material material) {
 	this->mesh = mesh;
 	this->material = material;
-}
+ }
 
 EntityFireball::~EntityFireball()
 {

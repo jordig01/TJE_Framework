@@ -400,6 +400,20 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 
 //---- COLLISION CON PIPE -----
 void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
+	static bool invincible = false;
+	static float invincibility_timer = 0.0f;
+	const float invincibility_duration = 3.0f; // Duration of invincibility in seconds
+
+	// If the player is invincible, update the timer and check if it has expired
+	if (invincible) {
+		invincibility_timer += seconds_elapsed;
+		if (invincibility_timer >= invincibility_duration) {
+			invincible = false;
+			invincibility_timer = 0.0f;
+		}
+		return; // Exit the function without checking collisions if the player is invincible
+	}
+
 	for (auto e : World::get_instance()->root.children) {
 		PipeCollider* pipe = dynamic_cast<PipeCollider*>(e);
 		if (pipe != nullptr) {
@@ -411,11 +425,17 @@ void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollis
 				loseLife(1);
 				losePoints(500);
 				std::cout << "PIPE COLLIDED: Life lost, points deducted." << std::endl;
-				break;
+
+				// Activate invincibility
+				invincible = true;
+				invincibility_timer = 0.0f;
+
+				break; // Exit the loop once a collision with a pipe is found
 			}
 		}
 	}
 }
+
 
 
 
