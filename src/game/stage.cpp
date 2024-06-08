@@ -155,7 +155,7 @@ PlayStage::PlayStage() {
 	// --- Finish ---
 	Material finish_mat;
 	finish_mat.diffuse = Texture::Get("data/Icons/finish_title.png");
-	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(150, 150), finish_mat);
+	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(400, 200), finish_mat);
 
 
 	// ---- Score ----
