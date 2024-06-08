@@ -154,22 +154,23 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 		}
 
-		if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && moving != 0) {
-			if (Input::isKeyPressed(SDL_SCANCODE_V)) drift = 2.0f;
+		if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && is_moving) {
+			if (Input::isKeyPressed(SDL_SCANCODE_V)) {
+				drift = 2.0f;
+				is_dripping = true;
+			}
 			right = false;
 			left = true;
 			turning = true;
 			rotation -= 0.004f * moving * drift;
-			cam_rotation -= 0.001f * moving * drift;
+			cam_rotation -= 0.001f * drift;
 			if (cam_rotation < rotation) cam_rotation += 0.003f * drift;
-			cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
-
-			is_moving = true;
+			cam_rotation = clamp(cam_rotation, rotation - 0.3f * drift, rotation + 0.3f * drift);
 
 		}
 
 
-		if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && moving != 0) {
+		if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && is_moving) {
 			if (Input::isKeyPressed(SDL_SCANCODE_V)) {
 				drift = 2.0f;
 				is_dripping = true;
@@ -178,10 +179,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 			left = false;
 			turning = true;
 			rotation += 0.004f * moving * drift;
-			cam_rotation += 0.001f * moving * drift;
+			cam_rotation += 0.001f * drift;
 			if (cam_rotation > rotation)cam_rotation -= 0.003f * drift;
-			cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation + 0.5f * drift);
-			is_moving = true;
+			cam_rotation = clamp(cam_rotation, rotation - 0.3f * drift, rotation + 0.3f * drift);
 
 		}
 	}
@@ -191,12 +191,12 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	if (cam_rotation != rotation && !turning) {
 		if (left) {
-			cam_rotation -= 0.004f * last_moving * drift;
-			cam_rotation = clamp(cam_rotation, rotation, rotation + 0.5f * drift);
+			cam_rotation -= 0.004f * drift;
+			cam_rotation = clamp(cam_rotation, rotation, rotation + 0.6f);
 		}
 		else if (right) {
-			cam_rotation += 0.004f * last_moving * drift;
-			cam_rotation = clamp(cam_rotation, rotation - 0.5f * drift, rotation);
+			cam_rotation += 0.004f * drift;
+			cam_rotation = clamp(cam_rotation, rotation - 0.6f, rotation);
 		}
 	}
 	front = Vector3(sin(rotation), 0, -cos(rotation));
@@ -304,7 +304,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 void EntityPlayer::handleCollisions(float seconds_elapsed) {
 	std::vector<sCollisionData> collisions;
 	std::vector<sCollisionData> ground_collisions;
-
+	bool cube_collision = false;
 
 	for (auto e : World::get_instance()->root.children) {
 		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
@@ -321,6 +321,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			if (!cube_collisions.empty()) {
 				handleCubePickup(cube);
 				std::cout << "CUBE SURPRISE COLLIDED " << cube->collected << std::endl;
+				cube_collision = true;
 			}
 		}
 
@@ -329,53 +330,25 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 
 	}
 
-	for (const sCollisionData& collision : collisions) {
-		Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
-		if (fabsf(collision.col_normal.dot(Vector3::UP)) < 0.8f) {
-			/*std::cout << "collision point: "<<collision.col_point.x << ","<<collision.col_point.y << "," << collision.col_point.z << std::endl;
-			std::cout << "player position: "<<position.x << ","<< position.y << "," << position.z << std::endl;*/
-			std::cout << "collision point: " << collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
-			std::cout << "player position: " << position.dot(Vector3(1, 0, 1)) << std::endl;
-			std::cout << position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) << std::endl;
-			//position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0
-			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
-			//	if (fabs(position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1))) < 7) {
-			//		collide = 1.0f;
-			//	}
-			//	else {
-			//		collide = -1.0f;
-			//	}
-			//	
-			//}
-			//else {
-			//	if (fabs(position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1))) < 7) {
-			//		collide = -1.0f;
-			//	}
-			//	else {
-			//		collide = 1.0f;
-			//	}
-			//}
-			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0/*cambiar condición*/) {
-			//	collide = 1.0f;
+	if (!cube_collision) {
+		for (const sCollisionData& collision : collisions) {
+			Vector3 newDir = velocity.dot(collision.col_normal) * collision.col_normal;
+			if (fabsf(collision.col_normal.dot(Vector3::UP)) < 0.8f) {
+				if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) {
+					collide = -1.0f;
 
-			//}
-			//else {
-			//	collide = -1.0f;
-			//}
-			//if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) collide = true; else collide = false;
-			if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) {
-				collide = -1.0f;
+				}
+				else {
+					collide = 1.0f;
+				}
+			}
+			velocity.x -= newDir.x;
+			velocity.y -= newDir.y;
+			velocity.z -= newDir.z;
 
-			}
-			else {
-				collide = 1.0f;
-			}
 		}
-		velocity.x -= newDir.x;
-		velocity.y -= newDir.y;
-		velocity.z -= newDir.z;
-
 	}
+	
 
 	bool is_grounded = false;
 	for (const sCollisionData& collision : ground_collisions) {

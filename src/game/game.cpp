@@ -172,7 +172,7 @@ void Game::onResize(int width, int height)
 	World::get_instance()->camera->aspect = width / (float)height;
 	World::get_instance()->camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f);
 	World::get_instance()->camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
-	for (Stage* s : stages) s->reload();
+	//for (Stage* s : stages) s->reload();
 }
 
 

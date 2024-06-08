@@ -304,6 +304,8 @@ void WinStage::render()
 	Camera* camera2D = World::get_instance()->camera2D;
 
 	background->render(camera2D);
+	play_button->render(camera2D);
+	exit_button->render(camera2D);
 }
 
 void WinStage::update(float seconds_elapsed) {
