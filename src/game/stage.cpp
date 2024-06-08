@@ -33,6 +33,18 @@ MenuStage::MenuStage()
 	background_channel = Audio::Play("data/sounds/intro_audio.wav", 0.2f, BASS_SAMPLE_LOOP);
 }
 
+void MenuStage::reload() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
+
+	play_button = new EntityUI(Vector2(width * 0.5, height * 0.5 + 50), Vector2(200, 75), play_button->material, eButtonId::PlayButton);
+
+	exit_button = new EntityUI(Vector2(width * 0.5, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
+
+}
+
 
 void MenuStage::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
@@ -135,6 +147,37 @@ PlayStage::PlayStage() {
 	fireball = new EntityUI(Vector2(700, 40), Vector2(75, 75), fireball_mat);
 
 
+}
+
+void PlayStage::reload() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+
+	// ---- Square and Surprise Objects ----
+	square = new EntityUI(Vector2(50, 45), Vector2(75, 75), square->material);
+
+	thunder = new EntityUI(Vector2(50, 45), Vector2(50, 50), thunder->material);
+
+	bullet = new EntityUI(Vector2(50, 45), Vector2(50, 50), bullet->material);
+
+	heart = new EntityUI(Vector2(50, 45), Vector2(50, 50), heart->material);
+
+	fake_cube = new EntityUI(Vector2(50, 45), Vector2(50, 50), fake_cube->material);
+
+
+	// ---- Lifes, Turbo and Fireballs ----
+	life0 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life0->material);
+
+	life1 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life1->material);
+
+	life2 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life2->material);
+
+	life3 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life3->material);
+
+	boost = new EntityUI(Vector2(width - 40 , height - 130), Vector2(20, 200), boost->material);
+
+	fireball = new EntityUI(Vector2(width - 100, 40), Vector2(75, 75), fireball->material);
 }
 
 
@@ -243,9 +286,17 @@ WinStage::WinStage()
 
 	background->addChild(play_button);
 	background->addChild(exit_button);
+}
 
+void WinStage::reload() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
 
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
+	play_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 50), Vector2(200, 75), play_button->material, eButtonId::PlayButton);
+
+	exit_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
 }
 
 void WinStage::render()
@@ -297,11 +348,25 @@ GameOverStage::GameOverStage()
 	background->addChild(exit_button);
 }
 
+void GameOverStage::reload() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
+
+	play_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 50), Vector2(200, 75), play_button->material, eButtonId::PlayButton);
+
+	exit_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
+
+}
+
 void GameOverStage::render()
 {
 	Camera* camera2D = World::get_instance()->camera2D;
 
 	background->render(camera2D);
+	play_button->render(camera2D);
+	exit_button->render(camera2D);
 
 }
 

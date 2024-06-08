@@ -38,6 +38,7 @@ public:
 
 
 	virtual void onButtonPressed(eButtonId buttonId) {};
+	virtual void reload() {};
 
 };
 
@@ -64,6 +65,7 @@ public:
 	void onEnterStage();
 	void onExitStage();
 	void onButtonPressed(eButtonId buttonId);
+	void reload();
 
 };
 
@@ -102,6 +104,7 @@ public:
 	void update(float seconds_elapsed) override;
 	void onEnterStage();
 	void onExitStage();
+	void reload();
 
 };
 
@@ -123,6 +126,7 @@ public:
 	void update(float seconds_elapsed);
 	void onEnterStage();
 	void onExitStage();
+	void reload();
 
 };
 
@@ -144,4 +148,5 @@ public:
 	void update(float seconds_elapsed);
 	void onEnterStage();
 	void onExitStage();
+	void reload();
 };
