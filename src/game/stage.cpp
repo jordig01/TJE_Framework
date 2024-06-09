@@ -155,6 +155,9 @@ PlayStage::PlayStage() {
 	int width = Game::instance->window_width;
 	int height = Game::instance->window_height;
 
+	Material controls_material;
+	controls_material.diffuse = Texture::Get("data/hud/controls.png");
+	controls = new EntityUI(Vector2(50, 100), Vector2(100, 25), controls_material);
 
 	// ---- Square and Surprise Objects ----
 	Material square_material;
@@ -240,7 +243,9 @@ void PlayStage::reload() {
 
 
 	// ---- Square and Surprise Objects ----
-	square = new EntityUI(Vector2(50, 45), Vector2(75, 75), square->material);
+	square = new EntityUI(Vector2(50, 100), Vector2(100, 25), square->material);
+
+	controls = new EntityUI(Vector2(75, 150), Vector2(100, 40), controls->material);
 
 	thunder = new EntityUI(Vector2(50, 45), Vector2(50, 50), thunder->material);
 
@@ -293,6 +298,7 @@ void PlayStage::render()
 	}
 
 	boost->render(camera2D);
+	controls->render(camera2D);
 
 	fireball->render(camera2D);
 
@@ -400,6 +406,7 @@ void PlayStage::update(float seconds_elapsed) {
 	boost->update(seconds_elapsed);
 	square->update(seconds_elapsed);
 	score->update(seconds_elapsed);
+	controls->update(seconds_elapsed);
 
 	if (!countdown_finished) {
 		countdown_timer -= seconds_elapsed;

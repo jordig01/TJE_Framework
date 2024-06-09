@@ -100,6 +100,7 @@ class PlayStage : public Stage {
 	eStages type = PLAY_STAGE;
 
 	EntityUI* square = nullptr;
+	EntityUI* controls = nullptr;
 
 	//--- LIFES ---
 	EntityUI* life0 = nullptr;
