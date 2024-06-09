@@ -75,12 +75,10 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/circuit_test2/circuitv2.scene", &root);//sample2.scene
+	parseScene("data/circuit_test2/circuitv2.scene", &root);
 	renderCubeWaypoint();
 	renderPipeWaypoint();
 	instantiateEnemies();
-
-	//channel = Audio::Play("data/audio/,  BASS_SAMPLE_LOOP); //riproduce musica in loop
 
 }
 
