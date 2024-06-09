@@ -100,11 +100,11 @@ TutorialStage::TutorialStage()
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
 
 	Material play_mat;
-	play_mat.diffuse = Texture::Get("data/hud/start_button2.png");
-	play_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(200, 75), play_mat, eButtonId::ContinueButton);
-	play_button->hover_texture = Texture::Get("data/hud/start_button.png");
+	play_mat.diffuse = Texture::Get("data/hud/continue.png");
+	continue_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(200, 75), play_mat, eButtonId::ContinueButton);
+	continue_button->hover_texture = Texture::Get("data/hud/continue_2.png");
 
-	background->addChild(play_button);
+	background->addChild(continue_button);
 }
 
 void TutorialStage::reload() {
@@ -113,26 +113,26 @@ void TutorialStage::reload() {
 
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
-	play_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(200, 75), play_button->material, eButtonId::ContinueButton);
+	continue_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(501, 145), continue_button->material, eButtonId::ContinueButton);
 
 }
 
 
 void TutorialStage::update(float seconds_elapsed) {
 	background->update(seconds_elapsed);
-	play_button->update(seconds_elapsed);
+	continue_button->update(seconds_elapsed);
 }
 
 void TutorialStage::onEnterStage()
 {
-
+	background_channel = Audio::Play("data/sounds/tutorial_menu.mp3", 0.6f, BASS_MUSIC_LOOP);
 }
 
 void TutorialStage::render() {
 	Camera* camera2D = World::get_instance()->camera2D;
 
 	background->render(camera2D);
-	play_button->render(camera2D);
+	continue_button->render(camera2D);
 }
 
 void TutorialStage::onButtonPressed(eButtonId buttonId)
@@ -146,7 +146,7 @@ void TutorialStage::onButtonPressed(eButtonId buttonId)
 
 void TutorialStage::onExitStage()
 {
-
+	Audio::Stop(background_channel);
 }
 
 
@@ -215,7 +215,7 @@ PlayStage::PlayStage() {
 	// --- Finish ---
 	Material finish_mat;
 	finish_mat.diffuse = Texture::Get("data/Icons/finish_title.png");
-	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(400, 200), finish_mat);
+	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(200, 40), finish_mat);
 
 
 	// ---- Score ----
@@ -491,6 +491,10 @@ void WinStage::render()
 {
 	Camera* camera2D = World::get_instance()->camera2D;
 	EntityPlayer* player = World::get_instance()->root_player;
+	
+
+	int height = Game::instance->window_height;
+	int width = Game::instance->window_width;
 
 	background->render(camera2D);
 	play_button->render(camera2D);
@@ -499,30 +503,36 @@ void WinStage::render()
 	score->render(camera2D);
 	int current_score = player->total_points;
 	int digits = 0;
+		
+	if (current_score <= 0) {
+		EntityUI* zero = new EntityUI(Vector2(250, height * 0.5 - 50), Vector2(50, 50), zero_mat);
+		zero->render(camera2D);
+		return;
+	}
+
+
 
 	while (current_score > 0) {
 		current_score = current_score / 10;
 		digits++;
 	}
 
-	int height = Game::instance->window_height;
 	current_score = player->total_points;
 	EntityUI* num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), zero_mat);;
 	int number;
 
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;
-
-		if (number == 0) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), zero_mat);
-		else if (number == 1) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), one_mat);
-		else if (number == 2) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), two_mat);
-		else if (number == 3) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), three_mat);
-		else if (number == 4) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), four_mat);
-		else if (number == 5) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), five_mat);
-		else if (number == 6) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), six_mat);
-		else if (number == 7) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), seven_mat);
-		else if (number == 8) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), eight_mat);
-		else if (number == 9) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), nine_mat);
+		if (number == 0) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), zero_mat);
+		else if (number == 1) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), one_mat);
+		else if (number == 2) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), two_mat);
+		else if (number == 3) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), three_mat);
+		else if (number == 4) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), four_mat);
+		else if (number == 5) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), five_mat);
+		else if (number == 6) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), six_mat);
+		else if (number == 7) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), seven_mat);
+		else if (number == 8) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), eight_mat);
+		else if (number == 9) num = new EntityUI(Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50), Vector2(50, 50), nine_mat);
 
 		num->render(camera2D);
 		current_score = current_score / 10;
@@ -621,6 +631,16 @@ void GameOverStage::render()
 	current_score = player->total_points;
 	EntityUI* num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), zero_mat);;
 	int number;
+
+
+	// If the score is zero or less then zero, render the zero digit and return
+	if (current_score <= 0) {
+		EntityUI* zero = new EntityUI(Vector2(250, height * 0.5 - 50), Vector2(50, 50), zero_mat);
+		zero->render(camera2D);
+		return;
+	}
+
+
 
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;

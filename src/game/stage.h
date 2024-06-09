@@ -83,7 +83,7 @@ public:
 
 
 	EntityUI* background = nullptr;
-	EntityUI* play_button = nullptr;
+	EntityUI* continue_button = nullptr;
 
 
 	void render();

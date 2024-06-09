@@ -254,7 +254,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	// --- Logic to handle car movement sound ---
 	if (is_moving) {
 		if (!is_moving_sound_playing) {
-			move_channel = Audio::Play("data/sounds/driving.wav", 0.3f, BASS_SAMPLE_OVER_POS | BASS_POS_LOOP);
+			move_channel = Audio::Play("data/sounds/driving.wav", 0.3f, BASS_SAMPLE_LOOP);
 			Audio::fadeInChannel(move_channel, 500);
 			is_moving_sound_playing = true;
 		}
@@ -266,7 +266,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	}
 	else {
 		if (!handle_sound_playing) {
-			handle_channel = Audio::Play("data/sounds/handle.wav", 0.5f, BASS_SAMPLE_OVER_POS);
+			handle_channel = Audio::Play("data/sounds/handle.wav", 0.5f, BASS_SAMPLE_LOOP);
 			handle_sound_playing = true;
 		}
 		if (is_moving_sound_playing) {

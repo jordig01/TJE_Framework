@@ -121,8 +121,8 @@ void World::render() {
 	drawText(350, 30, lives_info, Vector3(1, 1, 1), 2); */
 
 
-	std::string score_info = "SCORE: " + std::to_string(root_player->total_points);
-	drawText(5, 570, score_info, Vector3(1, 1, 1), 2);
+	//std::string score_info = "SCORE: " + std::to_string(root_player->total_points);
+	//drawText(5, 570, score_info, Vector3(1, 1, 1), 2);
 
 	/*std::string turbo_info = "TURBO: " + std::to_string(root_player->turbo);
 	drawText(660, 570, turbo_info, Vector3(1, 1, 1), 2);*/
