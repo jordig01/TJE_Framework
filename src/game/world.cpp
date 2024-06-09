@@ -142,7 +142,7 @@ void World::render() {
 void World::update(float seconds_elapsed) {
 
 
-	if (Input::wasKeyPressed(SDL_SCANCODE_C)) free_camera = !free_camera; 
+	if (Input::wasKeyPressed(SDL_SCANCODE_P)) free_camera = !free_camera; 
 	//printf("%d\n", free_camera);
 
 
@@ -226,7 +226,7 @@ void World::update(float seconds_elapsed) {
 
 
 	// Sirve para "disparar"
-	if (Input::wasKeyPressed(SDL_SCANCODE_T) && !free_camera) {
+	if (Input::wasKeyPressed(SDL_SCANCODE_Z) && !free_camera) {
 
 		shootFireball();
 	}

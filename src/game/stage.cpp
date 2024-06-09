@@ -64,14 +64,11 @@ void MenuStage::render() {
 	play_button->render(camera2D);
 	exit_button->render(camera2D);
 
-
-	
 	if (Input::wasKeyPressed(SDL_SCANCODE_1)) {
 		Game::instance->goToStage(WIN_STAGE);
 	}
 	if (Input::wasKeyPressed(SDL_SCANCODE_2)) {
 		Game::instance->goToStage(GAME_OVER);
-
 	}
 }
 
@@ -79,7 +76,7 @@ void MenuStage::onButtonPressed(eButtonId buttonId)
 {
 	switch (buttonId) {
 	case PlayButton:
-		Game::instance->goToStage(PLAY_STAGE);
+		Game::instance->goToStage(TUTORIAL_STAGE);
 		break;
 	case ExitButton:
 		exit(0);
@@ -90,6 +87,66 @@ void MenuStage::onButtonPressed(eButtonId buttonId)
 void MenuStage::onExitStage()
 {
 	Audio::Stop(background_channel);
+}
+
+//----- TUTORIAL STAGE -----
+TutorialStage::TutorialStage()
+{
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+	Material background_mat;
+	background_mat.diffuse = Texture::Get("data/hud/tutorial.png");
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
+
+	Material play_mat;
+	play_mat.diffuse = Texture::Get("data/hud/start_button2.png");
+	play_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(200, 75), play_mat, eButtonId::ContinueButton);
+	play_button->hover_texture = Texture::Get("data/hud/start_button.png");
+
+	background->addChild(play_button);
+}
+
+void TutorialStage::reload() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
+
+	play_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(200, 75), play_button->material, eButtonId::ContinueButton);
+
+}
+
+
+void TutorialStage::update(float seconds_elapsed) {
+	background->update(seconds_elapsed);
+	play_button->update(seconds_elapsed);
+}
+
+void TutorialStage::onEnterStage()
+{
+
+}
+
+void TutorialStage::render() {
+	Camera* camera2D = World::get_instance()->camera2D;
+
+	background->render(camera2D);
+	play_button->render(camera2D);
+}
+
+void TutorialStage::onButtonPressed(eButtonId buttonId)
+{
+	switch (buttonId) {
+	case ContinueButton:
+		Game::instance->goToStage(PLAY_STAGE);
+		break;
+	}
+}
+
+void TutorialStage::onExitStage()
+{
+
 }
 
 
@@ -264,6 +321,10 @@ void PlayStage::render()
 
 
 	if (timer < 0.0f) Game::instance->goToStage(WIN_STAGE);
+
+	if (Input::wasKeyPressed(SDL_SCANCODE_Q)) {
+		Game::instance->goToStage(TUTORIAL_STAGE);
+	}
 
 
 

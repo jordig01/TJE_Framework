@@ -155,7 +155,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		}
 
 		if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT)) && is_moving) {
-			if (Input::isKeyPressed(SDL_SCANCODE_V)) {
+			if (Input::isKeyPressed(SDL_SCANCODE_C)) {
 				drift = 2.0f;
 				is_dripping = true;
 			}
@@ -171,7 +171,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 
 		if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && is_moving) {
-			if (Input::isKeyPressed(SDL_SCANCODE_V)) {
+			if (Input::isKeyPressed(SDL_SCANCODE_C)) {
 				drift = 2.0f;
 				is_dripping = true;
 			}
