@@ -37,6 +37,7 @@ class EntityAI : public EntityCollider {
 	std::vector<WayPoint> path;
 
 	float total_time = 0.0f;
+	float oscillation_time = 0.0f;
 
 	eFSMStates state = PATROL;
 

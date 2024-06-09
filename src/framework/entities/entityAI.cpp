@@ -88,13 +88,13 @@ bool EntityAI::inLineOfSight(const Vector3& position)
 	Vector3 front = model.frontVector();
 	front.normalize();
 
-	//1st step: Vision Code
+	//1st step: Vision Cone
 	float angle = model.getYawRotationToAimTo(target);
 	float half_fov_radians = fov * 0.5f * DEG2RAD;
 
 	if (fabsf(angle) < half_fov_radians && distance < max_distance)
 	{
-		// 2nd staep: check obstacles
+		// 2nd step: check obstacles
 		sCollisionData data = World::get_instance()->ray_cast(origin, to_target, eCollisionFilter::ALL ^ eCollisionFilter::ENEMY, distance);
 		return !data.collided;
 	}
@@ -119,8 +119,14 @@ void EntityAI::followPath(float seconds_elapsed)
 		Vector3 target = path[waypoint_index].position;
 
 		lookAtTarget(target, seconds_elapsed);
-		
-		model.translate(0.f, 0.f, seconds_elapsed);
+
+		oscillation_time += seconds_elapsed;
+	
+		float lateral_amplitude = 0.01f; 
+		float lateral_frequency = 1.5f;
+		float lateral_oscillation = lateral_amplitude * sin(lateral_frequency * oscillation_time);
+
+		model.translate(lateral_oscillation, 0.f, seconds_elapsed * 2.f);
 
 		float distance_to_target = (target - origin).length();
 		if (distance_to_target < 0.1f) {
