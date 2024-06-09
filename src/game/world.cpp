@@ -199,8 +199,12 @@ void World::update(float seconds_elapsed) {
 		float orbit_dist = 35.0f;
 
 		root.update(seconds_elapsed);
-		root_player->update(seconds_elapsed);
 
+		if (move_player) {
+			root_player->update(seconds_elapsed);
+		}
+
+		
 		eye = root_player->model.getTranslation()  + front * orbit_dist;
 		eye.y += 18.0f;
 
@@ -212,6 +216,8 @@ void World::update(float seconds_elapsed) {
 		if (data.collided) {
 			eye = data.col_point;
 		}*/
+
+		
 
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
 

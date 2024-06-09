@@ -288,6 +288,7 @@ void PlayStage::render()
 	if (countdown_timer <= 2.0f) {
 		countdown_num->material.diffuse = Texture::Get("data/Icons/GO.png");
 		start_music = false;
+		World::instance->move_player = true;
 	}
 	if (countdown_timer  <= 0.0f) {
 		countdown_finished = true;

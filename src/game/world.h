@@ -51,6 +51,8 @@ public:
 
 	std::vector <WayPoint> cubewaypoints;
 
+	bool move_player = false;
+
 	//Prueba giro
 	int num_steps = 0;
 	float rot = -1.0f;
