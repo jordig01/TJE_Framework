@@ -451,7 +451,7 @@ void World::renderPipeWaypoint() {
 }
 
 
-//Function that load an Enemy in the position of the waypoints with tag @
+//Function that load an Enemy in the position of the waypoints with tag @enemy
 void World::instantiateEnemies()
 {
 	for (const auto& waypoint : enemy_waypoints) {
@@ -461,7 +461,7 @@ void World::instantiateEnemies()
 		enemy->setLayer(eCollisionFilter::ENEMY);
 		root.addChild(enemy);
 
-		waypoints.push_back(waypoint); 
+		waypoints.push_back(waypoint);  
 
 		// Crear un nuevo waypoint al lado del enemy y añadirlo a la lista
 		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f); 
