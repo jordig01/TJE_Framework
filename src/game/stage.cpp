@@ -321,26 +321,26 @@ void PlayStage::render()
 		fake_cube->render(camera2D);
 	}
 
-	if (player->position.y < 68.0f) {
+	if (player->position.y < 68.f) {
 		finish->render(camera2D);
 		finish_game = true;
 	}
 
 
-	if (timer < 0.0f) Game::instance->goToStage(WIN_STAGE);
-
-	if (Input::wasKeyPressed(SDL_SCANCODE_Q)) {
-		Game::instance->goToStage(TUTORIAL_STAGE);
+	if (timer < 0.0f) {
+		finish_game = false;
+		timer = 3.0f;
+		Game::instance->goToStage(WIN_STAGE);
 	}
-
 
 
 	// --- COUNTDOWN ---
+
 	if (!countdown_finished) {
 		countdown_num->render(camera2D);
 	}
-	
-	if(start_music){
+
+	if (start_music) {
 		start_channel = Audio::Play("data/sounds/race_start.mp3", 0.3f, BASS_MUSIC_MONO);
 	}
 	else {
@@ -358,11 +358,10 @@ void PlayStage::render()
 		start_music = false;
 		World::instance->move_player = true;
 	}
-	if (countdown_timer  <= 0.0f) {
+	if (countdown_timer <= 0.0f) {
 		countdown_finished = true;
 	}
-
-
+	
 
 
 	// --- Score render ---
@@ -421,6 +420,13 @@ void PlayStage::update(float seconds_elapsed) {
 
 void PlayStage::onEnterStage() {
 	sound = Audio::Play("data/sounds/mainScene.mp3", 0.05f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
+	countdown_finished = false;
+	countdown_timer = 6.0f;
+	countdown_num->material.diffuse = Texture::Get("data/Icons/3.png"); 
+	start_music = true;
+	World::instance->move_player = false;
+	//World::instance->root_player->model.setTranslation((World::instance->old_position_player));
+
 }
 
 
@@ -429,6 +435,7 @@ void PlayStage::onExitStage() {
 	Audio::Stop(sound);
 
 	EntityPlayer* player = World::instance->root_player;
+
 
 	Audio::Stop(player->turbo_channel);
 	Audio::Stop(player->handle_channel);

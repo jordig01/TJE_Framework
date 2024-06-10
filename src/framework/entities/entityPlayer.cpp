@@ -112,6 +112,8 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//Vector3 front_cam = mYaw.frontVector();
 	//Vector3 right_cam = mYaw.rightVector();
 
+
+
 	position = model.getTranslation();
 	static bool turbo_sound_playing = false;
 	static bool drift_sound_playing = false;
@@ -125,6 +127,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 	float moving = 0.0f;
 	bool turning = false;
 	float drift = 1.0f;
+
+
+
 
 	if (collide != 0.0f) {
 		velocity += front * last_moving * -1.0f * 20;//100;
@@ -289,8 +294,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 		Audio::fadeOutChannel(drift_sound_channel, 500); // Fade out the sound
 		drift_sound_playing = false;
 	}
-
-
 
 	EntityMesh::update(seconds_elapsed);
 

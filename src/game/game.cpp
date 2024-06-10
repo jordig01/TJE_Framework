@@ -75,6 +75,8 @@ void Game::goToStage(int new_stage) {
 
 void Game::restart()
 {
+
+	World* world = World::get_instance();
 	EntityPlayer * player = World::instance->root_player;
 	player->total_lives = 3;
 	player->total_points = 0;
@@ -82,9 +84,11 @@ void Game::restart()
 	player->turbo = 1000.f;
 	player->object_collected = "";
 	player->total_points = 0;
-	World::instance->renderCubeWaypoint();
-	World::instance->instantiateEnemies();
+
+	//World::instance->renderCubeWaypoint();
+	//World::instance->instantiateEnemies();
 	player->model.setTranslation((World::instance->old_position_player));
+
 	goToStage(PLAY_STAGE);
 }
 

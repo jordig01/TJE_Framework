@@ -121,6 +121,7 @@ class PlayStage : public Stage {
 
 	float countdown_timer = 6.0f;
 	bool countdown_finished = false;
+	bool restart_countdown = false;
 
 
 	//--- FINISH ----
