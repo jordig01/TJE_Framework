@@ -80,6 +80,8 @@ void Game::restart()
 	player->total_points = 0;
 	player->bullet_count = 5;
 	player->turbo = 1000.f;
+	player->object_collected = "";
+	player->total_points = 0;
 	World::instance->renderCubeWaypoint();
 	World::instance->instantiateEnemies();
 	player->model.setTranslation((World::instance->old_position_player));
