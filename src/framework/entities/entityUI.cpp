@@ -153,6 +153,7 @@ void EntityUI::update(double seconds_elapsed) {
 			Audio::Play("data/sounds/option.wav", 0.7f, BASS_SAMPLE_OVER_POS);
 			if (button_id == PlayButton) Game::instance->goToStage(1);
 			if (button_id == ContinueButton) Game::instance->goToStage(2);
+			if (button_id == ControlsButton) Game::instance->goToStage(1);
 			if (button_id == RestartButton){  Game::instance->restart();}
 			if (button_id == ExitButton) exit(0);
 		}

@@ -6,6 +6,7 @@ enum eButtonId{
 	ExitButton,
 	RestartButton,
 	ContinueButton,
+	ControlsButton,
 	UndefinedButton
 };
 

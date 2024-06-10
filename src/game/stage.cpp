@@ -101,7 +101,7 @@ TutorialStage::TutorialStage()
 
 	Material play_mat;
 	play_mat.diffuse = Texture::Get("data/hud/continue.png");
-	continue_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(200, 75), play_mat, eButtonId::ContinueButton);
+	continue_button = new EntityUI(Vector2(width - 200, height - 50), Vector2(200, 75), play_mat, eButtonId::ContinueButton);
 	continue_button->hover_texture = Texture::Get("data/hud/continue_2.png");
 
 	background->addChild(continue_button);
@@ -156,8 +156,9 @@ PlayStage::PlayStage() {
 	int height = Game::instance->window_height;
 
 	Material controls_material;
-	controls_material.diffuse = Texture::Get("data/hud/controls.png");
-	controls = new EntityUI(Vector2(50, 100), Vector2(100, 25), controls_material);
+	controls_material.diffuse = Texture::Get("data/hud/controls_1.png");
+	controls = new EntityUI(Vector2(50, 100), Vector2(115, 38), controls_material, eButtonId::ControlsButton);
+	controls->hover_texture = Texture::Get("data/hud/controls_2.png");
 
 	// ---- Square and Surprise Objects ----
 	Material square_material;
