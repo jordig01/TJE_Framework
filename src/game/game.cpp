@@ -86,6 +86,8 @@ void Game::restart()
 	player->total_points = 0;
 	player->countdown_finished = false;
 	player->countdown_timer = 6.0f;
+	World::instance->root_player->rotation = -1.5f;
+	World::instance->root_player->cam_rotation = -1.5f;
 	player->initial_rotation = true;
 	player->start_music = true;
 	World::instance->move_player = false;

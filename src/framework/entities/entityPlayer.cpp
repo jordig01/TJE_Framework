@@ -17,7 +17,7 @@ EntityPlayer::EntityPlayer(Mesh* mesh, Material material) {
 	this->velocity = Vector3(0, 0, 0);
 	this->walk_speed = 100.0f;
 	this->front = Vector3(0, 0, -1);
-	this->rotation = -1.0f;
+	this->rotation = -1.5f;
 	this->turbo = 1000.0f;
 	//animator.playAnimation();
 
@@ -71,7 +71,7 @@ void EntityPlayer::render(Camera* camera)
 		shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
 		shader->setUniform("u_model", m);
 
-		mesh->render(GL_LINES);
+		//mesh->render(GL_LINES);
 	}
 
 
@@ -85,7 +85,7 @@ void EntityPlayer::render(Camera* camera)
 
 		shader->setUniform("u_model", m);
 
-		mesh->render(GL_LINES);
+		//mesh->render(GL_LINES);
 
 	}
 
