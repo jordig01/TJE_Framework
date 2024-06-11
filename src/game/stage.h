@@ -119,10 +119,10 @@ class PlayStage : public Stage {
 	EntityUI * countdown_num = nullptr;
 	Material number_mat;
 
-	float countdown_timer = 6.0f;
+	/*float countdown_timer = 6.0f;
 	bool countdown_finished = false;
 	bool restart_countdown = false;
-	bool initial_rotation = true;
+	bool initial_rotation = true;*/
 
 
 	//--- FINISH ----

@@ -41,6 +41,10 @@ public:
     bool left = false;
     bool right = false;
     float last_moving = 0.0f;
+    bool countdown_finished = false;
+    float countdown_timer = 6.0f;
+    bool initial_rotation = true;
+    bool start_music = true;
 
     int total_lives = 3;
     int total_points = 0;

@@ -84,6 +84,11 @@ void Game::restart()
 	player->turbo = 1000.f;
 	player->object_collected = "";
 	player->total_points = 0;
+	player->countdown_finished = false;
+	player->countdown_timer = 6.0f;
+	player->initial_rotation = true;
+	player->start_music = true;
+	World::instance->move_player = false;
 
 	//World::instance->renderCubeWaypoint();
 	//World::instance->instantiateEnemies();

@@ -330,39 +330,39 @@ void PlayStage::render()
 	if (timer < 0.0f) {
 		finish_game = false;
 		timer = 3.0f;
-		initial_rotation = true;
-		World::instance->root_player->rotation = World::instance->root_player->rotation - 1.5f;
+		World::instance->root_player->initial_rotation = true;
+		World::instance->root_player->rotation -= World::instance->root_player->rotation + 1.5f;
 		World::instance->root_player->cam_rotation = -1.5f;
 		Game::instance->goToStage(WIN_STAGE);
 	}
 
 
 	// --- COUNTDOWN ---
-	if (initial_rotation) World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0)); initial_rotation = false;
-	if (!countdown_finished) {
+	if (World::instance->root_player->initial_rotation) World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0)); World::instance->root_player->initial_rotation = false;
+	if (!World::instance->root_player->countdown_finished) {
 		countdown_num->render(camera2D);
 	}
 
-	if (start_music) {
+	if (World::instance->root_player->start_music) {
 		start_channel = Audio::Play("data/sounds/race_start.mp3", 0.3f, BASS_MUSIC_MONO);
 	}
 	else {
 		Audio::Stop(start_channel);
 	}
 
-	if (countdown_timer <= 5.0f) {
+	if (World::instance->root_player->countdown_timer <= 5.0f) {
 		countdown_num->material.diffuse = Texture::Get("data/Icons/2.png");
 	}
-	if (countdown_timer <= 3.0f) {
+	if (World::instance->root_player->countdown_timer <= 3.0f) {
 		countdown_num->material.diffuse = Texture::Get("data/Icons/1.png");
 	}
-	if (countdown_timer <= 2.0f) {
+	if (World::instance->root_player->countdown_timer <= 2.0f) {
 		countdown_num->material.diffuse = Texture::Get("data/Icons/GO.png");
-		start_music = false;
+		World::instance->root_player->start_music = false;
 		World::instance->move_player = true;
 	}
-	if (countdown_timer <= 0.0f) {
-		countdown_finished = true;
+	if (World::instance->root_player->countdown_timer <= 0.0f) {
+		World::instance->root_player->countdown_finished = true;
 	}
 	
 
@@ -411,8 +411,8 @@ void PlayStage::update(float seconds_elapsed) {
 	score->update(seconds_elapsed);
 	controls->update(seconds_elapsed);
 
-	if (!countdown_finished) {
-		countdown_timer -= seconds_elapsed;
+	if (!World::instance->root_player->countdown_finished) {
+		World::instance->root_player->countdown_timer -= seconds_elapsed;
 	}
 
 	if (finish_game) {
@@ -423,11 +423,12 @@ void PlayStage::update(float seconds_elapsed) {
 
 void PlayStage::onEnterStage() {
 	sound = Audio::Play("data/sounds/mainScene.mp3", 0.05f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
-	countdown_finished = false;
-	countdown_timer = 6.0f;
-	countdown_num->material.diffuse = Texture::Get("data/Icons/3.png"); 
-	start_music = true;
-	World::instance->move_player = false;
+	countdown_num->material.diffuse = Texture::Get("data/Icons/3.png");
+	/*World::instance->root_player->countdown_finished = false;
+	World::instance->root_player->countdown_timer = 6.0f;
+	World::instance->root_player->initial_rotation = true;
+	World::instance->root_player->start_music = true;
+	World::instance->move_player = false;*/
 	//World::instance->root_player->model.setTranslation((World::instance->old_position_player));
 
 }
