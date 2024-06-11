@@ -330,12 +330,15 @@ void PlayStage::render()
 	if (timer < 0.0f) {
 		finish_game = false;
 		timer = 3.0f;
+		initial_rotation = true;
+		World::instance->root_player->rotation = World::instance->root_player->rotation - 1.5f;
+		World::instance->root_player->cam_rotation = -1.5f;
 		Game::instance->goToStage(WIN_STAGE);
 	}
 
 
 	// --- COUNTDOWN ---
-
+	if (initial_rotation) World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0)); initial_rotation = false;
 	if (!countdown_finished) {
 		countdown_num->render(camera2D);
 	}

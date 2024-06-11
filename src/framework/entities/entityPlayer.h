@@ -36,8 +36,8 @@ public:
     int walk_speed;
     Vector3 velocity;
     Vector3 position;
-    float rotation = -1.0f;
-    float cam_rotation = -1.0f;
+    float rotation = -1.5f;
+    float cam_rotation = -1.5f;
     bool left = false;
     bool right = false;
     float last_moving = 0.0f;
