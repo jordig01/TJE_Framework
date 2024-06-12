@@ -439,13 +439,13 @@ void World::renderCubeWaypoint() {
 
 //Function that load a Pipe in the position of the waypoints with tag @pipe
 void World::renderPipeWaypoint() {
-	Mesh* pipe_mesh = Mesh::Get("data/meshes/pipe/pipe.obj"); 
+	Mesh* pipe_mesh = Mesh::Get("data/meshes/pipe/pipe_mesh.obj"); 
 	Material pipe_material;
-	pipe_material.diffuse = Texture::Get("data/meshes/pipe/Dokan1_Alb.png"); 
+	pipe_material.diffuse = Texture::Get("data/meshes/pipe/pipe.png"); 
 
 	for (const auto& waypoint : pipewaypoints) {
 		PipeCollider* pipe_entity = new PipeCollider(pipe_mesh, pipe_material);
-		pipe_entity->addLOD({ Mesh::Get("data/meshes/pipe/pipe_lod.obj"), 100.f });
+		pipe_entity->addLOD({ Mesh::Get("data/meshes/pipe/pipe_low.obj"), 200.f });
 		pipe_entity->model.setTranslation(waypoint.position);
 		root.addChild(pipe_entity);
 	}
@@ -458,6 +458,7 @@ void World::instantiateEnemies()
 	for (const auto& waypoint : enemy_waypoints) {
 		Vector3 position = waypoint.position;
 		EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
+		enemy->addLOD({ Mesh::Get("data/meshes/enemy/enemy_low.obj"), 200.f });
 		enemy->model.setTranslation(position);
 		enemy->setLayer(eCollisionFilter::ENEMY);
 		root.addChild(enemy);
