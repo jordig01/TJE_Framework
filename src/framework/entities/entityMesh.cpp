@@ -41,7 +41,7 @@ void EntityMesh::render(Camera* camera) {
 	std::vector<Matrix44>* final_models = &models;
 	std::vector<Matrix44> models_instanced;
 
-
+	Mesh* final_mesh = mesh;
 	
 	if (isInstanced) {
 		for (int i = 0; i < models.size(); ++i) {
@@ -83,7 +83,7 @@ void EntityMesh::render(Camera* camera) {
 	material.shader->setUniform("u_color", material.color);
 	material.shader->setUniform("u_viewprojection", camera->viewprojection_matrix);
 
-	//Para el cubemap
+	//Para el cubemap5
 	material.shader->setUniform("u_camera_position", camera->eye);
 
 	if (material.diffuse) {
@@ -116,6 +116,15 @@ void EntityMesh::render(Camera* camera) {
 
 	material.shader->setUniform("u_maps", maps);
 
+	float distance = camera->eye.distance(model.getTranslation());
+
+	for (int i = 0; i < mesh_lods.size(); ++i) {
+		sMeshLOD mesh_lod = mesh_lods[i];
+		if (distance > mesh_lod.distance) {
+			final_mesh = mesh_lod.mesh_lod;
+		}
+	}
+
 
 	//si no estoy instanciando le envio mi model
 	if (!isInstanced) {
@@ -124,13 +133,13 @@ void EntityMesh::render(Camera* camera) {
 
 	//si instanciado renderInstance
 	if (isInstanced)
-		mesh->renderInstanced(GL_TRIANGLES, final_models->data(), final_models->size());
+		final_mesh->renderInstanced(GL_TRIANGLES, final_models->data(), final_models->size());
 	else {
 		if (isAnimated) {
-			mesh->renderAnimated(GL_TRIANGLES, &animator.getCurrentSkeleton());
+			final_mesh->renderAnimated(GL_TRIANGLES, &animator.getCurrentSkeleton());
 		}
 		else {
-			mesh->render(GL_TRIANGLES);
+			final_mesh->render(GL_TRIANGLES);
 		}
 
 	}
