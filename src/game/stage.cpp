@@ -321,7 +321,11 @@ void PlayStage::render()
 		fake_cube->render(camera2D);
 	}
 
-	if (player->position.y < 68.f) {
+	if (player->position.y > 68.f) {
+		just_enter = false;
+	}
+
+	if (player->position.y < 68.f && !just_enter) {
 		finish->render(camera2D);
 		finish_game = true;
 	}
@@ -329,6 +333,7 @@ void PlayStage::render()
 
 	if (timer < 0.0f) {
 		finish_game = false;
+		just_enter = true;
 		timer = 3.0f;
 		World::instance->root_player->initial_rotation = true;
 		World::instance->root_player->rotation -= World::instance->root_player->rotation + 1.5f;

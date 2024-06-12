@@ -131,6 +131,7 @@ class PlayStage : public Stage {
 	float timer = 3.0f;
 	HCHANNEL start_channel;
 	bool start_music = true;
+	bool just_enter = true;
 
 
 	//--- SCORE ---
