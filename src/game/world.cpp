@@ -445,6 +445,7 @@ void World::renderPipeWaypoint() {
 
 	for (const auto& waypoint : pipewaypoints) {
 		PipeCollider* pipe_entity = new PipeCollider(pipe_mesh, pipe_material);
+		pipe_entity->addLOD({ Mesh::Get("data/meshes/pipe/pipe_lod.obj"), 100.f });
 		pipe_entity->model.setTranslation(waypoint.position);
 		root.addChild(pipe_entity);
 	}
