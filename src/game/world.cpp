@@ -359,9 +359,22 @@ void World::addEntity(Entity* entity)
 
 void World::removeEntity(Entity* entity)
 {
-	root.removeChild(entity);
+	if (EntityAI* enemy = dynamic_cast<EntityAI*>(entity)) {
+		Vector3 original_position = enemy->original_position;
+		World::instance->eliminated_enemies.push_back({enemy,  original_position});
+	}
 
+	if (CubeCollider* cube = dynamic_cast<CubeCollider*>(entity)) {
+		// Store the original position of the cube
+		Vector3 original_position = cube->model.getTranslation();
+		// Add the cube and its position to the list of eliminated cubes
+		World::instance->eliminated_cubes.push_back({ cube, original_position });
+	}
+
+	root.removeChild(entity);
 }
+
+
 
 // --- RAY CAST FUNCTION ---
 sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist)
@@ -397,6 +410,7 @@ sCollisionData World::ray_cast(const Vector3& origin, const Vector3& direction, 
 }
 
 
+
 //----- FUNCTION TO SHOOT A FIREBALL ----
 void World::shootFireball()
 {
@@ -423,6 +437,7 @@ void World::shootFireball()
 }
 
 
+// ---- CUBE RENDER PART ----
 
 //Function that load a Cube in the position of the waypoints with tag @cube
 void World::renderCubeWaypoint() {
@@ -436,6 +451,25 @@ void World::renderCubeWaypoint() {
 		root.addChild(cube_entity);
 	}
 }
+
+//Function that render only the cubes removed for the restart of the game
+void World::renderRemovedCube() {
+
+	Mesh* cube_mesh = Mesh::Get("data/meshes/cube/box.obj");
+	Material cube_material;
+	cube_material.diffuse = Texture::Get("data/meshes/cube/box_mat.png");
+
+	for (const auto& [cube, position] : eliminated_cubes) {
+		CubeCollider* new_cube = new CubeCollider(cube_mesh, cube_material);
+		new_cube->model.setTranslation(position);
+		root.addChild(new_cube);
+	}
+
+	eliminated_cubes.clear();
+}
+
+
+// --- PIPE RENDER PART ---
 
 //Function that load a Pipe in the position of the waypoints with tag @pipe
 void World::renderPipeWaypoint() {
@@ -452,6 +486,9 @@ void World::renderPipeWaypoint() {
 }
 
 
+
+// --- ENEMY RENDER PART ---
+
 //Function that load an Enemy in the position of the waypoints with tag @enemy
 void World::instantiateEnemies()
 {
@@ -459,6 +496,7 @@ void World::instantiateEnemies()
 		Vector3 position = waypoint.position;
 		EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
 		enemy->addLOD({ Mesh::Get("data/meshes/enemy/enemy_low.obj"), 200.f });
+		enemy->original_position = waypoint.position;
 		enemy->model.setTranslation(position);
 		enemy->setLayer(eCollisionFilter::ENEMY);
 		root.addChild(enemy);
@@ -470,6 +508,28 @@ void World::instantiateEnemies()
 		WayPoint new_waypoint = WayPoint(new_waypoint_position);
 		waypoints.push_back(new_waypoint); 
 	}
+}
+
+
+void World::renderRemovedEnemies() {
+	for (const auto& [enemy, position] : eliminated_enemies) {
+		EntityAI* new_enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
+		new_enemy->addLOD({ Mesh::Get("data/meshes/enemy/enemy_low.obj"), 200.f });
+		new_enemy->model.setTranslation(position);
+		new_enemy->setLayer(eCollisionFilter::ENEMY);
+		root.addChild(new_enemy);
+
+		// Opcionalmente añadir un nuevo waypoint al lado del enemigo
+		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f);
+		WayPoint new_waypoint = WayPoint(new_waypoint_position);
+		waypoints.push_back(new_waypoint);
+	}
+
+	// Limpiar la lista después de re-instanciar
+	eliminated_enemies.clear();
+
+
+
 }
 
 

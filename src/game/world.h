@@ -15,9 +15,8 @@ class World {
 
 
 public:
-	
-	static World* instance;
 
+	static World* instance;
 	static World* get_instance() {
 		if (instance != nullptr) 
 			return instance;
@@ -83,10 +82,18 @@ public:
 	
 	void shootFireball();
 
-	void renderCubeWaypoint();
-	void renderPipeWaypoint();
-	void instantiateEnemies();
 
+	std::vector<std::pair<EntityAI*, Vector3>> eliminated_enemies;
+	std::vector<std::pair<CubeCollider*, Vector3>> eliminated_cubes;
+
+
+	void renderCubeWaypoint();
+	void renderRemovedCube();
+
+	void renderPipeWaypoint();
+
+	void instantiateEnemies();
+	void renderRemovedEnemies();
 	
 	sCollisionData ray_cast(const Vector3& origin, const Vector3& direction, int layer, float max_ray_dist);
 

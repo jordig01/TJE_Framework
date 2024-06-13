@@ -77,7 +77,7 @@ void Game::restart()
 {
 
 	World* world = World::get_instance();
-	EntityPlayer * player = World::instance->root_player;
+	EntityPlayer* player = World::instance->root_player;
 	player->total_lives = 3;
 	player->total_points = 0;
 	player->bullet_count = 5;
@@ -92,8 +92,8 @@ void Game::restart()
 	player->start_music = true;
 	World::instance->move_player = false;
 
-	//World::instance->renderCubeWaypoint();
-	//World::instance->instantiateEnemies();
+	World::instance->renderRemovedCube();	
+	World::instance->renderRemovedEnemies();
 	player->model.setTranslation((World::instance->old_position_player));
 
 	goToStage(PLAY_STAGE);

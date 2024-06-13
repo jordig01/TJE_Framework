@@ -53,7 +53,7 @@ void EntityCollider::getCollisions(const Vector3& target_position, std::vector<s
 
 void CubeCollider::render(Camera* camera)
 {
-	if (collected) return;
+	if (collected) World::instance->removeEntity(this);
 
 	EntityMesh::render(camera);
 }

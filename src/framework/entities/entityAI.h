@@ -42,6 +42,9 @@ class EntityAI : public EntityCollider {
 	eFSMStates state = PATROL;
 
 public:
+
+	Vector3 original_position;
+
 	EntityAI() {};
 	EntityAI(Mesh* mesh, const Material& material, const std::string& name = "");
 	~EntityAI();

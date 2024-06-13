@@ -208,7 +208,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 
 	float speed_mult = walk_speed;
-	//if (Input::isKeyPressed(SDL_SCANCODE_LSHIFT)) speed_mult *= 3.0f;
 
 	// ---- TURBO LOGIC ----
 	if (Input::isKeyPressed(SDL_SCANCODE_X) && turbo > 0 && move_dir.length() > 0.1f) {
