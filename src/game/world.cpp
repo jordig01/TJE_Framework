@@ -528,8 +528,6 @@ void World::renderRemovedEnemies() {
 	// Limpiar la lista después de re-instanciar
 	eliminated_enemies.clear();
 
-
-
 }
 
 

@@ -295,6 +295,7 @@ void PlayStage::render()
 			break;
 		case 0:
 			life0->render(camera2D);
+			Game::instance->goToStage(GAME_OVER);
 			break;
 	}
 
@@ -429,13 +430,6 @@ void PlayStage::update(float seconds_elapsed) {
 void PlayStage::onEnterStage() {
 	sound = Audio::Play("data/sounds/mainScene.mp3", 0.05f, BASS_MUSIC_LOOP | BASS_MUSIC_MONO);
 	countdown_num->material.diffuse = Texture::Get("data/Icons/3.png");
-	/*World::instance->root_player->countdown_finished = false;
-	World::instance->root_player->countdown_timer = 6.0f;
-	World::instance->root_player->initial_rotation = true;
-	World::instance->root_player->start_music = true;
-	World::instance->move_player = false;*/
-	//World::instance->root_player->model.setTranslation((World::instance->old_position_player));
-
 }
 
 

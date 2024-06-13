@@ -115,10 +115,7 @@ void Game::render(void)
 
 	
 	//render of the world
-
 	current_stage->render();
-
-	//StageManager::get_instance()->render();
 
 	// Swap between front buffer and back buffer 
 	SDL_GL_SwapWindow(this->window);

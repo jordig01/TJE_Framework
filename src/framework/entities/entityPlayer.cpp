@@ -533,7 +533,6 @@ void EntityPlayer::loseLife(int life) {
 		Audio::Play("data/sounds/yoshi_hit.mp3", 1.f, BASS_SAMPLE_OVER_POS);
 	}
 	else if (total_lives == 0) {
-		Game::instance->goToStage(GAME_OVER);
 		std::cout << "GAME OVER" << std::endl;
 	}
 }
