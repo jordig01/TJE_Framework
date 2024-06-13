@@ -27,25 +27,22 @@ World::World()
 	//camera2D->view_matrix.setIdentity();
 	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
 
-
-	Mesh* wheels_mesh = Mesh::Get("data/meshes/player/wheels.obj");
-	Material wheels_mat;
-	wheels_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Tire_S.png");
-	root_player = new EntityPlayer(wheels_mesh, wheels_mat);
-	
-
-	Mesh* kart_mesh = Mesh::Get("data/meshes/player/kart.obj");
+	/*Mesh* kart_mesh = Mesh::Get("data/meshes/separate_player/kart.obj");
 	Material kart_mat;
-	kart_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Kart_S.png");
-	EntityMesh* kart = new EntityMesh(kart_mesh, kart_mat);
+	kart_mat.diffuse = Texture::Get("data/meshes/separate_player/F2_Item_Kart_Yoshi_Kart_S.png");
+	EntityMesh* kart = new EntityMesh(kart_mesh, kart_mat);*/
 	
-	Mesh* character_mesh = Mesh::Get("data/meshes/player/character.obj");
+	Mesh* character_mesh = Mesh::Get("data/meshes/s_player/character.obj");
 	Material character_mat;
-	character_mat.diffuse = Texture::Get("data/meshes/player/F2_Item_Kart_Yoshi_Body_S.png");
-	EntityMesh* character = new EntityMesh(character_mesh, character_mat);
+	character_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Body_S.png");
+	root_player = new EntityPlayer(character_mesh, character_mat);
 
-	root_player->addChild(kart);
-	root_player->addChild(character);
+
+	Mesh* wheels_mesh = Mesh::Get("data/meshes/s_player/wheels.obj");
+	Material wheels_mat;
+	wheels_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Tire_S.png");
+	wheels = new EntityWheels(wheels_mesh, wheels_mat);
+
 
 	//player->isAnimated = true; //el body tendría que ser
 
@@ -109,6 +106,7 @@ void World::render() {
 
 	root.render(camera);
 	root_player->render(camera);
+	wheels->render(camera);
 
 	//Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
@@ -182,8 +180,10 @@ void World::update(float seconds_elapsed) {
 
 		root.update(seconds_elapsed);
 
+
 		if (move_player) {
 			root_player->update(seconds_elapsed);
+			wheels->update(seconds_elapsed);
 		}
 
 		
@@ -293,7 +293,11 @@ bool World::parseScene(const char* filename, Entity* root)
 			assert(root_player);
 			old_position_player = render_data.models[0].getTranslation();
 			root_player->model.setTranslation(render_data.models[0].getTranslation());
-		
+
+
+			assert(wheels);
+			wheels->model.setTranslation(render_data.models[0].getTranslation());
+
 		}
 		else if (tag_enemy != std::string::npos) {
 			/*assert(enemy);

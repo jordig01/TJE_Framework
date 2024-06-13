@@ -98,6 +98,7 @@ void EntityPlayer::render(Camera* camera)
 
 void EntityPlayer::update(float seconds_elapsed) {
 
+
 	float camera_yaw = World::get_instance()->camera_yaw;
 
 	Matrix44 mYaw;
@@ -120,7 +121,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	static bool is_moving_sound_playing = false;
 	static bool handle_sound_playing = false;
 
-	bool is_moving = false;
+	is_moving = false;
 	bool is_dripping = false; // Add logic to check if the player is drifting
 
 	Vector3 move_dir;
@@ -544,4 +545,33 @@ void EntityPlayer::addBullet(int bullet) {
 		total_points += 200;
 		bullet_count = 5;
 	}
+}
+
+
+EntityWheels::EntityWheels(Mesh* mesh, const Material& material) : EntityMesh(mesh, material) {
+};
+
+
+void EntityWheels::update(float seconds_elapsed)
+{
+	Vector3 playerPosition = World::instance->root_player->model.getTranslation();
+	float playerRotation = World::instance->root_player->rotation;
+
+	this->model.setTranslation(playerPosition);
+
+	float offset = 0.0f;
+	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && World::instance->root_player->is_moving){
+		offset = 0.1f;
+	}
+	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT))&& World::instance->root_player->is_moving) {
+		offset = -0.1f;
+	}
+	
+	float smoothOffset = offset * cos(seconds_elapsed * 5.0f); 
+
+	float wheelRotation = playerRotation + smoothOffset;
+	this->model.rotate(wheelRotation, Vector3(0, 1, 0)); 
+
+
+	EntityMesh::update(seconds_elapsed);
 }

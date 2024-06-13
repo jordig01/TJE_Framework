@@ -344,7 +344,12 @@ void PlayStage::render()
 
 
 	// --- COUNTDOWN ---
-	if (World::instance->root_player->initial_rotation) World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0)); World::instance->root_player->initial_rotation = false;
+	if (World::instance->root_player->initial_rotation) {
+		World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0));
+		World::instance->wheels->model.rotate(World::instance->wheels->rotation, Vector3(0, 1, 0));
+		World::instance->root_player->initial_rotation = false;
+	}
+
 	if (!World::instance->root_player->countdown_finished) {
 		countdown_num->render(camera2D);
 	}

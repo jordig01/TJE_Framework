@@ -28,7 +28,6 @@ public:
     HCHANNEL move_channel;
     HCHANNEL drift_sound_channel;
     bool was_moving; // Flag to track if the player was moving in the previous frame
-
     
     float collide = 0.0f;
     float collision_time = 0.0f;
@@ -41,6 +40,8 @@ public:
     bool left = false;
     bool right = false;
     float last_moving = 0.0f;
+
+
     bool countdown_finished = false;
     float countdown_timer = 6.0f;
     bool initial_rotation = true;
@@ -50,6 +51,9 @@ public:
     int total_points = 0;
     int bullet_count = 5;
     float turbo;
+
+    bool is_moving;
+
 
 
     std::string object_collected;
@@ -79,4 +83,17 @@ public:
     void addBullet(int bullet);
 
 
+};
+
+
+class EntityWheels : public EntityMesh {
+
+    public:
+
+        float rotation = -1.5f;
+
+        Vector3 original_position;
+        EntityWheels(Mesh* mesh, const Material& material);
+
+        void update(float seconds_elapsed);
 };

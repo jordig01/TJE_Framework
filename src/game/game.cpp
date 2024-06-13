@@ -95,6 +95,7 @@ void Game::restart()
 	World::instance->renderRemovedCube();	
 	World::instance->renderRemovedEnemies();
 	player->model.setTranslation((World::instance->old_position_player));
+	World::instance->wheels->model.setTranslation((World::instance->old_position_player));
 
 	goToStage(PLAY_STAGE);
 }

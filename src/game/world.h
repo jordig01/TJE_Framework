@@ -6,6 +6,7 @@
 
 
 class EntityPlayer;
+class EntityWheels;
 class Camera;
 
 
@@ -34,6 +35,7 @@ public:
 	EntityMesh * skybox;
 
 	EntityPlayer* player;
+	EntityWheels* wheels;
 	EntityAI* enemy;
 
 	Camera* camera = nullptr;
