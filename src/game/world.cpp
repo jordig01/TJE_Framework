@@ -113,24 +113,8 @@ void World::render() {
 	//Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
-
-	//NOTA: es provisional lo substituiremos con el HUD
-	/*std::string lives_info = "LIVES: " + std::to_string(root_player->total_lives); 
-	drawText(350, 30, lives_info, Vector3(1, 1, 1), 2); */
-
-
-	//std::string score_info = "SCORE: " + std::to_string(root_player->total_points);
-	//drawText(5, 570, score_info, Vector3(1, 1, 1), 2);
-
-	/*std::string turbo_info = "TURBO: " + std::to_string(root_player->turbo);
-	drawText(660, 570, turbo_info, Vector3(1, 1, 1), 2);*/
-
 	std::string bullet_info = std::to_string(root_player->bullet_count) + "/5";
 	drawText(750, 35, bullet_info, Vector3(1, 1, 1), 2);
-
-	/*std::string obj_info = "OBJECT: " + root_player->object_collected;
-	drawText(10, 30, obj_info, Vector3(1, 1, 1), 2);*/
-
 
 
 
