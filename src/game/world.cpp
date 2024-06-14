@@ -103,8 +103,6 @@ void World::render() {
 	//Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
-	std::cout << Game::instance->window_height << " " << Game::instance->window_width << std::endl;
-
 	int windows_width = Game::instance->window_width;
 	int windows_height = Game::instance->window_height;
 
