@@ -41,51 +41,6 @@ EntityUI::EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonI
 
 
 void EntityUI::render(Camera* camera2d) {
-	//shader
-	//enviar unifrom ...
-	//Igual que EntityMesh, pero cambiando cámara y:
-	// glDisable(GL_DEPTH_TEST)
-	// glDisable(GL_CULL_FACE)
-	// glEnable(GL_BLEND)
-	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// 
-	// material.shader->enable();
-	// 
-	// World* world = World::get_instance();
-	// Matrix44 viewProj = camera2d->voew`rpkectopm_matrix
-	// 
-	// material.shader->setUniform("u_model", model);
-	// material.shader->setUniform("u_viewprojection", viewProj);
-	// material.shader->setUniform("u_color", material.color);
-	// material.shader->setUniform("u_mask", mask);
-	// 
-	// 
-	// 
-	// Dejamos todo como estaba antes
-	// glEnable(GL_DEPTH_TEST)
-	// glEnable(GL_CULL_FACE)
-	// glDisable(GL_BLEND)
-	// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	// 
-	//MenuStage
-	// 
-	// EntityUI* background = nullptr;
-	// EntityUI* play_button = nullptr;
-	// EntityUI* exit_button = nullptr;
-	// 
-	// en el cpp:
-	// Material backgorun_mat;
-	// background_mat.diffuse = Texture::Get();
-	// background = new EntityUI();
-	// 
-	// play_button = new EntityUI(Vector2(), ..., eButtonId::PlayButton)
-	// 
-	// //Podemos hacer que background sea un root y guardar todo ahí
-	// background->addChild(play_button);
-	// background->addChild(exit_button);
-	// 
-	// 
-	//MenuStage
 
 	if (!visible) return;
 
@@ -176,7 +131,7 @@ void EntityUI::update(double seconds_elapsed) {
 
 
 
-//--- Para healtbars --- 
+//--- For healtbars --- 
 void EntityUI::update3D(Vector3 position3d) {
 	pos3d = position3d;
 
