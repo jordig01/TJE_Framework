@@ -121,12 +121,7 @@ void EntityUI::update(double seconds_elapsed) {
 	}
 
 	Entity::update(seconds_elapsed);
-	
-	
-	//--- APUNTES ---
-	// Para cambiar color:
-	// Si está dentro del quad: material.color = Vector4::RED //Por ejemplo
-	// Para saber si hemos pulsado tenemos que mirar si está dentro y si se ha pulsado
+
 }
 
 
