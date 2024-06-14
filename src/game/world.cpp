@@ -38,13 +38,17 @@ World::World()
 	root_player = new EntityPlayer(character_mesh, character_mat);
 
 
-	Mesh* wheels_mesh = Mesh::Get("data/meshes/s_player/wheels_f.obj");
+	Mesh* wheels_mesh_left = Mesh::Get("data/meshes/s_player/wheels_fleft.obj");
 	Material wheels_mat;
 	wheels_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Tire_S.png");
-	wheels[0] = new EntityWheels(wheels_mesh, wheels_mat, eTypeWheels::FRONT_WHEEL);
+	wheels[0] = new EntityWheels(wheels_mesh_left, wheels_mat, eTypeWheels::FRONT_LEFT);
 	
+	Mesh* wheels_mesh_right = Mesh::Get("data/meshes/s_player/wheels_fright.obj");
+	wheels[1] = new EntityWheels(wheels_mesh_right, wheels_mat, eTypeWheels::FRONT_RIGHT);
+		
+
 	Mesh* wheels_mesh_back = Mesh::Get("data/meshes/s_player/wheels_b.obj");
-	wheels[1] = new EntityWheels(wheels_mesh_back, wheels_mat, eTypeWheels::BACK_WHEEL);
+	wheels[2] = new EntityWheels(wheels_mesh_back, wheels_mat, eTypeWheels::BACK_WHEEL);
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -99,6 +103,7 @@ void World::render() {
 	root_player->render(camera);
 	wheels[0]->render(camera);
 	wheels[1]->render(camera);
+	wheels[2]->render(camera);
 
 	//Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
@@ -176,8 +181,8 @@ void World::update(float seconds_elapsed) {
 			root_player->update(seconds_elapsed);
 			wheels[0]->update(seconds_elapsed);
 			wheels[1]->update(seconds_elapsed);
+			wheels[2]->update(seconds_elapsed);
 		}
-
 		
 		eye = root_player->model.getTranslation()  + front * orbit_dist;
 		eye.y += 18.0f;
@@ -278,8 +283,12 @@ bool World::parseScene(const char* filename, Entity* root)
 
 			assert(wheels[0]);
 			wheels[0]->model.setTranslation(render_data.models[0].getTranslation());
+			
 			assert(wheels[1]);
 			wheels[1]->model.setTranslation(render_data.models[0].getTranslation());
+			
+			assert(wheels[2]);
+			wheels[2]->model.setTranslation(render_data.models[0].getTranslation());
 
 		}
 		else if (tag_enemy != std::string::npos) {

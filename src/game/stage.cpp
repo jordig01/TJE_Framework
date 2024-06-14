@@ -340,8 +340,9 @@ void PlayStage::render()
 		World::instance->root_player->rotation -= World::instance->root_player->rotation + 1.5f;
 		World::instance->root_player->cam_rotation = -1.5f;
 		
-		World::instance->wheels[0]->model.translate(Vector3(0,1.5,-4));
-		World::instance->wheels[1]->model.translate(Vector3(0,1.6,3.3));
+		World::instance->wheels[0]->model.translate(Vector3(-3.62, 1.5, -4));
+		World::instance->wheels[1]->model.translate(Vector3(3.62, 1.5,-4));
+		World::instance->wheels[2]->model.translate(Vector3(0,2,3.3));
 
 		Game::instance->goToStage(WIN_STAGE);
 	}
@@ -350,10 +351,17 @@ void PlayStage::render()
 	// --- COUNTDOWN ---
 	if (World::instance->root_player->initial_rotation) {
 		World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0));
+		
 		World::instance->wheels[0]->model.rotate(World::instance->wheels[0]->rotation, Vector3(0, 1, 0));
-		World::instance->wheels[0]->model.translate(Vector3(0,1.5,-4));
+		World::instance->wheels[0]->model.translate(Vector3(-3.62,1.5,-4));
+
 		World::instance->wheels[1]->model.rotate(World::instance->wheels[1]->rotation, Vector3(0, 1, 0));
-		World::instance->wheels[1]->model.translate(Vector3(0,1.6,3.3));
+		World::instance->wheels[1]->model.translate(Vector3(3.62,1.5,-4));
+
+		World::instance->wheels[2]->model.rotate(World::instance->wheels[2]->rotation, Vector3(0, 1, 0));
+		World::instance->wheels[2]->model.translate(Vector3(0, 2, 3.3));
+
+
 		World::instance->root_player->initial_rotation = false;
 	}
 

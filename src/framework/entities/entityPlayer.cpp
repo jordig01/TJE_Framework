@@ -547,9 +547,16 @@ void EntityWheels::update(float seconds_elapsed)
 	float last_moving_player = World::instance->root_player->last_moving;
 
 	this->model = model_player;
-	
-	if (type_wheels == FRONT_WHEEL) {
-		this->model.translate(Vector3(0, 1.5, -4));
+
+	bool is_turning_left = Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT);
+	bool is_turning_right = Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT);
+
+
+	if (type_wheels == FRONT_RIGHT) {
+		this->model.translate(Vector3(3.62, 1.5, -4));
+	}
+	if (type_wheels == FRONT_LEFT) {
+		this->model.translate(Vector3(-3.62, 1.5, -4));
 	}
 
 	if (type_wheels == BACK_WHEEL) {
@@ -566,9 +573,19 @@ void EntityWheels::update(float seconds_elapsed)
 
 	if (World::instance->root_player->is_moving) {
 
-		if (Input::isKeyPressed(SDL_SCANCODE_X)) speed = 3.5f;
+		if (is_turning_right && type_wheels == FRONT_RIGHT) {
+			this->model.rotate(0.3f, Vector3(0, 1, 0));
+		}
+
+		if (is_turning_left && type_wheels == FRONT_LEFT) {
+			this->model.rotate(-0.3f, Vector3(0, 1, 0));
+		}
+
 		
+		if (Input::isKeyPressed(SDL_SCANCODE_X)) speed = 5.f;
+
 		this->model.rotate(accumulated_rotation * last_moving_player * speed, Vector3(1, 0, 0));
+
 	}
 
 	EntityMesh::update(seconds_elapsed);

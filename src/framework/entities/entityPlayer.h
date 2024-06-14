@@ -90,7 +90,8 @@ public:
 // --- WHEELS ENTITY IS CONNECTED TO THE PLAYER ---
 
 enum eTypeWheels {
-    FRONT_WHEEL,
+    FRONT_LEFT,
+    FRONT_RIGHT,
     BACK_WHEEL
 };
 
