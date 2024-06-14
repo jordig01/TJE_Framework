@@ -22,11 +22,6 @@ MenuStage::MenuStage()
 	exit_button = new EntityUI(Vector2(width * 0.5, 450), Vector2(200, 75), exit_mat, eButtonId::ExitButton);
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
-
-	//Material exit_mat;
-	//exit_mat.diffuse = Texture::Get("data");
-	//exit_button = new EntityUI(Vector2(width * 0.5, 400), Vector2(240, 60), exit_mat, eButtonId::ExitButton);
-
 	background->addChild(play_button);
 	background->addChild(exit_button);
 
