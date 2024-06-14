@@ -32,6 +32,8 @@ public:
 };
 
 
+// --- SPECIAL COLLISIONS ---
+
 class PipeCollider : public EntityCollider {
 
 public:
@@ -48,7 +50,9 @@ public:
 class CubeCollider : public EntityCollider {
 
 public:	
-	bool collected;
+	
+	sbool collected;
+
 	CubeCollider() {
 		Mesh* mesh = Mesh::Get("data/meshes/cube/box.obj");
 		Material cube_mat;

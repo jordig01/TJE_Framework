@@ -31,7 +31,6 @@ void EntityCollider::getCollisionsWithModel(const Matrix44 model, const Vector3&
 
 }
 
-//inicialize su parte de EntityMesh
 EntityCollider::EntityCollider(Mesh* mesh, const Material& material): EntityMesh(mesh, material)
 {
 	
