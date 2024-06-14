@@ -181,6 +181,7 @@ public:
 
 	//--- SCORE ---
 	EntityUI* score = nullptr;
+	EntityUI* zero;
 	Material zero_mat;
 	Material one_mat;
 	Material two_mat;
@@ -218,6 +219,7 @@ public:
 
 	//--- SCORE ---
 	EntityUI* score = nullptr;
+	EntityUI* zero;
 	Material zero_mat;
 	Material one_mat;
 	Material two_mat;
