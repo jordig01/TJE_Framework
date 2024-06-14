@@ -505,6 +505,8 @@ void WinStage::reload() {
 	exit_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
+	score = new EntityUI(Vector2(100, height * 0.5 - 50), Vector2(200, 75), score->material);
+
 }
 
 void WinStage::render()
@@ -628,6 +630,7 @@ void GameOverStage::reload() {
 	exit_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
+	score = new EntityUI(Vector2(125, height * 0.5 - 50), Vector2(175, 50), score->material);
 }
 
 void GameOverStage::render()
