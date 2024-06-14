@@ -35,8 +35,11 @@ void MenuStage::reload() {
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
 	play_button = new EntityUI(Vector2(width * 0.5, height * 0.5 + 50), Vector2(200, 75), play_button->material, eButtonId::PlayButton);
+	play_button->hover_texture = Texture::Get("data/hud/start_button.png");
+
 
 	exit_button = new EntityUI(Vector2(width * 0.5, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
+	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 }
 
@@ -58,13 +61,6 @@ void MenuStage::render() {
 	background->render(camera2D);
 	play_button->render(camera2D);
 	exit_button->render(camera2D);
-
-	if (Input::wasKeyPressed(SDL_SCANCODE_1)) {
-		Game::instance->goToStage(WIN_STAGE);
-	}
-	if (Input::wasKeyPressed(SDL_SCANCODE_2)) {
-		Game::instance->goToStage(GAME_OVER);
-	}
 }
 
 void MenuStage::onButtonPressed(eButtonId buttonId)
@@ -108,7 +104,8 @@ void TutorialStage::reload() {
 
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
-	continue_button = new EntityUI(Vector2(width - 100, height - 50), Vector2(501, 145), continue_button->material, eButtonId::ContinueButton);
+	continue_button = new EntityUI(Vector2(width - 200, height - 50), Vector2(200, 75), continue_button->material, eButtonId::ContinueButton);
+	continue_button->hover_texture = Texture::Get("data/hud/continue_2.png");
 
 }
 
@@ -251,6 +248,7 @@ void PlayStage::reload() {
 
 	fake_cube = new EntityUI(Vector2(50, 45), Vector2(50, 50), fake_cube->material);
 
+	countdown_num = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(150, 150), countdown_num->material);
 
 	// ---- Lifes, Turbo, Fireballs and Score ----
 	life0 = new EntityUI(Vector2(width * 0.5, 50), Vector2(175, 50), life0->material);
@@ -271,6 +269,7 @@ void PlayStage::reload() {
 	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(200, 40), finish->material);
 
 	controls = new EntityUI(Vector2(50, 100), Vector2(115, 38), controls->material, eButtonId::ControlsButton);
+	controls->hover_texture = Texture::Get("data/hud/controls_2.png");
 
 }
 
@@ -501,8 +500,11 @@ void WinStage::reload() {
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
 	play_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 50), Vector2(200, 75), play_button->material, eButtonId::RestartButton);
+	play_button->hover_texture = Texture::Get("data/hud/restart_button.png");
 
 	exit_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
+	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
+
 }
 
 void WinStage::render()
@@ -621,8 +623,10 @@ void GameOverStage::reload() {
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
 	play_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 50), Vector2(200, 75), play_button->material, eButtonId::RestartButton);
+	play_button->hover_texture = Texture::Get("data/hud/restart_button.png");
 
 	exit_button = new EntityUI(Vector2(width * 0.25, height * 0.5 + 150), Vector2(200, 75), exit_button->material, eButtonId::ExitButton);
+	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 }
 

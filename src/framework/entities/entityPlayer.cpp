@@ -203,7 +203,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		if (turbo < 0) turbo = 0;
 
 		if (!turbo_sound_playing) {
-			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_OVER_VOL);
+			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_LOOP | BASS_SAMPLE_OVER_VOL);
 			Audio::fadeInChannel(turbo_channel, 500); // 500 milliseconds fade in
 			Audio::fadeOutChannel(move_channel, 500);
 			Audio::Stop(move_channel);
