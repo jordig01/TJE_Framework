@@ -4,15 +4,12 @@
 class CubeCollider;
 
 
-enum eAnimatedState{ //En nuesto caso rotar derecha izquierda  estado Handle
+enum eAnimatedState{ 
     MOVE
 };
 
 
-/*
-* CALLBACK usare per mettere audio
-* 
-* 
+/* 
 * animator.addCallback [&](float t){
 * SoundModule.playSoung("gyusj")
 * }, 0.5f); //segundos con f y frame numero entero 
@@ -69,13 +66,13 @@ public:
     void update(float seconds_elapsed);
 
     void render(Camera* camera);
-    void handleCollisions(float seconds_elapsed);
 
+    // --- Functions to handle collisions ---
+    void handleCollisions(float seconds_elapsed);
     void checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
     void checkEnemyCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
     void handleCubePickup(CubeCollider* cube);
    
-    //Functions to collect objects
     void addPoints(int point);
     void losePoints(int point);
 
@@ -87,6 +84,10 @@ public:
 
 };
 
+
+
+
+// --- WHEELS ENTITY IS CONNECTED TO THE PLAYER ---
 
 enum eTypeWheels {
     FRONT,
