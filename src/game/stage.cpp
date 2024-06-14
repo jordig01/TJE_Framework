@@ -339,6 +339,10 @@ void PlayStage::render()
 		World::instance->root_player->initial_rotation = true;
 		World::instance->root_player->rotation -= World::instance->root_player->rotation + 1.5f;
 		World::instance->root_player->cam_rotation = -1.5f;
+		
+		World::instance->wheels[0]->model.translate(Vector3(0,1.5,-4));
+		World::instance->wheels[1]->model.translate(Vector3(0,1.6,3.3));
+
 		Game::instance->goToStage(WIN_STAGE);
 	}
 
@@ -347,7 +351,9 @@ void PlayStage::render()
 	if (World::instance->root_player->initial_rotation) {
 		World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0));
 		World::instance->wheels[0]->model.rotate(World::instance->wheels[0]->rotation, Vector3(0, 1, 0));
+		World::instance->wheels[0]->model.translate(Vector3(0,1.5,-4));
 		World::instance->wheels[1]->model.rotate(World::instance->wheels[1]->rotation, Vector3(0, 1, 0));
+		World::instance->wheels[1]->model.translate(Vector3(0,1.6,3.3));
 		World::instance->root_player->initial_rotation = false;
 	}
 
@@ -389,10 +395,17 @@ void PlayStage::render()
 		digits++;
 	}
 
+	
 	int height = Game::instance->window_height;
 	current_score = player->total_points;
 	EntityUI* num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), zero_mat);;
 	int number;
+
+	if (current_score <= 0) {
+		EntityUI* zero = num = new EntityUI(Vector2(100, height - 20), Vector2(20, 20), zero_mat);
+		zero->render(camera2D);
+		return;
+	}
 
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;

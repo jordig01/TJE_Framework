@@ -559,12 +559,16 @@ void EntityWheels::update(float seconds_elapsed)
 
 	float rotation_speed = 2.0f * M_PI; 
 
+	float speed = 1.0f;
 
 	static float accumulated_rotation = 0.0f;
 	accumulated_rotation += rotation_speed * seconds_elapsed * 0.5f;
 
 	if (World::instance->root_player->is_moving) {
-		this->model.rotate(accumulated_rotation * last_moving_player, Vector3(1, 0, 0));
+
+		if (Input::isKeyPressed(SDL_SCANCODE_X)) speed = 3.5f;
+		
+		this->model.rotate(accumulated_rotation * last_moving_player * speed, Vector3(1, 0, 0));
 	}
 
 	EntityMesh::update(seconds_elapsed);
