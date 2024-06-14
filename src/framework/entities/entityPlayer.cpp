@@ -46,15 +46,10 @@ void EntityPlayer::render(Camera* camera)
 
 	EntityMesh::render(camera);
 
-
-	//Render debug spheres...
-
 	float sphere_radius = World::get_instance()->sphere_radius;
 	float sphere_ground_radius = World::get_instance()->sphere_ground_radius;
 	float player_height = World::get_instance()->player_height;
 
-
-	//TODO: Pensarlo de hacerlo con cubos
 	Shader* shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 	Mesh* mesh = Mesh::Get("data/meshes/sphere.obj");
 	Matrix44 m = model;
@@ -94,8 +89,6 @@ void EntityPlayer::render(Camera* camera)
 
 }
 
-
-
 void EntityPlayer::update(float seconds_elapsed) {
 
 
@@ -114,7 +107,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 	//Vector3 right_cam = mYaw.rightVector();
 
 
-
 	position = model.getTranslation();
 	static bool turbo_sound_playing = false;
 	static bool drift_sound_playing = false;
@@ -128,9 +120,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 	float moving = 0.0f;
 	bool turning = false;
 	float drift = 1.0f;
-
-
-
 
 	if (collide != 0.0f) {
 		velocity += front * last_moving * -1.0f * 20;//100;
@@ -191,9 +180,6 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 		}
 	}
-
-	
-
 
 	if (cam_rotation != rotation && !turning) {
 		if (left) {
@@ -370,17 +356,12 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 	else if (Input::wasKeyPressed(SDL_SCANCODE_SPACE)) {
 		velocity.y = 2.0f;
 	}
-
-
-
-	//if (!is_grounded && !cube_collision) {
-	//	Audio::Play("data/sounds/collision_car.wav", 0.5f, BASS_SAMPLE_OVER_POS);
-	//}
-
 }
 
 //---- COLLISION CON PIPE -----
 void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
+	
+	// The 'invincible' variable prevents consecutive collisions from causing immediate loss(es).
 	static bool invincible = false;
 	static float invincibility_timer = 0.0f;
 	const float invincibility_duration = 3.0f; // Duration of invincibility in seconds
@@ -468,6 +449,8 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 
 //---- FUNCTION TO HANDLE COLLISION WITH ENEMY ----
 void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
+	
+	// The 'invincible' variable prevents consecutive collisions from causing immediate loss(es).
 	static bool invincible = false;
 	static float invincibility_timer = 0.0f;
 	const float invincibility_duration = 3.0f; // Duration of invincibility in seconds
