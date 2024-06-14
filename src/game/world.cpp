@@ -38,13 +38,13 @@ World::World()
 	root_player = new EntityPlayer(character_mesh, character_mat);
 
 
-	Mesh* wheels_mesh = Mesh::Get("data/meshes/s_player/wheels_front.obj");
+	Mesh* wheels_mesh = Mesh::Get("data/meshes/s_player/wheels_f.obj");
 	Material wheels_mat;
 	wheels_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Tire_S.png");
-	wheels[0] = new EntityWheels(wheels_mesh, wheels_mat, eTypeWheels::FRONT);
+	wheels[0] = new EntityWheels(wheels_mesh, wheels_mat, eTypeWheels::FRONT_WHEEL);
 	
-	Mesh* wheels_mesh_back = Mesh::Get("data/meshes/s_player/wheels_back.obj");
-	wheels[1] = new EntityWheels(wheels_mesh_back, wheels_mat, eTypeWheels::BACK);
+	Mesh* wheels_mesh_back = Mesh::Get("data/meshes/s_player/wheels_b.obj");
+	wheels[1] = new EntityWheels(wheels_mesh_back, wheels_mat, eTypeWheels::BACK_WHEEL);
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");

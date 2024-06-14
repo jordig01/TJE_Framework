@@ -203,7 +203,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		if (turbo < 0) turbo = 0;
 
 		if (!turbo_sound_playing) {
-			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_LOOP | BASS_SAMPLE_OVER_VOL);
+			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_LOOP);
 			Audio::fadeInChannel(turbo_channel, 500); // 500 milliseconds fade in
 			Audio::fadeOutChannel(move_channel, 500);
 			Audio::Stop(move_channel);
@@ -534,26 +534,38 @@ void EntityPlayer::addBullet(int bullet) {
 // --- WHEELS ---
 
 EntityWheels::EntityWheels(Mesh* mesh, const Material& material, eTypeWheels type_wheels) : EntityMesh(mesh, material) {
+	this->type_wheels = type_wheels;
+
 };
 
 
 void EntityWheels::update(float seconds_elapsed)
 {
+	
+	Matrix44 model_player = World::instance->root_player->model;
+
+	float last_moving_player = World::instance->root_player->last_moving;
+
+	this->model = model_player;
+	
+	if (type_wheels == FRONT_WHEEL) {
+		this->model.translate(Vector3(0, 1.5, -4));
+	}
+
+	if (type_wheels == BACK_WHEEL) {
+		this->model.translate(Vector3(0, 2, 3.3));
+	}
+	
+
 	float rotation_speed = 2.0f * M_PI; 
-	float playerRotation = World::instance->root_player->rotation;
 
 
-	// Calcular el ángulo de rotación acumulado
 	static float accumulated_rotation = 0.0f;
-	accumulated_rotation += rotation_speed * seconds_elapsed;
+	accumulated_rotation += rotation_speed * seconds_elapsed * 0.5f;
 
-	Matrix44 local_rotation;
-	local_rotation.rotate(accumulated_rotation, Vector3(1, 0, 0));
-
-	//this->model = local_rotation * World::instance->root_player->model;
-	this->model = World::instance->root_player->model;
-
-	this->model.rotate(rotation_speed * seconds_elapsed, Vector3(1, 0, 0));
+	if (World::instance->root_player->is_moving) {
+		this->model.rotate(accumulated_rotation * last_moving_player, Vector3(1, 0, 0));
+	}
 
 	EntityMesh::update(seconds_elapsed);
 }

@@ -90,8 +90,8 @@ public:
 // --- WHEELS ENTITY IS CONNECTED TO THE PLAYER ---
 
 enum eTypeWheels {
-    FRONT,
-    BACK
+    FRONT_WHEEL,
+    BACK_WHEEL
 };
 
 
@@ -106,7 +106,7 @@ class EntityWheels : public EntityMesh {
         bool wheels_front;
 
         Vector3 original_position;
-        EntityWheels(Mesh* mesh, const Material& material, eTypeWheels type_wheels = BACK);
+        EntityWheels(Mesh* mesh, const Material& material, eTypeWheels type_wheels = BACK_WHEEL);
 
         void update(float seconds_elapsed);
 };
