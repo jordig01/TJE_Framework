@@ -51,7 +51,7 @@ class CubeCollider : public EntityCollider {
 
 public:	
 	
-	sbool collected;
+	bool collected;
 
 	CubeCollider() {
 		Mesh* mesh = Mesh::Get("data/meshes/cube/box.obj");
