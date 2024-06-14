@@ -35,7 +35,7 @@ public:
 	EntityMesh * skybox;
 
 	EntityPlayer* player;
-	EntityWheels* wheels;
+	EntityWheels* wheels[2]; 
 	EntityAI* enemy;
 
 	Camera* camera = nullptr;

@@ -244,7 +244,7 @@ void PlayStage::reload() {
 
 
 	// ---- Square and Surprise Objects ----
-	square = new EntityUI(Vector2(50, 100), Vector2(100, 25), square->material);
+	square = new EntityUI(Vector2(50, 45), Vector2(75, 75), square->material);
 
 	controls = new EntityUI(Vector2(75, 150), Vector2(100, 40), controls->material);
 
@@ -271,6 +271,12 @@ void PlayStage::reload() {
 	fireball = new EntityUI(Vector2(width - 100, 40), Vector2(75, 75), fireball->material);
 
 	score = new EntityUI(Vector2(40, height - 20), Vector2(75, 20), score->material);
+
+
+	finish = new EntityUI(Vector2(width * 0.5, height * 0.5 - 80), Vector2(200, 40), finish->material);
+
+	controls = new EntityUI(Vector2(50, 100), Vector2(115, 38), controls->material, eButtonId::ControlsButton);
+
 }
 
 
@@ -346,7 +352,8 @@ void PlayStage::render()
 	// --- COUNTDOWN ---
 	if (World::instance->root_player->initial_rotation) {
 		World::instance->root_player->model.rotate(World::instance->root_player->rotation, Vector3(0, 1, 0));
-		World::instance->wheels->model.rotate(World::instance->wheels->rotation, Vector3(0, 1, 0));
+		World::instance->wheels[0]->model.rotate(World::instance->wheels[0]->rotation, Vector3(0, 1, 0));
+		World::instance->wheels[1]->model.rotate(World::instance->wheels[1]->rotation, Vector3(0, 1, 0));
 		World::instance->root_player->initial_rotation = false;
 	}
 

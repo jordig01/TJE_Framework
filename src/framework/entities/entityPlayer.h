@@ -54,6 +54,8 @@ public:
 
     bool is_moving;
 
+    bool is_dripping;
+
 
 
     std::string object_collected;
@@ -86,14 +88,24 @@ public:
 };
 
 
+enum eTypeWheels {
+    FRONT,
+    BACK
+};
+
+
 class EntityWheels : public EntityMesh {
 
     public:
 
+        eTypeWheels type_wheels;
+
         float rotation = -1.5f;
 
+        bool wheels_front;
+
         Vector3 original_position;
-        EntityWheels(Mesh* mesh, const Material& material);
+        EntityWheels(Mesh* mesh, const Material& material, eTypeWheels type_wheels = BACK);
 
         void update(float seconds_elapsed);
 };

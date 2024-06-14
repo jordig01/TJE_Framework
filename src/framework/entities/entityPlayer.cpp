@@ -122,7 +122,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	static bool handle_sound_playing = false;
 
 	is_moving = false;
-	bool is_dripping = false; // Add logic to check if the player is drifting
+	is_dripping = false; // Add logic to check if the player is drifting
 
 	Vector3 move_dir;
 	float moving = 0.0f;
@@ -548,30 +548,29 @@ void EntityPlayer::addBullet(int bullet) {
 }
 
 
-EntityWheels::EntityWheels(Mesh* mesh, const Material& material) : EntityMesh(mesh, material) {
+// --- WHEELS ---
+
+EntityWheels::EntityWheels(Mesh* mesh, const Material& material, eTypeWheels type_wheels) : EntityMesh(mesh, material) {
 };
 
 
 void EntityWheels::update(float seconds_elapsed)
 {
-	Vector3 playerPosition = World::instance->root_player->model.getTranslation();
+	float rotation_speed = 2.0f * M_PI; 
 	float playerRotation = World::instance->root_player->rotation;
 
-	this->model.setTranslation(playerPosition);
 
-	float offset = 0.0f;
-	if ((Input::isKeyPressed(SDL_SCANCODE_D) || Input::isKeyPressed(SDL_SCANCODE_RIGHT)) && World::instance->root_player->is_moving){
-		offset = 0.1f;
-	}
-	if ((Input::isKeyPressed(SDL_SCANCODE_A) || Input::isKeyPressed(SDL_SCANCODE_LEFT))&& World::instance->root_player->is_moving) {
-		offset = -0.1f;
-	}
-	
-	float smoothOffset = offset * cos(seconds_elapsed * 5.0f); 
+	// Calcular el ángulo de rotación acumulado
+	static float accumulated_rotation = 0.0f;
+	accumulated_rotation += rotation_speed * seconds_elapsed;
 
-	float wheelRotation = playerRotation + smoothOffset;
-	this->model.rotate(wheelRotation, Vector3(0, 1, 0)); 
+	Matrix44 local_rotation;
+	local_rotation.rotate(accumulated_rotation, Vector3(1, 0, 0));
 
+	//this->model = local_rotation * World::instance->root_player->model;
+	this->model = World::instance->root_player->model;
+
+	this->model.rotate(rotation_speed * seconds_elapsed, Vector3(1, 0, 0));
 
 	EntityMesh::update(seconds_elapsed);
 }

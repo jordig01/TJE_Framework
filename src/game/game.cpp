@@ -95,7 +95,8 @@ void Game::restart()
 	World::instance->renderRemovedCube();	
 	World::instance->renderRemovedEnemies();
 	player->model.setTranslation((World::instance->old_position_player));
-	World::instance->wheels->model.setTranslation((World::instance->old_position_player));
+	World::instance->wheels[0]->model.setTranslation((World::instance->old_position_player));
+	World::instance->wheels[1]->model.setTranslation((World::instance->old_position_player));
 
 	goToStage(PLAY_STAGE);
 }
@@ -184,7 +185,7 @@ void Game::onResize(int width, int height)
 	World::get_instance()->camera->aspect = width / (float)height;
 	World::get_instance()->camera->setPerspective(70.f, window_width / (float)window_height, 0.1f, 10000.f);
 	World::get_instance()->camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
-	//for (Stage* s : stages) s->reload();
+	for (Stage* s : stages) s->reload();
 }
 
 

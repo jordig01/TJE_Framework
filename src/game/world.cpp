@@ -38,22 +38,13 @@ World::World()
 	root_player = new EntityPlayer(character_mesh, character_mat);
 
 
-	Mesh* wheels_mesh = Mesh::Get("data/meshes/s_player/wheels.obj");
+	Mesh* wheels_mesh = Mesh::Get("data/meshes/s_player/wheels_front.obj");
 	Material wheels_mat;
 	wheels_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Tire_S.png");
-	wheels = new EntityWheels(wheels_mesh, wheels_mat);
-
-
-	//player->isAnimated = true; //el body tendría que ser
-
-
-	//root_player.shader
-
-	//root_player->model.setTranslation(2955.f, 2550.f, 4690.f);
-
-	//enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
-	//enemy->setLayer(eCollisionFilter::ENEMY);
-	//root.addChild(enemy);
+	wheels[0] = new EntityWheels(wheels_mesh, wheels_mat, eTypeWheels::FRONT);
+	
+	Mesh* wheels_mesh_back = Mesh::Get("data/meshes/s_player/wheels_back.obj");
+	wheels[1] = new EntityWheels(wheels_mesh_back, wheels_mat, eTypeWheels::BACK);
 
 	Material landscape;
 	landscape.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/cubemap.fs");
@@ -106,13 +97,19 @@ void World::render() {
 
 	root.render(camera);
 	root_player->render(camera);
-	wheels->render(camera);
+	wheels[0]->render(camera);
+	wheels[1]->render(camera);
 
 	//Render the FPS, Draw Calls, etc
 	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
+	std::cout << Game::instance->window_height << " " << Game::instance->window_width << std::endl;
+
+	int windows_width = Game::instance->window_width;
+	int windows_height = Game::instance->window_height;
+
 	std::string bullet_info = std::to_string(root_player->bullet_count) + "/5";
-	drawText(750, 35, bullet_info, Vector3(1, 1, 1), 2);
+	drawText(windows_width - 50, 35, bullet_info, Vector3(1, 1, 1), 2);
 
 
 
@@ -123,13 +120,10 @@ void World::update(float seconds_elapsed) {
 
 
 	if (Input::wasKeyPressed(SDL_SCANCODE_P)) free_camera = !free_camera; 
-	//printf("%d\n", free_camera);
 
 
 	//float speed = seconds_elapsed * mouse_speed; //the speed is defined by the seconds_elapsed so it goes constant
 	float speed = seconds_elapsed * 30.0f;
-
-
 
 	if (free_camera)
 	{
@@ -140,7 +134,7 @@ void World::update(float seconds_elapsed) {
 		root.update(seconds_elapsed);
 
 		// Mouse input to rotate the cam
-		if (Input::isMousePressed(SDL_BUTTON_LEFT) || Game::instance->mouse_locked) //is left button pressed?
+		if (Input::isMousePressed(SDL_BUTTON_LEFT) || Game::instance->mouse_locked) //is left button pressed
 		{
 			camera->rotate(Input::mouse_delta.x * 0.005f, Vector3(0.0f, -1.0f, 0.0f));
 			camera->rotate(Input::mouse_delta.y * 0.005f, camera->getLocalVector(Vector3(-1.0f, 0.0f, 0.0f)));
@@ -156,7 +150,6 @@ void World::update(float seconds_elapsed) {
 	}
 	else {
 		camera_yaw -= Input::mouse_delta.x * 0.001;
-		//camera_pitch -= Input::mouse_delta.y * 0.001;
 		camera_pitch = clamp(camera_pitch, -M_PI * 0.4f, M_PI* 0.4f);
 		
 		Matrix44 mYaw;
@@ -183,7 +176,8 @@ void World::update(float seconds_elapsed) {
 
 		if (move_player) {
 			root_player->update(seconds_elapsed);
-			wheels->update(seconds_elapsed);
+			wheels[0]->update(seconds_elapsed);
+			wheels[1]->update(seconds_elapsed);
 		}
 
 		
@@ -199,32 +193,21 @@ void World::update(float seconds_elapsed) {
 			eye = data.col_point;
 		}*/
 
-		
-
 		camera->lookAt(eye, center, Vector3(0, 1, 0));
-
-
 	}
 
-
-	// Sirve para "disparar"
+	// Used to shoot fireballs
 	if (Input::wasKeyPressed(SDL_SCANCODE_Z) && !free_camera) {
 
 		shootFireball();
 	}
-
-
 
 	for (auto e : entities_to_destroy) {
 		root.removeChild(e);
 		delete e;
 	}
 	entities_to_destroy.clear();
-
-	//std::cout << root_player->model.getTranslation().x << std::endl;
-
 	
-
 }
 
 bool World::parseScene(const char* filename, Entity* root)
@@ -295,15 +278,13 @@ bool World::parseScene(const char* filename, Entity* root)
 			root_player->model.setTranslation(render_data.models[0].getTranslation());
 
 
-			assert(wheels);
-			wheels->model.setTranslation(render_data.models[0].getTranslation());
+			assert(wheels[0]);
+			wheels[0]->model.setTranslation(render_data.models[0].getTranslation());
+			assert(wheels[1]);
+			wheels[1]->model.setTranslation(render_data.models[0].getTranslation());
 
 		}
 		else if (tag_enemy != std::string::npos) {
-			/*assert(enemy);
-			enemy->model.setTranslation(render_data.models[0].getTranslation());*/
-			//waypoints.push_back(render_data.models[0].getTranslation());	
-
 			enemy_waypoints.push_back(render_data.models[0].getTranslation());
 			continue;
 		}
@@ -340,6 +321,8 @@ bool World::parseScene(const char* filename, Entity* root)
 	return true;
 }
 
+
+// --- FUNCTIONS RELATED ADDING ENTITIIES AND REMOVE THEM ---
 void World::addEntity(Entity* entity)
 {
 	root.addChild(entity);
@@ -491,14 +474,14 @@ void World::instantiateEnemies()
 
 		waypoints.push_back(waypoint);  
 
-		// Crear un nuevo waypoint al lado del enemy y añadirlo a la lista
+		// Create a new waypoint next to the enemy and add it to the list
 		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f); 
 		WayPoint new_waypoint = WayPoint(new_waypoint_position);
 		waypoints.push_back(new_waypoint); 
 	}
 }
 
-
+//Function that render only the enemies removed for the restart of the game
 void World::renderRemovedEnemies() {
 	for (const auto& [enemy, position] : eliminated_enemies) {
 		EntityAI* new_enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
@@ -507,13 +490,12 @@ void World::renderRemovedEnemies() {
 		new_enemy->setLayer(eCollisionFilter::ENEMY);
 		root.addChild(new_enemy);
 
-		// Opcionalmente añadir un nuevo waypoint al lado del enemigo
+		// Create a new waypoint next to the enemy and add it to the list
 		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f);
 		WayPoint new_waypoint = WayPoint(new_waypoint_position);
 		waypoints.push_back(new_waypoint);
 	}
 
-	// Limpiar la lista después de re-instanciar
 	eliminated_enemies.clear();
 
 }
