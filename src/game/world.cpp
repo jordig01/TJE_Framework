@@ -62,7 +62,7 @@ World::World()
 
 	skybox = new EntityMesh(cubemapMesh, landscape);
 
-	parseScene("data/circuit_test2/circuitv2.scene", &root);
+	parseScene("data/circuit_test2/circuitv2.0.scene", &root);
 	renderCubeWaypoint();
 	renderPipeWaypoint();
 	instantiateEnemies();

@@ -113,7 +113,7 @@ void EntityAI::lookAtTarget(const Vector3& position, float seconds_elapsed)
 
 void EntityAI::followPath(float seconds_elapsed)
 {
-	path = World::get_instance()->waypoints; 
+	path = World::get_instance()->waypoints;
 	if (path.size()) {
 		Vector3 origin = model.getTranslation();
 		Vector3 target = path[waypoint_index].position;
@@ -121,12 +121,21 @@ void EntityAI::followPath(float seconds_elapsed)
 		lookAtTarget(target, seconds_elapsed);
 
 		oscillation_time += seconds_elapsed;
-	
-		float lateral_amplitude = 0.01f; 
+
+		float lateral_amplitude = 0.01f;
 		float lateral_frequency = 1.5f;
 		float lateral_oscillation = lateral_amplitude * sin(lateral_frequency * oscillation_time);
 
+		// Store the current vertical position
+		float vertical_position = origin.y;
+
+		// Apply lateral oscillation only to x and z
 		model.translate(lateral_oscillation, 0.f, seconds_elapsed * 2.f);
+
+		// Restore the vertical position
+		Vector3 new_position = model.getTranslation();
+		new_position.y = vertical_position;
+		model.setTranslation(new_position);
 
 		float distance_to_target = (target - origin).length();
 		if (distance_to_target < 0.1f) {
@@ -136,6 +145,5 @@ void EntityAI::followPath(float seconds_elapsed)
 			waypoint_index += (walk_forwards ? 1 : -1);
 		}
 	}
-
 }
 
