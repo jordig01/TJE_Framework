@@ -60,6 +60,25 @@ void EntityAI::update(float seconds_elapsed)
 {
 	
 	Vector3 player_pos = World::get_instance()->root_player->position;
+
+	float angle_step = rotation_speed * seconds_elapsed;
+	if (rotating_forward) {
+		current_rotation_angle += angle_step;
+		if (current_rotation_angle > max_rotation_angle) {
+			current_rotation_angle = max_rotation_angle;
+			rotating_forward = false;
+		}
+	}
+	else {
+		current_rotation_angle -= angle_step;
+		if (current_rotation_angle < -max_rotation_angle) {
+			current_rotation_angle = -max_rotation_angle;
+			rotating_forward = true;
+		}
+	}
+
+	model.rotate(angle_step * (rotating_forward ? 1.0f : -1.0f), Vector3(0, 0, 1));
+
 	if (state == PATROL) {
 		followPath(seconds_elapsed);
 
@@ -107,35 +126,22 @@ void EntityAI::lookAtTarget(const Vector3& position, float seconds_elapsed)
 	//Rotate model to look at position
 	float angle = model.getYawRotationToAimTo(position);
 	float rotationSpeed = 4.0f * seconds_elapsed;
+	model.rotate(0, Vector3(0, 0, 1));
 	model.rotate(angle * rotationSpeed, Vector3::UP);
 }
 
 
 void EntityAI::followPath(float seconds_elapsed)
 {
-	path = World::get_instance()->waypoints;
+	//path = World::get_instance()->waypoints;
 	if (path.size()) {
 		Vector3 origin = model.getTranslation();
 		Vector3 target = path[waypoint_index].position;
 
 		lookAtTarget(target, seconds_elapsed);
 
-		oscillation_time += seconds_elapsed;
-
-		float lateral_amplitude = 0.01f;
-		float lateral_frequency = 1.5f;
-		float lateral_oscillation = lateral_amplitude * sin(lateral_frequency * oscillation_time);
-
-		// Store the current vertical position
-		float vertical_position = origin.y;
-
 		// Apply lateral oscillation only to x and z
-		model.translate(lateral_oscillation, 0.f, seconds_elapsed * 2.f);
-
-		// Restore the vertical position
-		Vector3 new_position = model.getTranslation();
-		new_position.y = vertical_position;
-		model.setTranslation(new_position);
+		model.translate(0.f, 0.f, seconds_elapsed * 2.f);
 
 		float distance_to_target = (target - origin).length();
 		if (distance_to_target < 0.1f) {

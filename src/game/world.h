@@ -46,8 +46,6 @@ public:
 	//List of Waypoints to renderize some objects
 	std::vector<WayPoint> enemy_waypoints;
 	
-	std::vector<WayPoint> waypoints;
-
 	std::vector<WayPoint> pipewaypoints;
 
 	std::vector <WayPoint> cubewaypoints;

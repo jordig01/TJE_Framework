@@ -468,14 +468,19 @@ void World::instantiateEnemies()
 		enemy->original_position = waypoint.position;
 		enemy->model.setTranslation(position);
 		enemy->setLayer(eCollisionFilter::ENEMY);
-		root.addChild(enemy);
 
-		waypoints.push_back(waypoint);  
+		std::vector<WayPoint> enemy_waypoints_list;
+
+		enemy_waypoints_list.push_back(waypoint);  
 
 		// Create a new waypoint next to the enemy and add it to the list
-		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f); 
+		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 40.0f); 
 		WayPoint new_waypoint = WayPoint(new_waypoint_position);
-		waypoints.push_back(new_waypoint); 
+		enemy_waypoints_list.push_back(new_waypoint); 
+		enemy->path = enemy_waypoints_list;
+
+		root.addChild(enemy);
+
 	}
 }
 
@@ -486,12 +491,18 @@ void World::renderRemovedEnemies() {
 		new_enemy->addLOD({ Mesh::Get("data/meshes/goomba/enemy_low.obj"), 200.f });
 		new_enemy->model.setTranslation(position);
 		new_enemy->setLayer(eCollisionFilter::ENEMY);
-		root.addChild(new_enemy);
+		
+		std::vector<WayPoint> enemy_waypoints_list;
+
+		enemy_waypoints_list.push_back(position);
 
 		// Create a new waypoint next to the enemy and add it to the list
-		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 30.0f);
+		Vector3 new_waypoint_position = position + Vector3(0.0f, 0.0f, 40.0f);
 		WayPoint new_waypoint = WayPoint(new_waypoint_position);
-		waypoints.push_back(new_waypoint);
+		enemy_waypoints_list.push_back(new_waypoint);
+		enemy->path = enemy_waypoints_list;
+
+		root.addChild(enemy);
 	}
 
 	eliminated_enemies.clear();

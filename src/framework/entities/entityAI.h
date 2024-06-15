@@ -34,14 +34,18 @@ class EntityAI : public EntityCollider {
 
 	bool walk_forwards = true;
 	int waypoint_index = 0;
-	std::vector<WayPoint> path;
 
-	float total_time = 0.0f;
-	float oscillation_time = 0.0f;
+	float max_rotation_angle = 0.75f; // Ángulo máximo de oscilación
+	float current_rotation_angle = 0.0f; // Ángulo de rotación actual
+	float rotation_speed = 0.5f; // Velocidad de rotación en grados por segundo
+	bool rotating_forward = true; // Dirección de la rotación
 
 	eFSMStates state = PATROL;
 
+
 public:
+
+	std::vector<WayPoint> path;
 
 	Vector3 original_position;
 

@@ -442,14 +442,14 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 	// Generate a random number to determine if it's an obstacle (20%) or a collectible (80%)
 	int random_value = std::rand() % 100 + 1; // Generate a random number between 1 and 100
 
-	if (random_value <= 20) {
-		// 20% chance of being an obstacle
+	if (random_value <= 10) {
+		// 10% chance of being an obstacle
 		loseLife(1);
 		losePoints(500);
 		object_collected = "obstacle";
 	}
 	else {
-		// 80% chance of being a collectible
+		// 90% chance of being a collectible
 		int collectible_value = std::rand() % 3; // Generate a random number between 0 and 2
 
 		if (collectible_value == 0) {
@@ -488,7 +488,7 @@ void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sColli
 	// The 'invincible' variable prevents consecutive collisions from causing immediate loss(es).
 	static bool invincible = false;
 	static float invincibility_timer = 0.0f;
-	const float invincibility_duration = 3.0f; // Duration of invincibility in seconds
+	const float invincibility_duration = 0.5f; // Duration of invincibility in seconds
 
 	// If the player is invincible, update the timer and check if it has expired
 	if (invincible) {
