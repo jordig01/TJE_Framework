@@ -273,7 +273,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	// --- Logic to handle drifting sound ---
 	if (is_dripping && !drift_sound_playing) {
 		// Start playing the drifting sound if not already playing
-		drift_sound_channel = Audio::Play("data/sounds/derrape.wav", 1.f, BASS_SAMPLE_OVER_POS | BASS_POS_LOOP);
+		drift_sound_channel = Audio::Play("data/sounds/derrape.wav", 1.f, BASS_SAMPLE_OVER_POS | BASS_SAMPLE_LOOP);
 		drift_sound_playing = true;
 	}
 	else if (!is_dripping && drift_sound_playing) {
@@ -550,9 +550,6 @@ void EntityPlayer::loseLife(int life) {
 		total_lives -= life;
 		Audio::Play("data/sounds/yoshi_hit.mp3", 1.f, BASS_SAMPLE_OVER_POS);
 	}
-	/*else if (total_lives == 0) {
-		std::cout << "GAME OVER" << std::endl;
-	}*/
 }
 
 void EntityPlayer::addBullet(int bullet) {

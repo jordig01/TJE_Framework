@@ -121,7 +121,7 @@ void EntityAI::followPath(float seconds_elapsed)
 
 		lookAtTarget(target, seconds_elapsed);
 
-		model.translate(0.f, 0.f, seconds_elapsed * 2.f);
+		model.translate(0.f, 0.f, seconds_elapsed * 5.f);
 		
 		float distance_to_target = (target - origin).length();
 		if (distance_to_target < 0.1f) {
