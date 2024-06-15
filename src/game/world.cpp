@@ -26,18 +26,13 @@ World::World()
 	camera2D = new Camera();
 	//camera2D->view_matrix.setIdentity();
 	camera2D->setOrthographic(0, window_width, window_height, 0, -1.f, 1.f);
-
-	/*Mesh* kart_mesh = Mesh::Get("data/meshes/separate_player/kart.obj");
-	Material kart_mat;
-	kart_mat.diffuse = Texture::Get("data/meshes/separate_player/F2_Item_Kart_Yoshi_Kart_S.png");
-	EntityMesh* kart = new EntityMesh(kart_mesh, kart_mat);*/
 	
 	Mesh* character_mesh = Mesh::Get("data/meshes/s_player/character.obj");
 	Material character_mat;
 	character_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Body_S.png");
 	root_player = new EntityPlayer(character_mesh, character_mat);
 
-
+	//Front Wheels
 	Mesh* wheels_mesh_left = Mesh::Get("data/meshes/s_player/wheels_fleft.obj");
 	Material wheels_mat;
 	wheels_mat.diffuse = Texture::Get("data/meshes/s_player/F2_Item_Kart_Yoshi_Tire_S.png");
@@ -46,7 +41,7 @@ World::World()
 	Mesh* wheels_mesh_right = Mesh::Get("data/meshes/s_player/wheels_fright.obj");
 	wheels[1] = new EntityWheels(wheels_mesh_right, wheels_mat, eTypeWheels::FRONT_RIGHT);
 		
-
+	//Back Wheels
 	Mesh* wheels_mesh_back = Mesh::Get("data/meshes/s_player/wheels_b.obj");
 	wheels[2] = new EntityWheels(wheels_mesh_back, wheels_mat, eTypeWheels::BACK_WHEEL);
 
@@ -407,10 +402,6 @@ void World::shootFireball()
 
 		// Decrease the bullet count
 		root_player->bullet_count--;
-	}
-	else {
-		// Output a message indicating that the player is out of bullets
-		std::cout << "Cannot shoot fireball." << std::endl;
 	}
 }
 

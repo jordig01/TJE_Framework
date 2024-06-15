@@ -31,7 +31,6 @@ void EntityFireball::update(float seconds_elapsed) {
 
     // Test collision with enemy
     if (testCollisionWithEnemy()) {
-        std::cout << "Fireball collided with an enemy" << std::endl;
 
         // Mark this fireball for destruction
         World::instance->removeEntity(this);
@@ -57,7 +56,6 @@ bool EntityFireball::testCollisionWithEnemy() {
 
                 // Spawn a heart entity
                 EntityHeart* heart = new EntityHeart();
-                if (heart) std::cout << "LIFE OF GOOMBA" << std::endl;
                 heart->model.setTranslation(collision_point);
                 World::instance->addEntity(heart);
 

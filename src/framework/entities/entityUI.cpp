@@ -24,16 +24,16 @@ EntityUI::EntityUI(Vector2 pos, Vector2 size, const Material& material, eButtonI
 
 	if (!this->material.shader) {
 		if (material.diffuse) {
-			std::cout << "Loading texture shader." << std::endl;
+			//std::cout << "Loading texture shader." << std::endl;
 			this->material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/texture.fs");
 		}
 		else {
-			std::cout << "Loading flat shader." << std::endl;
+			//std::cout << "Loading flat shader." << std::endl;
 			this->material.shader = Shader::Get("data/shaders/basic.vs", "data/shaders/flat.fs");
 		}
 
 		if (this->material.shader == nullptr) {
-			std::cerr << "Error: Shader not found or failed to load." << std::endl;
+			//std::cerr << "Error: Shader not found or failed to load." << std::endl;
 		}
 	}
 }

@@ -549,9 +549,9 @@ void EntityPlayer::loseLife(int life) {
 		total_lives -= life;
 		Audio::Play("data/sounds/yoshi_hit.mp3", 1.f, BASS_SAMPLE_OVER_POS);
 	}
-	else if (total_lives == 0) {
+	/*else if (total_lives == 0) {
 		std::cout << "GAME OVER" << std::endl;
-	}
+	}*/
 }
 
 void EntityPlayer::addBullet(int bullet) {
