@@ -107,8 +107,10 @@ void EntityUI::update(double seconds_elapsed) {
 		if (Input::isMousePressed(SDL_BUTTON_LEFT)) {
 			Audio::Play("data/sounds/option.wav", 0.7f, BASS_SAMPLE_OVER_POS);
 			if (button_id == PlayButton) Game::instance->goToStage(1);
-			if (button_id == ContinueButton) Game::instance->goToStage(2);
-			if (button_id == ControlsButton) Game::instance->goToStage(1);
+			if (button_id == ContinueButton) Game::instance->goToStage(3);
+			if (button_id == ControlsButton || button_id == ContinueIntroButton) {
+				Game::instance->goToStage(2);
+			}
 			if (button_id == RestartButton) {
 				Game::instance->restart();
 			}

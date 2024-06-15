@@ -80,6 +80,62 @@ void MenuStage::onExitStage()
 	Audio::Stop(background_channel);
 }
 
+
+
+//----- INTRODUCTION STAGE -----
+IntroStage::IntroStage()
+{
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+	Material background_mat;
+	background_mat.diffuse = Texture::Get("data/hud/intro_tutorial.png");
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background_mat);
+
+	Material play_mat;
+	play_mat.diffuse = Texture::Get("data/hud/continue.png");
+	continue_button = new EntityUI(Vector2(width * 0.5, 530), Vector2(200, 75), play_mat, eButtonId::ContinueIntroButton);
+	continue_button->hover_texture = Texture::Get("data/hud/continue_2.png");
+
+	background->addChild(continue_button);
+}
+
+void IntroStage::reload() {
+	int width = Game::instance->window_width;
+	int height = Game::instance->window_height;
+
+	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
+
+	continue_button = new EntityUI(Vector2(width * 0.5, 530), Vector2(200, 75), continue_button->material, eButtonId::ContinueIntroButton);
+	continue_button->hover_texture = Texture::Get("data/hud/continue_2.png");
+
+}
+
+
+void IntroStage::update(float seconds_elapsed) {
+	background->update(seconds_elapsed);
+	continue_button->update(seconds_elapsed);
+}
+
+void IntroStage::onEnterStage()
+{
+	background_channel = Audio::Play("data/sounds/tutorial_menu.mp3", 0.6f, BASS_MUSIC_LOOP);
+}
+
+void IntroStage::render() {
+	Camera* camera2D = World::get_instance()->camera2D;
+
+	background->render(camera2D);
+	continue_button->render(camera2D);
+}
+
+void IntroStage::onExitStage()
+{
+	Audio::Stop(background_channel);
+}
+
+
+
 //----- TUTORIAL STAGE -----
 TutorialStage::TutorialStage()
 {
@@ -527,6 +583,8 @@ void WinStage::reload() {
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 	score = new EntityUI(Vector2(100, height * 0.5 - 50), Vector2(200, 75), score->material);
+	//num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), num->material);
+
 
 }
 
@@ -561,7 +619,7 @@ void WinStage::render()
 	}
 
 	current_score = player->total_points;
-	EntityUI* num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), zero_mat);;
+	num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), zero_mat);;
 	int number;
 
 	for (int i = 0; i < digits; i++) {
@@ -652,6 +710,8 @@ void GameOverStage::reload() {
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 	score = new EntityUI(Vector2(125, height * 0.5 - 50), Vector2(175, 50), score->material);
+	//num = new EntityUI(Vector2(100, height - 20), Vector2(75, 20), num->material);
+
 }
 
 void GameOverStage::render()

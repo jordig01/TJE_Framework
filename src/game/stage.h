@@ -14,6 +14,7 @@ class Camera;
 enum eStages {
 
 	MENU,
+	INTRO_STAGE,
 	TUTORIAL_STAGE,
 	PLAY_STAGE,
 	GAME_OVER,
@@ -69,6 +70,35 @@ public:
 	void reload();
 
 };
+
+
+class IntroStage : public Stage {
+
+	eStages type = INTRO_STAGE;
+
+public:
+	IntroStage();
+
+
+	//--- Audio Part ---
+	HCHANNEL background_channel;
+
+
+	EntityUI* background = nullptr;
+	EntityUI* continue_button = nullptr;
+
+
+	void render();
+	void update(float seconds_elapsed);
+	void onEnterStage();
+	void onExitStage();
+	void onButtonPressed(eButtonId buttonId) {};
+	void reload();
+
+};
+
+
+
 
 class TutorialStage : public Stage {
 
@@ -181,6 +211,7 @@ public:
 
 	//--- SCORE ---
 	EntityUI* score = nullptr;
+	EntityUI* num = nullptr;
 	EntityUI* zero;
 	Material zero_mat;
 	Material one_mat;
@@ -219,6 +250,7 @@ public:
 
 	//--- SCORE ---
 	EntityUI* score = nullptr;
+	EntityUI* num = nullptr;
 	EntityUI* zero;
 	Material zero_mat;
 	Material one_mat;

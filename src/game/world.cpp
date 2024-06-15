@@ -89,11 +89,7 @@ void World::render() {
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
-
-	//// Create model matrix for cube
-	//Matrix44 m;
-	//m.rotate(angle * DEG2RAD, Vector3(0.0f, 1.0f, 0.0f));
-
+	
 	root.render(camera);
 	root_player->render(camera);
 	wheels[0]->render(camera);

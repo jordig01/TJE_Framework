@@ -49,6 +49,7 @@ Game::Game(int window_width, int window_height, SDL_Window* window)
 	//world = new World();
 
 	stages[MENU] = new MenuStage();
+	stages[INTRO_STAGE] = new IntroStage();
 	stages[TUTORIAL_STAGE] = new TutorialStage();
 	stages[PLAY_STAGE] = new PlayStage();
 	stages[WIN_STAGE] = new WinStage();
