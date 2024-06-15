@@ -203,7 +203,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 		if (turbo < 0) turbo = 0;
 
 		if (!turbo_sound_playing) {
-			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_LOOP);
+			turbo_channel = Audio::Play("data/sounds/turbo.wav", 0.8f, BASS_SAMPLE_LOOP | BASS_SAMPLE_OVER_VOL);
 			Audio::fadeInChannel(turbo_channel, 500); // 500 milliseconds fade in
 			Audio::fadeOutChannel(move_channel, 500);
 			Audio::Stop(move_channel);
@@ -213,6 +213,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	else {
 		if (turbo_sound_playing) {
 			Audio::fadeOutChannel(turbo_channel, 500); // 500 milliseconds fade out
+			Audio::Stop(turbo_channel);
 			turbo_sound_playing = false;
 		}
 	}
@@ -244,7 +245,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	// --- Logic to handle car movement sound ---
 	if (is_moving) {
-		if (!is_moving_sound_playing) {
+		if (!is_moving_sound_playing)) {
 			move_channel = Audio::Play("data/sounds/driving.wav", 0.3f, BASS_SAMPLE_LOOP);
 			Audio::fadeInChannel(move_channel, 500);
 			is_moving_sound_playing = true;
@@ -615,7 +616,7 @@ void EntityWheels::update(float seconds_elapsed)
 		}
 
 		
-		if (Input::isKeyPressed(SDL_SCANCODE_X)) speed = 5.f;
+		if (Input::isKeyPressed(SDL_SCANCODE_X) && World::instance->root_player->turbo > 0) speed = 5.f;
 
 		this->model.rotate(accumulated_rotation * last_moving_player * speed, Vector3(1, 0, 0));
 
