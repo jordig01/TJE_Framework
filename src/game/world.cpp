@@ -106,8 +106,8 @@ void World::render() {
 	int windows_width = Game::instance->window_width;
 	int windows_height = Game::instance->window_height;
 
-	std::string bullet_info = std::to_string(root_player->bullet_count) + "/5";
-	drawText(windows_width - 50, 35, bullet_info, Vector3(1, 1, 1), 2);
+	std::string bullet_info = std::to_string(root_player->bullet_count) + "/10";
+	drawText(windows_width - 60, 35, bullet_info, Vector3(1, 1, 1), 2);
 
 
 
@@ -389,7 +389,8 @@ void World::shootFireball()
 {
 	if (root_player->bullet_count > 0) {
 		Vector3 player_pos = root_player->model.getTranslation();
-		Vector3 fireball_dir = root_player->model.frontVector().normalize() * root_player->rotation;
+		//Vector3 fireball_dir = root_player->model.frontVector().normalize() * root_player->rotation;
+		Vector3 fireball_dir = root_player->front;
 		Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f;
 
 		// Create a new fireball entity

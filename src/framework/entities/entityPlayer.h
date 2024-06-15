@@ -46,7 +46,7 @@ public:
 
     int total_lives = 3;
     int total_points = 0;
-    int bullet_count = 5;
+    int bullet_count = 10;
     float turbo;
 
     bool is_moving;

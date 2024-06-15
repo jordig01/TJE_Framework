@@ -558,9 +558,9 @@ void EntityPlayer::loseLife(int life) {
 void EntityPlayer::addBullet(int bullet) {
 	bullet_count += bullet;
 
-	if (bullet_count > 5) {
+	if (bullet_count > 10) {
 		total_points += 200;
-		bullet_count = 5;
+		bullet_count = 10;
 	}
 }
 

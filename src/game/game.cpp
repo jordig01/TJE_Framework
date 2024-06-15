@@ -80,7 +80,7 @@ void Game::restart()
 	EntityPlayer* player = World::instance->root_player;
 	player->total_lives = 3;
 	player->total_points = 0;
-	player->bullet_count = 5;
+	player->bullet_count = 10;
 	player->turbo = 1000.f;
 	player->object_collected = "";
 	player->total_points = 0;

@@ -61,24 +61,6 @@ void EntityAI::update(float seconds_elapsed)
 	
 	Vector3 player_pos = World::get_instance()->root_player->position;
 
-	float angle_step = rotation_speed * seconds_elapsed;
-	if (rotating_forward) {
-		current_rotation_angle += angle_step;
-		if (current_rotation_angle > max_rotation_angle) {
-			current_rotation_angle = max_rotation_angle;
-			rotating_forward = false;
-		}
-	}
-	else {
-		current_rotation_angle -= angle_step;
-		if (current_rotation_angle < -max_rotation_angle) {
-			current_rotation_angle = -max_rotation_angle;
-			rotating_forward = true;
-		}
-	}
-
-	model.rotate(angle_step * (rotating_forward ? 1.0f : -1.0f), Vector3(0, 0, 1));
-
 	if (state == PATROL) {
 		followPath(seconds_elapsed);
 
@@ -126,7 +108,6 @@ void EntityAI::lookAtTarget(const Vector3& position, float seconds_elapsed)
 	//Rotate model to look at position
 	float angle = model.getYawRotationToAimTo(position);
 	float rotationSpeed = 4.0f * seconds_elapsed;
-	model.rotate(0, Vector3(0, 0, 1));
 	model.rotate(angle * rotationSpeed, Vector3::UP);
 }
 
@@ -140,9 +121,8 @@ void EntityAI::followPath(float seconds_elapsed)
 
 		lookAtTarget(target, seconds_elapsed);
 
-		// Apply lateral oscillation only to x and z
 		model.translate(0.f, 0.f, seconds_elapsed * 2.f);
-
+		
 		float distance_to_target = (target - origin).length();
 		if (distance_to_target < 0.1f) {
 			if (walk_forwards && waypoint_index + 1 == path.size() || !walk_forwards && waypoint_index - 1 < 0) {
