@@ -50,12 +50,12 @@ World::World()
 	landscape.diffuse = new Texture();
 
 	landscape.diffuse->loadCubemap("landscape",  {
-		"data/textures/skybox2/right.png",
-		"data/textures/skybox2/left.png",
-		"data/textures/skybox2/bottom.png",
-		"data/textures/skybox2/top.png",
-		"data/textures/skybox2/front.png",
-		"data/textures/skybox2/back.png"
+		"data/textures/skybox/right.png",
+		"data/textures/skybox/left.png",
+		"data/textures/skybox/bottom.png",
+		"data/textures/skybox/top.png",
+		"data/textures/skybox/front.png",
+		"data/textures/skybox/back.png"
 	});
 
 	Mesh* cubemapMesh = Mesh::Get("data/meshes/cubemap.obj");
