@@ -463,8 +463,8 @@ void World::instantiateEnemies()
 {
 	for (const auto& waypoint : enemy_waypoints) {
 		Vector3 position = waypoint.position;
-		EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
-		enemy->addLOD({ Mesh::Get("data/meshes/enemy/enemy_low.obj"), 200.f });
+		EntityAI* enemy = new EntityAI(Mesh::Get("data/meshes/goomba/enemy.obj"), {});
+		enemy->addLOD({ Mesh::Get("data/meshes/goomba/enemy_low.obj"), 200.f });
 		enemy->original_position = waypoint.position;
 		enemy->model.setTranslation(position);
 		enemy->setLayer(eCollisionFilter::ENEMY);
@@ -482,8 +482,8 @@ void World::instantiateEnemies()
 //Function that render only the enemies removed for the restart of the game
 void World::renderRemovedEnemies() {
 	for (const auto& [enemy, position] : eliminated_enemies) {
-		EntityAI* new_enemy = new EntityAI(Mesh::Get("data/meshes/enemy/enemy.obj"), {});
-		new_enemy->addLOD({ Mesh::Get("data/meshes/enemy/enemy_low.obj"), 200.f });
+		EntityAI* new_enemy = new EntityAI(Mesh::Get("data/meshes/goomba/enemy.obj"), {});
+		new_enemy->addLOD({ Mesh::Get("data/meshes/goomba/enemy_low.obj"), 200.f });
 		new_enemy->model.setTranslation(position);
 		new_enemy->setLayer(eCollisionFilter::ENEMY);
 		root.addChild(new_enemy);
