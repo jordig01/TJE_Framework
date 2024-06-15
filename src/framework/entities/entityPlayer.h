@@ -69,9 +69,9 @@ public:
 
     // --- Functions to handle collisions ---
     void handleCollisions(float seconds_elapsed);
+    void handleCubePickup(CubeCollider* cube);
     void checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
     void checkEnemyCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions);
-    void handleCubePickup(CubeCollider* cube);
    
     void addPoints(int point);
     void losePoints(int point);

@@ -290,32 +290,70 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 //--- FUNCTION TO HANDLE COLLISIONS ---
 void EntityPlayer::handleCollisions(float seconds_elapsed) {
+	static bool invincible = false;
+	static float invincibility_timer = 0.0f;
+	const float invincibility_duration = 3.0f; // Duration of invincibility in seconds
+
 	std::vector<sCollisionData> collisions;
 	std::vector<sCollisionData> ground_collisions;
 	bool cube_collision = false;
 
+	// If the player is invincible, update the timer and check if it has expired
+	if (invincible) {
+		invincibility_timer += seconds_elapsed;
+		if (invincibility_timer >= invincibility_duration) {
+			invincible = false;
+			invincibility_timer = 0.0f;
+		}
+	}
+
 	for (auto e : World::get_instance()->root.children) {
 		EntityCollider* ec = dynamic_cast<EntityCollider*>(e);
-
 		if (ec != nullptr) {
 			ec->getCollisions(position + velocity * seconds_elapsed, collisions, ground_collisions);
 		}
 
-		// Check for CubeCollider 
+		// Check for CubeCollider
 		CubeCollider* cube = dynamic_cast<CubeCollider*>(e);
 		if (cube != nullptr && !cube->collected) {
 			std::vector<sCollisionData> cube_collisions;
 			cube->getCollisions(position + velocity * seconds_elapsed, cube_collisions, ground_collisions);
 			if (!cube_collisions.empty()) {
 				handleCubePickup(cube);
-				std::cout << "CUBE SURPRISE COLLIDED " << cube->collected << std::endl;
 				cube_collision = true;
 			}
 		}
 
-		checkPipeCollision(seconds_elapsed, ground_collisions);
-		checkEnemyCollision(seconds_elapsed, ground_collisions);
+		// Check for collisions with pipes and enemies only if not invincible
+		if (!invincible) {
+			PipeCollider* pipe = dynamic_cast<PipeCollider*>(e);
+			if (pipe != nullptr) {
+				std::vector<sCollisionData> pipe_collisions;
+				pipe->getCollisions(position + velocity * seconds_elapsed, pipe_collisions, ground_collisions);
 
+				if (!pipe_collisions.empty() && velocity.length() > 250.0f) {
+					loseLife(1);
+					losePoints(500);
+					invincible = true;
+					invincibility_timer = 0.0f;
+					break; // Exit the loop once a collision with a pipe is found
+				}
+			}
+
+			EntityAI* enemy = dynamic_cast<EntityAI*>(e);
+			if (enemy != nullptr) {
+				std::vector<sCollisionData> enemy_collisions;
+				enemy->getCollisions(position + velocity * seconds_elapsed, enemy_collisions, ground_collisions);
+
+				if (!enemy_collisions.empty()) {
+					loseLife(1);
+					losePoints(500);
+					invincible = true;
+					invincibility_timer = 0.0f;
+					break; // Exit the loop once a collision with an enemy is found
+				}
+			}
+		}
 	}
 
 	if (!cube_collision) {
@@ -324,7 +362,6 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			if (fabsf(collision.col_normal.dot(Vector3::UP)) < 0.8f) {
 				if (position.dot(Vector3(1, 0, 1)) - collision.col_point.dot(Vector3(1, 0, 1)) < 0) {
 					collide = -1.0f;
-
 				}
 				else {
 					collide = 1.0f;
@@ -333,10 +370,8 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 			velocity.x -= newDir.x;
 			velocity.y -= newDir.y;
 			velocity.z -= newDir.z;
-
 		}
 	}
-
 
 	bool is_grounded = false;
 	for (const sCollisionData& collision : ground_collisions) {
@@ -357,6 +392,7 @@ void EntityPlayer::handleCollisions(float seconds_elapsed) {
 		velocity.y = 2.0f;
 	}
 }
+
 
 //---- COLLISION CON PIPE -----
 void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollisionData> ground_collisions) {
@@ -386,7 +422,6 @@ void EntityPlayer::checkPipeCollision(float seconds_elapsed, std::vector<sCollis
 			if (!pipe_collisions.empty() && velocity.length() > 250.0f) {
 				loseLife(1);
 				losePoints(500);
-				std::cout << "PIPE COLLIDED: Life lost, points deducted." << std::endl;
 
 				// Activate invincibility
 				invincible = true;
@@ -410,7 +445,6 @@ void EntityPlayer::handleCubePickup(CubeCollider* cube) {
 		// 20% chance of being an obstacle
 		loseLife(1);
 		losePoints(500);
-		std::cout << "SURPRISE CUBE COLLIDED: Life lost, points deducted." << std::endl;
 		object_collected = "obstacle";
 	}
 	else {
@@ -475,7 +509,6 @@ void EntityPlayer::checkEnemyCollision(float seconds_elapsed, std::vector<sColli
 				// If the player is not invincible, lose a life and become invincible for a certain period
 				loseLife(1);
 				losePoints(500);
-				std::cout << "ENEMY COLLIDED: Life lost, points deducted." << std::endl;
 
 				// Activate invincibility
 				invincible = true;
