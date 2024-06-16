@@ -109,7 +109,7 @@ void IntroStage::reload() {
 
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
-	continue_button = new EntityUI(Vector2(width * 0.5, 530), Vector2(200, 75), continue_button->material, eButtonId::ContinueIntroButton);
+	continue_button = new EntityUI(Vector2(width * 0.5, height * 0.8), Vector2(200, 75), continue_button->material, eButtonId::ContinueIntroButton);
 	continue_button->hover_texture = Texture::Get("data/hud/continue_2.png");
 
 }
@@ -789,7 +789,7 @@ void GameOverStage::renderNumber(Camera* camera2D, EntityPlayer* player, int wid
 
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;
-		Vector2 position = Vector2(width * 0.25 + (width * 0.25 - 200) + (digits - i) * 45, height * 0.5 - 50);
+		Vector2 position = Vector2(200 + (digits - i) * 45, height * 0.5 - 50);
 		if (number == 0) num = new EntityUI(position, dimension, zero_mat);
 		else if (number == 1) num = new EntityUI(position, dimension, one_mat);
 		else if (number == 2) num = new EntityUI(position, dimension, two_mat);

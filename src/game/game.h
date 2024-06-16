@@ -61,5 +61,6 @@ public:
 	void goToStage(int new_stage);
 
 	void restart();
+	void restart2();
 
 };

@@ -109,6 +109,40 @@ void Game::restart()
 	goToStage(PLAY_STAGE);
 }
 
+void Game::restart2()
+{
+
+	World* world = World::get_instance();
+	EntityPlayer* player = World::instance->root_player;
+	player->total_lives = 3;
+	player->total_points = 0;
+	player->bullet_count = 10;
+	player->turbo = 1000.f;
+	player->object_collected = "";
+	player->total_points = 0;
+	player->countdown_finished = false;
+	player->countdown_timer = 6.0f;
+	World::instance->root_player->rotation = -1.5f;
+	World::instance->root_player->cam_rotation = -1.5f;
+	player->initial_rotation = true;
+	player->start_music = true;
+	World::instance->move_player = false;
+	World::instance->timer_game = 0.0f;
+	World::instance->start_timer = false;
+
+	World::instance->root_player->end_score = 100000;
+	World::instance->root_player->score_timer = 0.0f;
+
+	World::instance->renderRemovedCube();
+	World::instance->renderRemovedEnemies();
+	player->model.setTranslation((World::instance->old_position_player));
+
+	World::instance->wheels[0]->model.setTranslation((World::instance->old_position_player));
+	World::instance->wheels[1]->model.setTranslation((World::instance->old_position_player));
+	World::instance->wheels[2]->model.setTranslation((World::instance->old_position_player));
+
+	goToStage(MENU);
+}
 
 
 //what to do when the image has to be draw
@@ -143,7 +177,8 @@ void Game::onKeyDown( SDL_KeyboardEvent event )
 {
 	switch(event.keysym.sym)
 	{
-		case SDLK_ESCAPE: must_exit = true; break; //ESC key, kill the app
+		//case SDLK_ESCAPE: must_exit = true; break; //ESC key, kill the app
+		case SDLK_ESCAPE: restart2(); break;
 		case SDLK_F1: Shader::ReloadAll(); break; 
 	}
 }
