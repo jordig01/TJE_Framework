@@ -25,9 +25,9 @@ EntityFireball::~EntityFireball()
 
 void EntityFireball::update(float seconds_elapsed) {
 	
-    Vector3 dir = direction * seconds_elapsed * 200.0f;
+    Vector3 dir = direction * seconds_elapsed * 300.0f;
 
-	this->model.translate(dir.x, -0.05f, dir.z); // Move forward by 200 units per seconds
+	this->model.translate(dir.x, -15.0f * seconds_elapsed, dir.z); // Move forward by 200 units per seconds
 
     // Test collision with enemy
     if (testCollisionWithEnemy()) {

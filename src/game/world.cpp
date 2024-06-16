@@ -390,6 +390,7 @@ void World::shootFireball()
 {
 	if (root_player->bullet_count > 0) {
 		Vector3 player_pos = root_player->model.getTranslation();
+		player_pos.y += 5.0f;
 		//Vector3 fireball_dir = root_player->model.frontVector().normalize() * root_player->rotation;
 		Vector3 fireball_dir = root_player->front;
 		Vector3 fireball_start_pos = player_pos + fireball_dir * 2.0f;
