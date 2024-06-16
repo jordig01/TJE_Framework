@@ -8,6 +8,7 @@
 #include "framework/entities/entityFireball.h"
 #include <framework/input.h>
 #include <fstream>
+#include <iomanip> 
 
 World* World::instance = nullptr; // Initialization of static member variable
 
@@ -72,7 +73,6 @@ World::World()
 
 void World::render() {
 
-
 	// Set the camera as default
 	camera->enable();
 
@@ -81,9 +81,7 @@ void World::render() {
 	skybox->render(camera);
 	glDepthMask(GL_TRUE);
 
-	
-	drawGrid();
-
+	//drawGrid();
 
 	// Set flags
 	glDisable(GL_BLEND);
@@ -105,7 +103,10 @@ void World::render() {
 	std::string bullet_info = std::to_string(root_player->bullet_count) + "/10";
 	drawText(windows_width - 60, 35, bullet_info, Vector3(1, 1, 1), 2);
 
-
+	std::stringstream ss;
+	ss << std::fixed << std::setprecision(2) << timer_game;
+	std::string timer = ss.str() + "s";
+	drawText(windows_width * 0.5 - 30, windows_height - 28, timer, Vector3(1, 1, 1), 2);
 
 }
 
@@ -194,6 +195,10 @@ void World::update(float seconds_elapsed) {
 	if (Input::wasKeyPressed(SDL_SCANCODE_Z) && !free_camera) {
 
 		shootFireball();
+	}
+
+	if (start_timer) {
+		timer_game += seconds_elapsed;
 	}
 
 	for (auto e : entities_to_destroy) {
