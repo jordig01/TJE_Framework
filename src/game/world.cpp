@@ -95,7 +95,7 @@ void World::render() {
 	wheels[2]->render(camera);
 
 	//Render the FPS, Draw Calls, etc
-	drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
+	//drawText(2, 2, getGPUStats(), Vector3(1, 1, 1), 2);
 
 	int windows_width = Game::instance->window_width;
 	int windows_height = Game::instance->window_height;
