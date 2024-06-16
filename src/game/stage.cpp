@@ -526,14 +526,14 @@ void PlayStage::onEnterStage() {
 
 void PlayStage::onExitStage() {
 	Audio::Stop(sound);
+	Audio::Stop(start_channel);
 
 	EntityPlayer* player = World::instance->root_player;
-
 
 	Audio::Stop(player->turbo_channel);
 	Audio::Stop(player->handle_channel);
 	Audio::Stop(player->move_channel);
-
+	Audio::Stop(player->drift_sound_channel);
 
 }
 
@@ -594,8 +594,6 @@ void WinStage::reload() {
 
 	score = new EntityUI(Vector2(100, height * 0.5 - 50), Vector2(200, 75), score->material);
 
-	reloadNumber(camera2D, player, width, height);
-
 }
 
 void WinStage::render()
@@ -612,7 +610,7 @@ void WinStage::render()
 	exit_button->render(camera2D);
 
 	score->render(camera2D);
-	reloadNumber(camera2D, player, width, height);
+	renderNumber(camera2D, player, width, height);
 }
 
 void WinStage::update(float seconds_elapsed) {
@@ -630,7 +628,7 @@ void WinStage::onExitStage() {
 	Audio::Stop(winBackground);
 }
 
-void WinStage::reloadNumber(Camera* camera2D, EntityPlayer* player, int width, int height)
+void WinStage::renderNumber(Camera* camera2D, EntityPlayer* player, int width, int height)
 {
 	int current_score = player->total_points;
 	int digits = 0;
@@ -734,8 +732,6 @@ void GameOverStage::reload() {
 
 	score = new EntityUI(Vector2(125, height * 0.5 - 50), Vector2(175, 50), score->material);
 
-	reloadNumber(camera2D, player, width, height);
-
 }
 
 void GameOverStage::render()
@@ -751,7 +747,7 @@ void GameOverStage::render()
 
 	score->render(camera2D);
 	
-	reloadNumber(camera2D, player,width, height);
+	renderNumber(camera2D, player,width, height);
 }
 
 void GameOverStage::update(float seconds_elapsed) {
@@ -761,7 +757,7 @@ void GameOverStage::update(float seconds_elapsed) {
 
 }
 
-void GameOverStage::reloadNumber(Camera* camera2D, EntityPlayer* player, int width, int height)
+void GameOverStage::renderNumber(Camera* camera2D, EntityPlayer* player, int width, int height)
 {
 	int current_score = player->total_points;
 	int digits = 0;
