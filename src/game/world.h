@@ -62,6 +62,10 @@ public:
 	float sphere_ground_radius = 2.5f;
 	float player_height = 5.0f;
 
+
+	float timer_game = 0;
+	bool start_timer = false;
+
 	float camera_yaw = 0.f;
 	float camera_pitch = 0.f;
 	float camera_speed = 10.0f;

@@ -285,6 +285,7 @@ void EntityPlayer::update(float seconds_elapsed) {
 	else if (!is_dripping && drift_sound_playing) {
 		// Stop playing the drifting sound if not drifting anymore
 		Audio::fadeOutChannel(drift_sound_channel, 500); // Fade out the sound
+		Audio::Stop(drift_sound_channel);
 		drift_sound_playing = false;
 	}
 
