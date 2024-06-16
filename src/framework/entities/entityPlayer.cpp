@@ -121,6 +121,12 @@ void EntityPlayer::update(float seconds_elapsed) {
 	bool turning = false;
 	float drift = 1.0f;
 
+	if (score_timer >= 1.0f) {
+		score_timer = 0.0f;
+		if (end_score > 0) end_score -= 100;
+	}
+	score_timer += seconds_elapsed;
+
 	if (collide != 0.0f) {
 		velocity += front * last_moving * -1.0f * 20;//100;
 		collision_time += seconds_elapsed;

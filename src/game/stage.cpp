@@ -341,7 +341,9 @@ void PlayStage::render()
 
 	World::get_instance()->render();
 
-
+	if (Input::wasKeyPressed(SDL_SCANCODE_R)) {
+		Game::instance->restart();
+	}
 	switch (player->total_lives) {
 		case 3:
 			life3->render(camera2D);
@@ -398,6 +400,7 @@ void PlayStage::render()
 		World::instance->root_player->initial_rotation = true;
 		World::instance->root_player->rotation -= World::instance->root_player->rotation + 1.5f;
 		World::instance->root_player->cam_rotation = -1.5f;
+		World::instance->root_player->total_points += World::instance->root_player->end_score;
 		
 		World::instance->wheels[0]->model.translate(Vector3(-3.62, 1.5, -4));
 		World::instance->wheels[1]->model.translate(Vector3(3.62, 1.5,-4));
