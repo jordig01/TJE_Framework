@@ -38,6 +38,8 @@ public:
     bool right = false;
     float last_moving = 0.0f;
 
+    int end_score = 100000;
+    float score_timer = 0.0f;
 
     bool countdown_finished = false;
     float countdown_timer = 6.0f;

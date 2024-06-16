@@ -93,6 +93,9 @@ void Game::restart()
 	player->start_music = true;
 	World::instance->move_player = false;
 
+	World::instance->root_player->end_score = 100000;
+	World::instance->root_player->score_timer = 0.0f;
+
 	World::instance->renderRemovedCube();	
 	World::instance->renderRemovedEnemies();
 	player->model.setTranslation((World::instance->old_position_player));
