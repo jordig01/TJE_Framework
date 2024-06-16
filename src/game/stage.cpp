@@ -593,6 +593,7 @@ void WinStage::reload() {
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 	score = new EntityUI(Vector2(100, height * 0.5 - 50), Vector2(200, 75), score->material);
+	renderNumber(World::instance->camera2D, World::instance->root_player, width, height);
 
 }
 
@@ -729,6 +730,8 @@ void GameOverStage::reload() {
 	exit_button->hover_texture = Texture::Get("data/hud/exit_button.png");
 
 	score = new EntityUI(Vector2(125, height * 0.5 - 50), Vector2(175, 50), score->material);
+
+	renderNumber(World::instance->camera2D, World::instance->root_player, width, height);
 
 }
 
