@@ -189,11 +189,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	if (cam_rotation != rotation && !turning) {
 		if (left) {
-			cam_rotation -= 0.25f * drift * seconds_elapsed;
+			cam_rotation -= 0.75f * drift * seconds_elapsed;
 			cam_rotation = clamp(cam_rotation, rotation, rotation + 0.6f);
 		}
 		else if (right) {
-			cam_rotation += 0.25f * drift * seconds_elapsed;
+			cam_rotation += 0.75f * drift * seconds_elapsed;
 			cam_rotation = clamp(cam_rotation, rotation - 0.6f, rotation);
 		}
 	}

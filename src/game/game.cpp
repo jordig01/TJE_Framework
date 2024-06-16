@@ -96,7 +96,6 @@ void Game::restart()
 
 	World::instance->root_player->end_score = 100000;
 	World::instance->root_player->score_timer = 0.0f;
-	World::instance->timer_game = 0.f;
 
 	World::instance->renderRemovedCube();	
 	World::instance->renderRemovedEnemies();
