@@ -163,9 +163,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 			right = false;
 			left = true;
 			turning = true;
-			rotation -= 0.004f * moving * drift;
-			cam_rotation -= 0.001f * drift;
-			if (cam_rotation < rotation) cam_rotation += 0.003f * drift;
+			rotation -= 1.0f * moving * drift * seconds_elapsed;
+			cam_rotation -= 0.25f * drift * seconds_elapsed;
+			if (cam_rotation < rotation) cam_rotation += 0.75 * drift * seconds_elapsed;
 			cam_rotation = clamp(cam_rotation, rotation - 0.3f * drift, rotation + 0.3f * drift);
 
 		}
@@ -179,9 +179,9 @@ void EntityPlayer::update(float seconds_elapsed) {
 			right = true;
 			left = false;
 			turning = true;
-			rotation += 0.004f * moving * drift;
-			cam_rotation += 0.001f * drift;
-			if (cam_rotation > rotation)cam_rotation -= 0.003f * drift;
+			rotation += 1.0f * moving * drift * seconds_elapsed;
+			cam_rotation += 0.25f * drift * seconds_elapsed;
+			if (cam_rotation > rotation)cam_rotation -= 0.75f * drift * seconds_elapsed;
 			cam_rotation = clamp(cam_rotation, rotation - 0.3f * drift, rotation + 0.3f * drift);
 
 		}
@@ -189,11 +189,11 @@ void EntityPlayer::update(float seconds_elapsed) {
 
 	if (cam_rotation != rotation && !turning) {
 		if (left) {
-			cam_rotation -= 0.004f * drift;
+			cam_rotation -= 0.25f * drift * seconds_elapsed;
 			cam_rotation = clamp(cam_rotation, rotation, rotation + 0.6f);
 		}
 		else if (right) {
-			cam_rotation += 0.004f * drift;
+			cam_rotation += 0.25f * drift * seconds_elapsed;
 			cam_rotation = clamp(cam_rotation, rotation - 0.6f, rotation);
 		}
 	}

@@ -92,6 +92,7 @@ void Game::restart()
 	player->initial_rotation = true;
 	player->start_music = true;
 	World::instance->move_player = false;
+	World::instance->timer_game = 0.0f;
 
 	World::instance->root_player->end_score = 100000;
 	World::instance->root_player->score_timer = 0.0f;
