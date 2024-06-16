@@ -719,8 +719,6 @@ GameOverStage::GameOverStage()
 void GameOverStage::reload() {
 	int width = Game::instance->window_width;
 	int height = Game::instance->window_height;
-	Camera* camera2D = World::get_instance()->camera2D;
-	EntityPlayer* player = World::get_instance()->root_player;
 
 	background = new EntityUI(Vector2(width * 0.5, height * 0.5), Vector2(width, height), background->material);
 
