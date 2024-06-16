@@ -231,6 +231,7 @@ public:
 	void update(float seconds_elapsed);
 	void onEnterStage();
 	void onExitStage();
+	void reloadNumber(Camera* camera2D, EntityPlayer* player, int width, int height);
 	void reload();
 
 };
@@ -266,6 +267,7 @@ public:
 	GameOverStage();
 	void render();
 	void update(float seconds_elapsed);
+	void reloadNumber(Camera* camera2D, EntityPlayer* player, int width, int height);
 	void onEnterStage();
 	void onExitStage();
 	void reload();
