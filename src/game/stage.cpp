@@ -480,16 +480,16 @@ void PlayStage::render()
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;
 
-		if (number == 0) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), zero_mat);
-		else if (number == 1) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), one_mat);
-		else if (number == 2) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), two_mat);
-		else if (number == 3) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), three_mat);
-		else if (number == 4) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), four_mat);
-		else if (number == 5) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), five_mat);
-		else if (number == 6) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), six_mat);
-		else if (number == 7) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), seven_mat);
-		else if (number == 8) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), eight_mat);
-		else if (number == 9) num = new EntityUI(Vector2(150 - i * 18, height - 20), Vector2(20, 20), nine_mat);
+		if (number == 0) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), zero_mat);
+		else if (number == 1) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), one_mat);
+		else if (number == 2) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), two_mat);
+		else if (number == 3) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), three_mat);
+		else if (number == 4) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), four_mat);
+		else if (number == 5) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), five_mat);
+		else if (number == 6) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), six_mat);
+		else if (number == 7) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), seven_mat);
+		else if (number == 8) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), eight_mat);
+		else if (number == 9) num = new EntityUI(Vector2(75 + (digits - i) * 20, height - 20), Vector2(20, 20), nine_mat);
 
 		num->render(camera2D);
 		current_score = current_score / 10;
@@ -660,7 +660,7 @@ void WinStage::renderNumber(Camera* camera2D, EntityPlayer* player, int width, i
 
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;
-		Vector2 position = Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50);
+		Vector2 position = Vector2(200 + (digits - i) * 45, height * 0.5 - 50);
 		if (number == 0) num = new EntityUI(position, dimension, zero_mat);
 		else if (number == 1) num = new EntityUI(position, dimension, one_mat);
 		else if (number == 2) num = new EntityUI(position, dimension, two_mat);
@@ -788,7 +788,7 @@ void GameOverStage::renderNumber(Camera* camera2D, EntityPlayer* player, int wid
 
 	for (int i = 0; i < digits; i++) {
 		number = current_score % 10;
-		Vector2 position = Vector2(width * 0.5 - 25 - i * 45, height * 0.5 - 50);
+		Vector2 position = Vector2(width * 0.25 + (width * 0.25 - 200) + (digits - i) * 45, height * 0.5 - 50);
 		if (number == 0) num = new EntityUI(position, dimension, zero_mat);
 		else if (number == 1) num = new EntityUI(position, dimension, one_mat);
 		else if (number == 2) num = new EntityUI(position, dimension, two_mat);
